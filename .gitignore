@@ -1,0 +1,6 @@
+.apt_generated/
+.factorypath
+.grade/
+.settings/
+.DS_Store
+build/
