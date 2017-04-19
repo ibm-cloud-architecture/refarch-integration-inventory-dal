@@ -4,6 +4,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import inventory.model.ItemEntity;
+
 @XmlRootElement(name="Item")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Item {
@@ -34,6 +36,15 @@ public class Item {
 	    this.img_alt = img_alt; 
 	  }
 
+	public Item(ItemEntity ie){
+		this.name=ie.getName();
+		this.description=ie.getDescription();
+		this.id=ie.getId();
+		this.img=ie.getImg();
+		this.img_alt=ie.getImg_alt();
+		this.price=ie.getPrice();
+	}
+	
 	public String getName() {
 		return name;
 	}

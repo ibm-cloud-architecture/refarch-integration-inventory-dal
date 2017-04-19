@@ -9,6 +9,16 @@
 // Apply the java-library plugin to add support for Java Library
 // apply plugin: 'java-library'
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.apache.openjpa:openjpa:2.4.2'
+        classpath 'at.schmutterer.oss.gradle:gradle-openjpa:0.2.0'
+    }
+}
+
 plugins {
   id 'java'
   id 'war'
@@ -16,19 +26,30 @@ plugins {
 
 // In this section you declare where to find the dependencies of your project
 repositories {
-    // Use jcenter for resolving your dependencies.
-    // You can declare any Maven/Ivy/file repository here.
     jcenter()
 }
 
+// Java compiler compliance level
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
 dependencies {
-
+    compile fileTree(dir: 'lib', include: ['*.jar'])
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
-
-    // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-    implementation 'com.google.guava:guava:20.0'
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
 }
 
+apply plugin: 'openjpa'
+
+
+openjpa {
+      files = fileTree(sourceSets.main.output.classesDir).matching {
+          include '**/model/**'
+      }
+}
+
+test {
+  jvmArgs "-javaagent:./lib/openjpa-all-2.4.2.jar"
+}
