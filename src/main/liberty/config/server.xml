@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright (c) 2015 IBM Corp.
- 
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
- 
+
      http://www.apache.org/licenses/LICENSE-2.0
- 
+
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,15 +22,25 @@
  below or put a server.xml file in configDropins/overrides. Note: you may need to add Maven provided
  dependencies for use at compile time if not using app accelerator dependencies. -->
 
-    
+
     <featureManager>
-        <feature>jaxws-2.2</feature>
+		   <feature>servlet-3.1</feature>
+        <feature>localConnector-1.0</feature>
+       <feature>jpa-2.0</feature>
+       <feature>jaxws-2.2</feature>
     </featureManager>
-     
+
 
     <httpEndpoint httpPort="${default.http.port}" httpsPort="${default.https.port}"
         id="defaultHttpEndpoint" />
     <applicationMonitor updateTrigger="mbean"/>
-    <logging traceSpecification="*=audit:com.ibm.dd.api.*=finest"/>
-    <webApplication id="refarch-premsource-inventory-dal" location="refarch-premsource-inventory-dal.war" contextRoot="inventory"/>
+    <logging traceSpecification="*=audit:inventory.ws.*=finest"/>
+   <library id="DB2JCC4Lib">
+      <fileset dir="${shared.config.dir}/lib" includes="db2jcc4.jar"/>
+   </library>
+   <dataSource id="db2" jndiName="jdbc/db2">
+     <jdbcDriver libraryRef="DB2JCC4Lib"/>
+     <properties.db2.jcc databaseName="INVDB" portNumber="50000" serverName="localhost"/>
+ </dataSource>
+   <webApplication contextRoot="inventory" id="refarch-premsource-inventory-dal" location="refarch-premsource-inventory-dal.war"/>
 </server>

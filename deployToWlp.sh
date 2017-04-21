@@ -1,2 +1,2 @@
 #!/bin/bash
-cp ./build/libs/*.war ~/tools/wlp/usr/servers/dws/apps
+cp ./build/libs/*.war ~/IBM/wlp/usr/servers/appServer/apps
