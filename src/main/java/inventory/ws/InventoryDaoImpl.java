@@ -12,13 +12,21 @@ import inventory.model.ItemEntity;
 public class InventoryDaoImpl extends BaseDao implements InventoryDAO {
 	Logger logger = Logger.getLogger(InventoryDaoImpl.class.getName());
 	
+	public InventoryDaoImpl(){
+		
+	}
+	
+	public InventoryDaoImpl(String persistanceName) {
+		
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ItemEntity> getItems() {
 		EntityManager em = getEntityManager();
 		List<ItemEntity> results = new ArrayList<ItemEntity>();
 		try{ 
-			Query query =em.createQuery("select p from Items p");
+			Query query =em.createNamedQuery("Item.findAll");
 			results = query.getResultList ();
 		
 		} finally {
@@ -69,7 +77,7 @@ public class InventoryDaoImpl extends BaseDao implements InventoryDAO {
 		EntityManager em = getEntityManager();
 		List<ItemEntity> results = new ArrayList<ItemEntity>();
 		try{ 
-			Query query =em.createQuery("select p from Items p where p.name = ?1",ItemEntity.class);
+			Query query =em.createQuery("select p from Item p where p.name = ?1",ItemEntity.class);
 			query.setParameter (1, name);
 			results = query.getResultList();
 		} finally {

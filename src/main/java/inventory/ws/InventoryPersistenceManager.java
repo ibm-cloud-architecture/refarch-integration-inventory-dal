@@ -4,6 +4,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 public class InventoryPersistenceManager {
+	public String persitenceName="inventory";
+	
 	// EntityManagerFactory instances are heavy weight objects. 
 	// Each factory might maintain a metadata cache, object state cache, EntityManager pool, connection pool...
 	protected EntityManagerFactory emf;
@@ -36,7 +38,7 @@ public class InventoryPersistenceManager {
 	}
 	  
 	protected void createEntityManagerFactory() {	    
-	   emf = Persistence.createEntityManagerFactory("inventory");
+	   emf = Persistence.createEntityManagerFactory(persitenceName);
 	   if (DEBUG)
 		      System.out.println("@@@@ Persistence manager factory started at " + new java.util.Date());
 	}

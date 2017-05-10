@@ -2,20 +2,17 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="inventory" transaction-type="RESOURCE_LOCAL">
 	
-	  <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
-	  <!-- 
-	   <jta-data-source>java:comp/env/jdbc/derbyClient</jta-data-source>
-     -->	
+	  <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>	
+       <jta-data-source>java:comp/env/jdbc/invdbds</jta-data-source>
+	   <non-jta-data-source>java:comp/env/jdbc/invdbds</non-jta-data-source>
+	
     	<class>inventory.model.ItemEntity</class>
 		<properties>
-		<property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/INVDB;create=true"/>
-		<property name="javax.persistence.jdbc.user" value="user"/>
-		<property name="javax.persistence.jdbc.password" value="user"/>
-		<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:db2://172.16.254.23:50000/INVDB:retrieveMessagesFromServerOnGetMessage=true;"/>
+			<property name="javax.persistence.jdbc.user" value="DB2INST1"/>
+			<property name="javax.persistence.jdbc.password" value="Brown01"/>
+			<property name="javax.persistence.jdbc.driver" value="com.ibm.db2.jcc.DB2Driver"/>
 		<property name="openjpa.Log" value="SQL=TRACE" />
-		<property name="openjpa.jdbc.Schema" value="APP"/>
-		<property name="openjpa.jdbc.DriverDataSource" value="simple"/> 
-		<property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema"/>    
 		<property name="openjpa.DataCache" value="true"/>
 		<property name="openjpa.RemoteCommitProvider" value="sjvm"/>
 		<property name="openjpa.DynamicEnhancementAgent" value="true"/>

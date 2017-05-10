@@ -13,8 +13,8 @@ public class Item {
 	protected long id;
 	protected String name;
 	private String description;
-    private int price;
-	private String img_alt;  
+    private double price;
+	private String imgAlt;  
 	private String img;
 
 	
@@ -33,7 +33,7 @@ public class Item {
 	    this.description = description;
 	    this.price = price;
 	    this.img = img;
-	    this.img_alt = img_alt; 
+	    this.imgAlt = img_alt; 
 	  }
 
 	public Item(ItemEntity ie){
@@ -41,7 +41,7 @@ public class Item {
 		this.description=ie.getDescription();
 		this.id=ie.getId();
 		this.img=ie.getImg();
-		this.img_alt=ie.getImg_alt();
+		this.imgAlt=ie.getImg_alt();
 		this.price=ie.getPrice();
 	}
 	
@@ -69,7 +69,7 @@ public class Item {
 		this.description = description;
 	}
 
-	public int getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
@@ -77,12 +77,12 @@ public class Item {
 		this.price = price;
 	}
 
-	public String getImg_alt() {
-		return img_alt;
+	public String getImgAlt() {
+		return imgAlt;
 	}
 
-	public void setImg_alt(String img_alt) {
-		this.img_alt = img_alt;
+	public void setImgAlt(String img_alt) {
+		this.imgAlt = img_alt;
 	}
 
 	public String getImg() {

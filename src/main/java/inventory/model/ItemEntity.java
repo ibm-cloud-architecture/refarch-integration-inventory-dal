@@ -1,26 +1,44 @@
 package inventory.model;
 
+import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 import inventory.ws.Item;
 
-@Entity(name="Items")
-public class ItemEntity {
+@Entity(name="Item")
+@Table(name="ITEMS")
+@NamedQuery(name="Item.findAll", query="SELECT i FROM Item i")
+public class ItemEntity implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue (strategy=GenerationType.SEQUENCE)
+	@Column(nullable=false)
 	protected long id;
-	protected String name;
+	 
+	@Column(nullable=false, length=1500)
 	private String description;
-    private int price;
-	private String img_alt;  
+	@Column(nullable=false, length=100)
+	protected String name;
+	@Column(nullable=false, precision=8, scale=2)
+	private double price;
+	@Column(nullable=false, length=100)
 	private String img;
-	private Date updateDate;
-	private Date creationDate;
+	@Column(name="IMG_ALT", length=75)
+	private String imgAlt;
+	@Column(precision=5)
+	private int quantity;
+	private Timestamp updateDate;
+	private Timestamp creationDate;
 	
 	public ItemEntity(){
 		
@@ -31,7 +49,7 @@ public class ItemEntity {
 		this.description=i.getDescription();
 		this.id=i.getId();
 		this.img=i.getImg();
-		this.img_alt=i.getImg_alt();
+		this.imgAlt=i.getImgAlt();
 		this.price=i.getPrice();
 	}
 	
@@ -63,20 +81,20 @@ public class ItemEntity {
 		this.description = description;
 	}
 
-	public int getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 
 	public String getImg_alt() {
-		return img_alt;
+		return imgAlt;
 	}
 
 	public void setImg_alt(String img_alt) {
-		this.img_alt = img_alt;
+		this.imgAlt = img_alt;
 	}
 
 	public String getImg() {
@@ -87,19 +105,19 @@ public class ItemEntity {
 		this.img = img;
 	}
 
-	public Date getUpdateDate() {
+	public Timestamp getUpdateDate() {
 		return updateDate;
 	}
 
-	public void setUpdateDate(Date updateDate) {
+	public void setUpdateDate(Timestamp updateDate) {
 		this.updateDate = updateDate;
 	}
 
-	public Date getCreationDate() {
+	public Timestamp getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(Date creationDate) {
+	public void setCreationDate(Timestamp creationDate) {
 		this.creationDate = creationDate;
 	}
 	

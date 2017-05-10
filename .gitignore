@@ -4,6 +4,7 @@
 .settings/
 .DS_Store
 build/
+invdb/
 bin/
 src/main/webapp/WEB-INF/classes/
 derby.log
