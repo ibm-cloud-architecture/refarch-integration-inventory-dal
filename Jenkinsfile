@@ -8,7 +8,7 @@ pipeline {
         }
         stage('deploy') {
             steps {
-                sh './updateAppServer.sh'
+                sh './deployToWlp.sh'
             }
         }
     }

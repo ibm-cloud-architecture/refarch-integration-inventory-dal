@@ -34,22 +34,42 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 dependencies {
-    compile fileTree(dir: 'lib', include: ['*.jar'])
+    providedCompile fileTree(dir: 'lib', include: ['*.jar'])
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
 }
 
-apply plugin: 'openjpa'
+sourceSets {
+  main {
+    output.classesDir   = 'src/main/webapp/WEB-INF/classes'
+  }
+}
 
+apply plugin:'openjpa'
 
+// See https://github.com/schmutterer/gradle-openjpa
 openjpa {
       files = fileTree(sourceSets.main.output.classesDir).matching {
           include '**/model/**'
       }
 }
 
+task processConfig(type: Copy) {
+    from('src/main/config') {
+        include '**/*'
+    }
+
+    into 'build/config/main'
+}
+
 test {
   jvmArgs "-javaagent:./lib/openjpa-all-2.4.2.jar"
+}
+
+war {
+  dependsOn openjpaEnhance
+  rootSpec.exclude("**/lib/db2jcc4.jar")
+  rootSpec.exclude("**/lib/derby.jar")
 }
