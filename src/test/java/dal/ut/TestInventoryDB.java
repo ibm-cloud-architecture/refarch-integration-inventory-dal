@@ -1,5 +1,7 @@
 package dal.ut;
 
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.util.Collection;
 
@@ -10,6 +12,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import inventory.ws.DALException;
 import inventory.ws.InventoryService;
 import inventory.ws.Item;
 
@@ -60,7 +63,12 @@ public class TestInventoryDB {
 		ie.setImg("a path to an image");
 		ie.setPrice(10000);
 		
-		ie=serv.newItem(ie);
+		try {
+			ie=serv.newItem(ie);
+		} catch (DALException e) {
+			e.printStackTrace();
+			fail("Exception");
+		}
 		Assert.assertNotNull(ie);
 		Assert.assertTrue(ie.getId()>0);
 		idToKeep=ie.getId();
@@ -71,21 +79,41 @@ public class TestInventoryDB {
 	@Test
 	public void testGetOneItem() {
 		System.out.println("Id:"+idToKeep);
-		Item item= serv.getItemById(idToKeep);
+		Item item = null;
+		try {
+			item = serv.getItemById(idToKeep);
+		} catch (DALException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("Exception");
+		}
 		Assert.assertNotNull(item);
 		Assert.assertTrue(item.getId() == idToKeep);
 	}
 	
 	@Test
 	public void testLoadAllItems() {
-		Collection<Item> items = serv.getItems();
+		Collection<Item> items =null;
+		try {
+			items = serv.getItems();
+		} catch (DALException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("Exception");
+		}
 		Assert.assertNotNull(items);
 		Assert.assertTrue(items.size() >= 1);
 	}
 	
 	@Test
 	public void testWDeleteOneItem() {
-		String s= serv.deleteItem(idToKeep);
+		String s=null;
+		try {
+			s = serv.deleteItem(idToKeep);
+		} catch (DALException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Assert.assertNotNull(s);
 		Assert.assertTrue("Success".equals(s));
 	}

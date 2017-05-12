@@ -49,14 +49,13 @@ public class InventoryDaoMock implements InventoryDAO {
 	}
 
 	@Override
-	public List<ItemEntity> getItemByName(String name) {
-		List<ItemEntity> iel = new ArrayList<ItemEntity>();
+	public ItemEntity getItemEntityByName(String name) {
 		for (ItemEntity ie : items.values()) {
 			if (name.equals(ie.getName())) {
-				iel.add(ie);
+				return ie;
 			}
 		}
-		return iel;
+		return null;
 	}
 
 }

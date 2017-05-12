@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="inventory" transaction-type="RESOURCE_LOCAL">
-	
-	  <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>	
+
+	  <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
        <jta-data-source>java:comp/env/jdbc/invdbds</jta-data-source>
-	   <non-jta-data-source>java:comp/env/jdbc/invdbds</non-jta-data-source>
-	
+	     <non-jta-data-source>java:comp/env/jdbc/invdbds</non-jta-data-source>
+
     	<class>inventory.model.ItemEntity</class>
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:db2://172.16.254.23:50000/INVDB:retrieveMessagesFromServerOnGetMessage=true;"/>

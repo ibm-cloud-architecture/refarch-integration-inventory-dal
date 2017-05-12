@@ -22,7 +22,7 @@ public class InventoryDaoImpl extends BaseDao implements InventoryDAO {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ItemEntity> getItems() {
+	public List<ItemEntity> getItems() throws DALException{
 		EntityManager em = getEntityManager();
 		List<ItemEntity> results = new ArrayList<ItemEntity>();
 		try{ 
@@ -73,16 +73,16 @@ public class InventoryDaoImpl extends BaseDao implements InventoryDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ItemEntity> getItemByName(String name) {
+	public ItemEntity getItemEntityByName(String name) {
 		EntityManager em = getEntityManager();
-		List<ItemEntity> results = new ArrayList<ItemEntity>();
+		ItemEntity result = null;
 		try{ 
 			Query query =em.createQuery("select p from Item p where p.name = ?1",ItemEntity.class);
 			query.setParameter (1, name);
-			results = query.getResultList();
+			result = (ItemEntity)query.getResultList().get(0);
 		} finally {
 			em.close();
 		}
-		return results;
+		return result;
 	}
 }

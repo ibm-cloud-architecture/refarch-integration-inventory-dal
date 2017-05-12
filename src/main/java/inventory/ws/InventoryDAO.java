@@ -6,16 +6,15 @@ import inventory.model.ItemEntity;
 
 public interface InventoryDAO {
 
-	List<ItemEntity> getItems();
+	List<ItemEntity> getItems() throws DALException;
 
-	ItemEntity updateItem(ItemEntity inItem);
+	ItemEntity updateItem(ItemEntity inItem) throws DALException;
 
-	ItemEntity getItemEntityById(long id);
+	ItemEntity getItemEntityById(long id) throws DALException;
 
-	String addItem(ItemEntity ie);
+	String addItem(ItemEntity ie) throws DALException;
 
-	String deleteItem(long id);
-
-	List<ItemEntity> getItemByName(String name);
-
+	String deleteItem(long id) throws DALException;
+	
+	ItemEntity getItemEntityByName(String name) throws DALException;
 }
