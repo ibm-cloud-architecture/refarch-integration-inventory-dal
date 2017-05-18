@@ -2,7 +2,6 @@ package inventory.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,20 +22,20 @@ public class ItemEntity implements Serializable {
 	@Id
 	@GeneratedValue (strategy=GenerationType.SEQUENCE)
 	@Column(nullable=false)
-	protected long id;
+	protected Long id=null;
 
-	@Column(nullable=false, length=1500)
+	@Column(length=1500)
 	private String description;
 	@Column(nullable=false, length=100)
 	protected String name;
 	@Column(nullable=false, precision=8, scale=2)
-	private double price;
+	private Double price=null;
 	@Column(length=100)
 	private String img;
 	@Column(name="IMG_ALT", length=75)
 	private String imgAlt;
 	@Column(precision=5)
-	private int quantity;
+	private Integer quantity;
 	private Timestamp updateDate;
 	private Timestamp creationDate;
 
@@ -51,18 +50,23 @@ public class ItemEntity implements Serializable {
 		this.img=i.getImg();
 		this.imgAlt=i.getImgAlt();
 		this.price=i.getPrice();
+		setQuantity(i.getQuantity());
 	}
 
 	public ItemEntity(String name){
 		this.name=name;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
 	public void setId(long id) {
-		this.id = id;
+		this.id = new Long(id);
+	}
+	
+	public void setId(Long i){
+		this.id=i;
 	}
 
 	public String getName() {
@@ -81,13 +85,18 @@ public class ItemEntity implements Serializable {
 		this.description = description;
 	}
 
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
 	public void setPrice(double price) {
+		this.price = new Double(price);
+	}
+	
+	public void setPrice(Double price) {
 		this.price = price;
 	}
+
 
 	public String getImg_alt() {
 		return imgAlt;
@@ -121,4 +130,23 @@ public class ItemEntity implements Serializable {
 		this.creationDate = creationDate;
 	}
 
+	public String getImgAlt() {
+		return imgAlt;
+	}
+
+	public void setImgAlt(String imgAlt) {
+		this.imgAlt = imgAlt;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = new Integer(quantity);
+	}
 }

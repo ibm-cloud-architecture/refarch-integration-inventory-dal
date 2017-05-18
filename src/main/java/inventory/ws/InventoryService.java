@@ -73,6 +73,7 @@ public class InventoryService {
 	@WebMethod(operationName="newItem")
 	public Item newItem(Item inItem) throws DALException{
 		ItemEntity ie = new ItemEntity(inItem);
+		ie.setId(null);
 		ie.setCreationDate(new Timestamp((new Date()).getTime()));
 		ie.setUpdateDate(ie.getCreationDate());		
 		if ("Success".equals(dao.addItem(ie))) {

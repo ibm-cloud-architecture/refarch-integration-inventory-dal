@@ -1,10 +1,12 @@
 package inventory.ws;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 
 public abstract class BaseDao {
 
+	@PersistenceContext(unitName = "inventory")
 	protected EntityManager em;
 	 /**
 	  *  An EntityManager is not a heavy object.
@@ -43,14 +45,17 @@ public abstract class BaseDao {
 	
 
 	public String save(Object entity) {
+		 EntityManager em=null;
     	try {
-			 EntityManager em = begin();
+			 em = begin();
 			 em.persist(entity);
 			 em.getTransaction().commit();
-			 em.close();
+			 
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "Failure: "+e.getMessage();
+		} finally {
+			if (em != null) em.close();
 		}
 		 return "Success";
     }

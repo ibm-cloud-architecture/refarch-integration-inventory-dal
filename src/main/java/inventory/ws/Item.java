@@ -2,6 +2,7 @@ package inventory.ws;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import inventory.model.ItemEntity;
@@ -9,13 +10,16 @@ import inventory.model.ItemEntity;
 @XmlRootElement(name="Item")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Item {
-
+	@XmlElement( nillable=true )
 	protected long id;
 	protected String name;
 	private String description;
+	@XmlElement( nillable = true )
     private double price;
 	private String imgAlt;  
 	private String img;
+	@XmlElement( nillable = true )
+	private int quantity;
 
 	
 	public Item(){}
@@ -43,6 +47,7 @@ public class Item {
 		this.img=ie.getImg();
 		this.imgAlt=ie.getImg_alt();
 		this.price=ie.getPrice();
+		this.quantity=ie.getQuantity().intValue();
 	}
 	
 	public String getName() {
@@ -91,6 +96,14 @@ public class Item {
 
 	public void setImg(String img) {
 		this.img = img;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 	
 }
