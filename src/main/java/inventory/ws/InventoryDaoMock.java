@@ -35,7 +35,7 @@ public class InventoryDaoMock implements InventoryDAO {
 	}
 
 	@Override
-	public String addItem(ItemEntity ie) {
+	public String createItem(ItemEntity ie) {
 		ie.setId(count);
 		items.put(new Long(count), ie);
 		count++;
@@ -55,6 +55,12 @@ public class InventoryDaoMock implements InventoryDAO {
 				return ie;
 			}
 		}
+		return null;
+	}
+
+	@Override
+	public List<ItemEntity> searchItemEntitiesByName(String name) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

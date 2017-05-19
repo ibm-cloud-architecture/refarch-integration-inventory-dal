@@ -12,6 +12,7 @@ import inventory.model.ItemEntity;
 public class Item {
 	@XmlElement( nillable=true )
 	protected long id;
+	@XmlElement( nillable = false )
 	protected String name;
 	private String description;
 	@XmlElement( nillable = true )

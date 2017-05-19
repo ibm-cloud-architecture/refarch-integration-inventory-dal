@@ -33,21 +33,20 @@ public class InventoryService {
 	
 	@WebMethod(operationName="items")
 	public Collection<Item> getItems() throws DALException{
-		Collection<ItemEntity> l=dao.getItems();
+		return processList(dao.getItems());
+	}
+	
+	private Collection<Item>  processList(Collection<ItemEntity> l ){
 		List<Item> li=new ArrayList<Item>();
 		for (ItemEntity ie : l){
 			Item i = new Item(ie);
 			li.add(i);
 		}
-		return li; 
+		return li;
 	}
 
 	@WebMethod(operationName="itemById")
 	public Item getItemById(@WebParam(name="id")long id) throws DALException{
-		if (id <= 0) {
-			DALFault f = new DALFault("ERR001","Item identification negative or 0");
-			throw new DALException("DAL exception input data", f);
-		}
 		ItemEntity ie =dao.getItemEntityById(id);
 		if (ie != null) return new Item(ie);
 		return null;
@@ -55,10 +54,6 @@ public class InventoryService {
 	
 	@WebMethod(operationName="itemByName")
 	public Item getItemByName(@WebParam(name="name")String name) throws DALException{
-		if (name == null || name.isEmpty()) {
-			DALFault f = new DALFault("ERR002","Item name is empty");
-			throw new DALException("DAL exception input data", f);
-		}
 		ItemEntity ie =dao.getItemEntityByName(name);
 		if (ie != null) return new Item(ie);
 		return null;
@@ -76,7 +71,7 @@ public class InventoryService {
 		ie.setId(null);
 		ie.setCreationDate(new Timestamp((new Date()).getTime()));
 		ie.setUpdateDate(ie.getCreationDate());		
-		if ("Success".equals(dao.addItem(ie))) {
+		if ("Success".equals(dao.createItem(ie))) {
 			ItemEntity outItem=dao.getItemEntityByName(ie.getName());
 			return new Item(outItem);
 		}
@@ -86,5 +81,10 @@ public class InventoryService {
 	@WebMethod(operationName="deleteItem")
 	public String deleteItem(@WebParam(name="id")long id) throws DALException{
 		return dao.deleteItem(id);
+	}
+
+	@WebMethod(operationName="searchByName")
+	public Collection<Item> searchByName(String name) throws DALException{
+		return processList(dao.searchItemEntitiesByName(name));
 	}
 }

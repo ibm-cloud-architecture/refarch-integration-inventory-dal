@@ -17,7 +17,9 @@ import inventory.ws.InventoryService;
 import inventory.ws.Item;
 
 /**
- * Test at the service level the basic CRUD operation on inventory item
+ * Test at the service level the basic CRUD operation on inventory item.
+ * The persistence.xml uses derby embedded for testing purpose so testcase
+ * can delete the DB at the end of their unit tests
  * @author jerome boyer
  *
  */
@@ -30,15 +32,9 @@ public class TestInventoryDB {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		 serv = new InventoryService();
-//		 try {
-//			 Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-//			 DriverManager.getConnection("jdbc:derby:memory:INVDB;create=true");
-//		 } catch (Exception ex) {
-//	         ex.printStackTrace();
-//	         org.junit.Assert.fail("Exception during database startup.");
-//		 }
 	}
 	
+	// Delete the DB files
 	static void deleteDir(File file) {
 	    File[] contents = file.listFiles();
 	    if (contents != null) {
@@ -52,7 +48,6 @@ public class TestInventoryDB {
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 		deleteDir(new File("./invdb"));
-
 	}
 
 	@Test
@@ -62,7 +57,6 @@ public class TestInventoryDB {
 		ie.setPrice(1000);
 		ie.setImg("a path to an image");
 		ie.setPrice(10000);
-		
 		try {
 			ie=serv.newItem(ie);
 		} catch (DALException e) {
@@ -83,9 +77,8 @@ public class TestInventoryDB {
 		try {
 			item = serv.getItemById(idToKeep);
 		} catch (DALException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			fail("Exception");
+			fail("Exception to get one item");
 		}
 		Assert.assertNotNull(item);
 		Assert.assertTrue(item.getId() == idToKeep);
@@ -106,18 +99,64 @@ public class TestInventoryDB {
 	}
 	
 	@Test
+	public void testUpdateQuantity(){
+		Item item;
+		try {
+			item = serv.getItemById(idToKeep);
+			long currentQuantity=item.getQuantity();
+			Assert.assertEquals(0, currentQuantity);
+			item.setQuantity(item.getQuantity()+1);
+			serv.updateItem(item);
+			Item itemOut=serv.getItemById(idToKeep);
+			Assert.assertTrue(itemOut.getQuantity()==currentQuantity +1);
+		} catch (DALException e) {
+			e.printStackTrace();
+			fail("Exception in update item test");
+		}
+		
+	}
+	
+	@Test
 	public void testWDeleteOneItem() {
 		String s=null;
 		try {
 			s = serv.deleteItem(idToKeep);
 		} catch (DALException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		Assert.assertNotNull(s);
 		Assert.assertTrue("Success".equals(s));
 	}
 	
+	@Test
+	public void wellDoASearch(){
+		try {
+			Item ie= new Item("item1");
+			ie.setDescription("This is item");
+			ie.setPrice(1000);
+			ie.setImg("a path to an image");
+			ie.setPrice(10000);
+			ie=serv.newItem(ie);
+			ie= new Item("item2");
+			ie.setDescription("This is item");
+			ie.setPrice(1000);
+			ie.setImg("a path to an image");
+			ie.setPrice(10000);
+			ie=serv.newItem(ie);
+			ie= new Item("item3");
+			ie.setDescription("This is item");
+			ie.setPrice(1000);
+			ie.setImg("a path to an image");
+			ie.setPrice(10000);
+			ie=serv.newItem(ie);
+			Collection<Item>  items = serv.getItems();
+			Assert.assertTrue(items.size() >= 3);
+			items=serv.searchByName("item");
+			Assert.assertTrue(items.size() >= 3);
+		} catch (DALException e) {
+			e.printStackTrace();
+			fail("Exception");
+		}
+	}
 	
-
 }

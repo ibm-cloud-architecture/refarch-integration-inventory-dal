@@ -21,14 +21,12 @@ public class ItemEntity implements Serializable {
 
 	@Id
 	@GeneratedValue (strategy=GenerationType.SEQUENCE)
-	@Column(nullable=false)
 	protected Long id=null;
-
 	@Column(length=1500)
 	private String description;
 	@Column(nullable=false, length=100)
 	protected String name;
-	@Column(nullable=false, precision=8, scale=2)
+	@Column(precision=8, scale=2)
 	private Double price=null;
 	@Column(length=100)
 	private String img;
@@ -46,7 +44,7 @@ public class ItemEntity implements Serializable {
 	public ItemEntity(Item i){
 		this.name=i.getName();
 		this.description=i.getDescription();
-		this.id=i.getId();
+		setId(i.getId());
 		this.img=i.getImg();
 		this.imgAlt=i.getImgAlt();
 		this.price=i.getPrice();

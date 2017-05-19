@@ -1,11 +1,15 @@
 package inventory.ws;
 
+import java.util.logging.Logger;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 
 
 public abstract class BaseDao {
-
+	Logger logger = Logger.getLogger("BaseDao");
+	
 	@PersistenceContext(unitName = "inventory")
 	protected EntityManager em;
 	 /**
@@ -16,7 +20,6 @@ public abstract class BaseDao {
 	protected EntityManager getEntityManager(){
             if (em == null || !em.isOpen()) {
                 em = InventoryPersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
-                System.out.println("@@@@ In JSE the em is not injected");
             }
             return em;
 	}
@@ -30,48 +33,72 @@ public abstract class BaseDao {
           return em;
     }
 
-	public String merge(Object entity) {
-    	try {
-			 EntityManager em = begin();
-			 em.merge(entity);
-			 em.getTransaction().commit();
-			 em.close();
+	public String merge(Object entity) throws DALException{
+		EntityManager em=null;
+		try{
+			em = begin();
+			em.merge(entity);
+			em.getTransaction().commit();
+
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "Failure: "+e.getMessage();
+			throw new DALException("ERRDAO1004","Error in merge operation "+e.getMessage());
+		} finally {
+			try {
+				if (em != null) {
+					if (em.getTransaction().isActive()) {
+						em.getTransaction().rollback();
+					}
+					em.close();
+				}
+			} catch(Exception e){
+				e.printStackTrace();
+				throw new DALException("ERRDAO1005","Error in merge-close operation "+e.getMessage());
+			}
 		}
 		 return "Success";
     }
 	
 
-	public String save(Object entity) {
-		 EntityManager em=null;
+	public String save(Object entity) throws DALException{
+		EntityManager em=null;
     	try {
 			 em = begin();
 			 em.persist(entity);
-			 em.getTransaction().commit();
-			 
-		} catch (Exception e) {
+			 em.getTransaction().commit();		 
+		} catch (PersistenceException e) {
 			e.printStackTrace();
-			return "Failure: "+e.getMessage();
-		} finally {
+			throw new DALException("ERRDAO1001","Error in save operation "+e.getMessage());
+		} 
+    	finally {
 			if (em != null) em.close();
 		}
 		 return "Success";
     }
 	
-	public String delete(Object entity){
+	public String delete(Object entity) throws DALException{
+		EntityManager em=null;
 		try {
-			 EntityManager em = begin();
+			 em = begin();
 			 em.remove(entity);
 			 em.getTransaction().commit();
 			 em.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "Failure: "+e.getMessage();
+			throw new DALException("ERRDAO1006","Error in delete operation "+e.getMessage());
 		} finally {
-		    if (em.getTransaction().isActive()) em.getTransaction().rollback();
-		  }
+			try {
+				if (em != null) {
+					if (em.getTransaction().isActive()) {
+						em.getTransaction().rollback();
+					}
+					em.close();
+				}
+			} catch(Exception e){
+				e.printStackTrace();
+				throw new DALException("ERRDAO1007","Error in delete-close operation "+e.getMessage());
+			}
+		}
 		 return "Success";
 	}
 }

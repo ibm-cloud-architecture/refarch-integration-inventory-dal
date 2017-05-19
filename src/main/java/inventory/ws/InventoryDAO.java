@@ -12,9 +12,11 @@ public interface InventoryDAO {
 
 	ItemEntity getItemEntityById(long id) throws DALException;
 
-	String addItem(ItemEntity ie) throws DALException;
+	String createItem(ItemEntity ie) throws DALException;
 
 	String deleteItem(long id) throws DALException;
 	
 	ItemEntity getItemEntityByName(String name) throws DALException;
+
+	List<ItemEntity> searchItemEntitiesByName(String name) throws DALException;
 }
