@@ -119,7 +119,7 @@ public class InventoryDaoImpl extends BaseDao implements InventoryDAO {
 				} 
 		}catch (Exception e){
 			e.printStackTrace();
-			 throw new DALException("ERRDAO4000","Error on delete delete");
+			 throw new DALException("ERRDAO4000","Error on delete operation at tx level id="+id);
 		} finally {
 			if (em != null) {
 				if (em.getTransaction().isActive()) {
@@ -129,7 +129,7 @@ public class InventoryDaoImpl extends BaseDao implements InventoryDAO {
 			}
 		}
 		if (entity == null) {
-			 throw new DALException("ERRDAO4001","Error on delete delete");
+			 throw new DALException("ERRDAO4001","Error on delete, entity not found for id="+id);
 		}
 		
 		 return "Success";

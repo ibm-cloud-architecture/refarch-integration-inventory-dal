@@ -75,12 +75,26 @@ The build is supported by gradle. The project folder has a gradle wrapper so run
 should compile, unit tests and build a war under build/libs
 Here is an example of execution trace
 ```
-
+Starting a Gradle Daemon (subsequent builds will be faster)
+:compileJava
+:openjpaEnhance
+36  inventory  INFO   [Daemon worker] openjpa.Tool - Enhancer running on type "class inventory.model.ItemEntity".
+:processResources UP-TO-DATE
+:classes
+:war
+:assemble
+:compileTestJava
+:processTestResources UP-TO-DATE
+:testClasses
+:test
 ```
+## Test Driven development
+The service and data access object classes were developed by starting by the tests. The first test to validate the access to data and the CRUD operation at the service API level.
+
 
 ## Deploy
 The script ./deployToWlp.sh copy the created war to a local wlp, modify the path in this script to reflect your local environment if you do not have your WebSphere Liberty profile under ~/IBM/wlp.
 The server name was appServer.
 
 ## Access deployed wsdl
-Using a web broswer to the localhost should display the wsdl: [http://localhost:9080/inventory/ws?wsdl](http://localhost:9080/inventory/ws?wsdl) 
+Using a web broswer to the localhost should display the wsdl: [http://localhost:9080/inventory/ws?wsdl](http://localhost:9080/inventory/ws?wsdl)
