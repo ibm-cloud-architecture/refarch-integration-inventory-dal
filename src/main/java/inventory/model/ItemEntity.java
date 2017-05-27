@@ -44,7 +44,8 @@ public class ItemEntity implements Serializable {
 	public ItemEntity(Item i){
 		this.name=i.getName();
 		this.description=i.getDescription();
-		setId(i.getId());
+		if (i.getId() <=0) setId(null);
+		else setId(i.getId());
 		this.img=i.getImg();
 		this.imgAlt=i.getImgAlt();
 		this.price=i.getPrice();

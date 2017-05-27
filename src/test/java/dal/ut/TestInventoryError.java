@@ -118,7 +118,7 @@ public class TestInventoryError {
 			Item ie= new Item("Name is good");
 			Item item = serv.updateItem(ie);
 		} catch (DALException e) {
-			Assert.assertTrue("ERRDAO1004".equals(e.getFaultInfo().getCode()));
+			Assert.assertTrue("ERRDAO2001".equals(e.getFaultInfo().getCode()));
 			System.out.println(e.getFaultInfo().getMessage());
 			gotIt=true;
 		}
