@@ -90,7 +90,6 @@ public class TestInventoryDB {
 		try {
 			items = serv.getItems();
 		} catch (DALException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			fail("Exception");
 		}
