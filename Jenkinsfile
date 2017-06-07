@@ -8,7 +8,7 @@ pipeline {
         }
         stage('deploy') {
             steps {
-             timeout(time: 30, unit: 'SECONDS') {
+             timeout(time: 3, unit: 'MINUTES') {
                 sh './deployToWlp.sh'
               }
             }
