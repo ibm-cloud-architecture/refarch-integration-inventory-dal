@@ -1,2 +1,2 @@
 #!/bin/bash
-cp ./build/libs/*.war ~/IBM/wlp/usr/servers/appServer/apps
+scp ./build/libs/*.war admin@172.16.254.44:~/IBM/wlp/usr/servers/appServer/apps
