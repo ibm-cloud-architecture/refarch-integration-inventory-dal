@@ -7,6 +7,7 @@
 	     <non-jta-data-source>java:comp/env/jdbc/invdbds</non-jta-data-source>
 
     	<class>inventory.model.ItemEntity</class>
+    	<class>inventory.model.Supplier</class>
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:db2://172.16.254.23:50000/INVDB:retrieveMessagesFromServerOnGetMessage=true;"/>
 			<property name="javax.persistence.jdbc.user" value="DB2INST1"/>

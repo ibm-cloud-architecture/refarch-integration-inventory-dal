@@ -24,7 +24,7 @@ import inventory.ws.Item;
  *
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class TestInventoryDB {
+public class TestInventoryDB extends BaseTest{
 
 	static InventoryService serv;
 	static long idToKeep=351;
@@ -34,21 +34,7 @@ public class TestInventoryDB {
 		 serv = new InventoryService();
 	}
 	
-	// Delete the DB files
-	static void deleteDir(File file) {
-	    File[] contents = file.listFiles();
-	    if (contents != null) {
-	        for (File f : contents) {
-	            deleteDir(f);
-	        }
-	    }
-	    file.delete();
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-		deleteDir(new File("./invdb"));
-	}
+	
 
 	@Test
 	public void saveItem(){
