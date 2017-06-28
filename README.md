@@ -127,3 +127,8 @@ Using a web broswer to the localhost should display the wsdl: [http://localhost:
 
 ## Conclusion
 The SOA service operations defines in this simple project are not exposed to Bluemix application or microservices directly. Mostlikly a integration bus exposing interfaces in different format may be added. For this architecture IBM API Connect is use to front end this data access layer. See project [API](https://github.com/ibm-cloud-architecture/refarch-integration-api)
+
+# Contribute
+We welcome contribution. Contribution is not only PRs and code, but any help with docs or helping other developers to solve issues are very appreciated! Thanks in advance!
+
+To standardize on contribution guidance see [main brown repository](https://github.com/ibm-cloud-architecture/refarch-integration).
