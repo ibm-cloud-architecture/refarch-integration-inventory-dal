@@ -9,18 +9,26 @@ If you did not configure your ICP environment with SSH certificates, ... please 
 ## Build
 This project includes a docker file to build a docker image.
 
-You can build the image to your local repository using the command:
+You can build the image to your local repository using the commands:
 ```
-# first build the App
+# first compile and build the App war file
 $ gradlew build
+# build the image
 $ docker build -t case/dal .
 $ docker images
+#... should see case/dal image
 ```
 Then tag your local image with the name of the remote server where the docker registry resides, and the namespace to use. (*master.cfc:8500* is the remote server and *default* is the namespace)
 ```
 $ docker tag case/dal master.cfc:8500/default/dal:v0.0.1
 $ docker images
+# you should get something like:
+REPOSITORY                    TAG                 IMAGE ID            CREATED              SIZE
+master.cfc:8500/default/dal   v0.0.1              906ad6fc851e        About a minute ago   474MB
+case/dal                      latest              906ad6fc851e        About a minute ago   474MB
+websphere-liberty             webProfile7         905fc63e8e9b        
 ```
+
 ## Push docker image to ICP private docker repository
 
 ```
@@ -39,7 +47,7 @@ The casedal chart was already created with a 'helm create casedal' command.
 Set the version and name it will be use in deployment.yaml. Each time you deploy a new version of your app you can just change the version number. The values in the char.yaml are used in the templates.
 
 ### values.yaml
-Specify in this file the docker image name and tag
+Specify in this file where to get the docker image:
 ```yaml
 image:
   repository: master.cfc:8500/default/casedal
@@ -64,7 +72,7 @@ $ helm package casedal
 ```
 $ helm install casedal-0.0.1.tgz
 ```
-You should get a new name for the deployed application. 
+You should get a new name for the deployed application.
 ### Use helm upgrade
 To update, rollout, a new version of the code, after packaging the docker images and uploaded it to ICP internal docker repository, use the **upgrade**
 
