@@ -1,5 +1,12 @@
 # Inventory Data Access Layer
 This project is part of the 'IBM Integration Reference Architecture' suite, available at [https://github.com/ibm-cloud-architecture/refarch-integration](https://github.com/ibm-cloud-architecture/refarch-integration)
+
+## Table of Contents
+* [Goals](https://github.com/ibm-cloud-architecture/refarch-integration-inventory-dal#goals)
+* [Technology](https://github.com/ibm-cloud-architecture/refarch-integration-inventory-dal#technology)
+* [Code explanation](https://github.com/ibm-cloud-architecture/refarch-integration-inventory-dal#code-explanation)
+* [Build and deploy](https://github.com/ibm-cloud-architecture/refarch-integration-inventory-dal#build-and-deploy)
+* [Install on ICP](https://github.com/ibm-cloud-architecture/refarch-integration-inventory-dal/blob/master/docs/icp-deploy.md)
 ## Goals
 The goal of this project is to define a SOAP interface for the Inventory datasource and implement the data access object as JPA entities The operations are visibles in the wsdl saved [here](docs/ws.wsdl). This wsdl is used for documentation purpose but it can also be imported in API Connect or IBM Integration Bus for interface mapping.
 
@@ -58,7 +65,7 @@ public class ItemEntity implements Serializable {
 The unit tests are using an embedded derby to validate the service and data access object layer without dependencies to external DB. In production the data base is DB2.
 Therefore two persistence.xml are defined one for testing ( src/test/resources) and one for production to be packaged into the war (src/java/resources).
 
-
+# Build and deploy
 ## Preparing the project
 The project was developed with [Eclipse Neon](http://www.eclipse.org/neon) with the following plugins added to the base eclipse:
 * Websphere Developer Tool for Liberty: using the Marketplace and searching Websphere developer
@@ -67,7 +74,16 @@ The project was developed with [Eclipse Neon](http://www.eclipse.org/neon) with 
 Install gradle CLI on your computer so you can build, unit test and assemble war.  For that see the installation instruction at [gradle](http://gradle.org)
 
 ## Preparing your App server
-Install the WebSphere Liberty profile by downloading it from [WAS dev](https://developer.ibm.com/wasdev/downloads/download-latest-stable-websphere-liberty-runtime). See configuration explanation [details](docs/liberty-server.md)
+* Install Java JDK, preferably Oracle one. For example for a ubuntu build server we did the following commands
+```
+$ sudo update-ca-certificates -f
+$ sudo add-apt-repository ppa:webupd8team/java
+$ sudo apt-get update
+$ sudo apt-get install oracle-java8-installer
+$ sudo apt-get install oracle-java8-set-default
+```
+
+* Install the WebSphere Liberty profile by downloading it from [WAS dev](https://developer.ibm.com/wasdev/downloads/download-latest-stable-websphere-liberty-runtime). See configuration explanation [details](docs/liberty-server.md)
 
 ## Build
 The build is supported by gradle. The project folder has a gradle wrapper so running
@@ -125,7 +141,7 @@ The server name was *appServer*.
 ## Access deployed wsdl
 Using a web broswer to the localhost should display the wsdl: [http://localhost:9080/inventory/ws?wsdl](http://localhost:9080/inventory/ws?wsdl)
 
-## Conclusion
+# Conclusion
 The SOA service operations defines in this simple project are not exposed to Bluemix application or microservices directly. Mostlikly a integration bus exposing interfaces in different format may be added. For this architecture IBM API Connect is use to front end this data access layer. See project [API](https://github.com/ibm-cloud-architecture/refarch-integration-api)
 
 # Contribute

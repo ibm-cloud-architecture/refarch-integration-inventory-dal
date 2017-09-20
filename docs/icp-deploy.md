@@ -3,6 +3,9 @@
 We propose to package the code as a docker image, build a helm chart and then publish it to an ICP instance.
 For detail on why commands below are performed, read the detail on [deploying Case inc Web app on ICP](https://github.com/ibm-cloud-architecture/refarch-caseinc-app/blob/master/docs/run-icp.md)
 
+## Pre-requisites
+If you did not configure your ICP environment with SSH certificates, ... please read [this note](https://github.com/ibm-cloud-architecture/refarch-integration/blob/master/docs/icp-deploy.md#common-installation-tasks)
+
 ## Build
 This project includes a docker file to build a docker image.
 
