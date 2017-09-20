@@ -50,7 +50,7 @@ Set the version and name it will be use in deployment.yaml. Each time you deploy
 Specify in this file where to get the docker image:
 ```yaml
 image:
-  repository: master.cfc:8500/default/casedal
+  repository: master.cfc:8500/default/dal
   tag: v0.0.1
   pullPolicy: IfNotPresent
 ```

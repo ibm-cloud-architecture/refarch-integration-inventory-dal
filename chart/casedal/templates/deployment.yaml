@@ -17,11 +17,5 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
         - containerPort: {{ .Values.service.internalPort }}
-        livenessProbe:
-          tcpSocket:
-            port: {{ .Values.service.internalPort }}
-        readinessProbe:
-          tcpSocket:
-            port: {{ .Values.service.internalPort }}
         resources:
 {{ toYaml .Values.resources | indent 10 }}
