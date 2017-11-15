@@ -6,7 +6,7 @@ This project is part of the 'IBM Integration Reference Architecture' suite, avai
 * [Technology](https://github.com/ibm-cloud-architecture/refarch-integration-inventory-dal#technology)
 * [Code explanation](https://github.com/ibm-cloud-architecture/refarch-integration-inventory-dal#code-explanation)
 * [Build and deploy](https://github.com/ibm-cloud-architecture/refarch-integration-inventory-dal#build-and-deploy)
-* [Install on ICP](https://github.com/ibm-cloud-architecture/refarch-integration-inventory-dal/blob/master/docs/icp-deploy.md)
+* [Install on ICP](docs/icp/README.md)
 ## Goals
 The goal of this project is to define a SOAP interface for the Inventory datasource and implement the data access object as JPA entities The operations are visibles in the wsdl saved [here](docs/ws.wsdl). This wsdl is used for documentation purpose but it can also be imported in API Connect or IBM Integration Bus for interface mapping.
 

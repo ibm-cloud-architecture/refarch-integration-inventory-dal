@@ -10,6 +10,10 @@ spec:
   - port: {{ .Values.service.externalPort }}
     targetPort: {{ .Values.service.internalPort }}
     protocol: TCP
-    name: {{ .Values.service.name }}
+    name: http
+  - port: {{ .Values.service.externalSPort }}
+    targetPort: {{ .Values.service.internalSPort }}
+    protocol: TCP
+    name: https
   selector:
     app: {{ template "fullname" . }}
