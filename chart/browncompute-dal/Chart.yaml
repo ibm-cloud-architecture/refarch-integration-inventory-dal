@@ -1,4 +1,4 @@
 apiVersion: v1
 description: A Helm chart to run Brown Compute Data Access Layer on Kubernetes
 name: browncompute-dal
-version: 0.0.1
+version: 0.0.2

@@ -22,13 +22,13 @@ public class ItemEntity implements Serializable {
 	@Id
 	@GeneratedValue (strategy=GenerationType.SEQUENCE)
 	protected Long id=null;
-	@Column(length=1500)
+	@Column(nullable=true, length=2000)
 	private String description;
 	@Column(nullable=false, length=100)
 	protected String name;
 	@Column(precision=8, scale=2)
 	private Double price=null;
-	@Column(length=100)
+	@Column(nullable=true, length=50)
 	private String img;
 	@Column(name="IMG_ALT", length=75)
 	private String imgAlt;

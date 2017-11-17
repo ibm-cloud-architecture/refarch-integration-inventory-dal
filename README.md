@@ -1,12 +1,15 @@
 # Inventory Data Access Layer
-This project is part of the 'IBM Integration Reference Architecture' suite, available at [https://github.com/ibm-cloud-architecture/refarch-integration](https://github.com/ibm-cloud-architecture/refarch-integration)
+This project is part of the 'IBM Hybrid Integration Reference Architecture' solution, available at [https://github.com/ibm-cloud-architecture/refarch-integration](https://github.com/ibm-cloud-architecture/refarch-integration)
+
+The goal of this project is to implement a set of SOA services to manage inventory, supplier and stock. This is on purpose that we centralize those three components inside the same application to present an older design. In 2017 we will have separated those three entities into three micro services.
 
 ## Table of Contents
 * [Goals](https://github.com/ibm-cloud-architecture/refarch-integration-inventory-dal#goals)
-* [Technology](https://github.com/ibm-cloud-architecture/refarch-integration-inventory-dal#technology)
-* [Code explanation](https://github.com/ibm-cloud-architecture/refarch-integration-inventory-dal#code-explanation)
-* [Build and deploy](https://github.com/ibm-cloud-architecture/refarch-integration-inventory-dal#build-and-deploy)
+* [Technology](#technology)
+* [Code explanation](#code-explanation)
+* [Build and deploy](#build-and-deploy)
 * [Install on ICP](docs/icp/README.md)
+
 ## Goals
 The goal of this project is to define a SOAP interface for the Inventory datasource and implement the data access object as JPA entities The operations are visibles in the wsdl saved [here](docs/ws.wsdl). This wsdl is used for documentation purpose but it can also be imported in API Connect or IBM Integration Bus for interface mapping.
 
@@ -132,7 +135,7 @@ public class TestInventoryDB {
 	}
 ```
 
-When tests are executed by *gradlew* the reports are in the build/reports folder.
+When tests are executed by `gradlew` the reports are in the build/reports folder.
 
 ## Deploy
 The script ./deployToWlp.sh copy the created war to a local wlp, modify the path in this script to reflect your local environment if you do not have your WebSphere Liberty profile under ~/IBM/wlp.

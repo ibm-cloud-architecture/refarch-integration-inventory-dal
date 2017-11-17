@@ -1,0 +1,8 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+  <soapenv:Header/>
+     <soapenv:Body>
+        <ws:itemById>
+           <id>13408</id>
+        </ws:itemById>
+    </soapenv:Body>
+</soapenv:Envelope>

@@ -1,17 +1,23 @@
 # Deploy the Data Access Layer to IBM Cloud Private
 
-There is two ways to deploy the Data Access layer component:
-* deploy the Webpshere Liberty chart to ICP from the Catalog
-* package the app with its own liberty image
+There are two ways to deploy the Data Access layer component:
+1. deploy the Webpshere Liberty chart to ICP from the Catalog and then deploy the application on it: this is the current concept of operations used on JEE application server
+1. dockerize the app with its own liberty image and deploy it to ICP
 
-We propose to package the code as a docker image, build a helm chart and then publish it to an ICP instance.
-For explanation about why the commands below are performed, read the detail on [deploying Case inc Web app on ICP](https://github.com/ibm-cloud-architecture/refarch-caseinc-app/blob/master/docs/run-icp.md)
+We start by documenting the second approach by packaging the code as a docker image, build a helm chart and then publish it to an ICP cluster.
+
 
 ## Pre-requisites
+* Have an instance of ICP up and running.
+* The DAL code is running on WAS Liberty on premise server connected to the DB
+
 If you did not configure your ICP environment with SSH certificates, ... please read [this note](https://github.com/ibm-cloud-architecture/refarch-integration/blob/master/docs/icp-deploy.md#common-installation-tasks)
 
 ## Build
-This project includes a docker file to build a docker image.
+This project includes a docker file to build a docker image. It uses the public liberty image from public docker hub, and then copy the code and configuration for Liberty server to the image.
+```
+FROM websphere-liberty:webProfile7
+```
 
 You can build the image to your local repository using the following commands:
 ```
@@ -58,7 +64,7 @@ docker push master.cfc:8500/brown/dal:v0.0.1
 The `browncompute-dal` chart was already created with the 'helm create browncompute-dal' command. This commands create the chart.yaml, values.yaml and a set of template files. We will not cover again the details of those files, you can read [this note](https://github.com/ibm-cloud-architecture/refarch-caseinc-app/blob/master/docs/run-icp.md#build-the-helm-package) for more information.
 
 ### Chart.yaml
-Set the version and name pf the chart release. This name will be visible in ICP in the **Workloads > Helm releases** menu of the admin console.
+Set the version and name for the chart release. This name will be visible in ICP in the **Workloads > Helm releases** menu of the admin console.
 This name is used in deployment and service definition. Each time you deploy a new version of your app you can just change the version number. The values in the chart.yaml are used in the templates.
 ```yaml
 apiVersion: v1
@@ -70,7 +76,7 @@ The name of the chart needs to map the name of the parent folder. (It was create
 
 The `templates/deployment.yaml` is not modified.
 
-### Services
+### values
 Specify in this file the docker image name and tags.
 
 ```yaml
@@ -81,6 +87,20 @@ image:
 ```
 
 Try to align the number of helm package with docker image tag.
+Add the two port numbers for the HTTP and HTTPS that were exposed in the dockerfile:
+
+```yaml
+service:
+  name: inventorydalsvc
+  type: ClusterIP
+  externalPort: 9080
+  internalPort: 9080
+  externalSPort: 9443
+  internalSPort: 9443
+```
+The internalPort is the docker exposed port. The service type is ClusterIP as we are using ingress for HTTP routing, load balancing,...
+
+### Services
 
 The second import templates is the **service** definition. Combined with the values.yaml setting we want the service to expose http and https ports mapped to the port number exposed in the dockerfile. We specified the port numbers for the Liberty server: `9080 and 9443`
 ```yaml
@@ -101,17 +121,6 @@ spec:
 ```
 The **selector.app** is used by the service created in k8s to route traffic to the pod with the "app=inventorydal" label.
 
-In the values.yaml we added the two port numbers for the HTTPS:
-```yaml
-service:
-  name: inventorydalsvc
-  type: ClusterIP
-  externalPort: 9080
-  internalPort: 9080
-  externalSPort: 9443
-  internalSPort: 9443
-```
-The internalPort is the docker exposed port. The service type is ClusterIP as we are using ingress for HTTP routing, load balancing,...
 
 ### Ingress
 First we enable to use Ingress in the values.yaml and we specify a hostname
@@ -120,10 +129,10 @@ ingress:
   enabled: true
   # Used to create Ingress record (should used with service.type: ClusterIP).
   hosts:
-    - case.dal.local
+    - dal.brown.case
 ```
 
-The ingress.yaml file needs to be modified to match the service name. Then the **spec** defines a path to /dal.
+The ingress.yaml file needs to be modified so the service name is not the chart name but the service name defined in value.yaml `service` element. Then the **spec** defines a path as `/dal` which means the base URL to this application will be `http://dal.brown.case/dal/inventory`
 ```yaml
 {{- if .Values.ingress.enabled -}}
 {{- $serviceName :=  .Values.service.name -}}
@@ -178,7 +187,7 @@ browncompute-dal-browncompute-dal  2        2        2           0          1s
 
 ==> v1beta1/Ingress
 NAME                               HOSTS           ADDRESS  PORTS  AGE
-browncompute-dal-browncompute-dal  case.dal.local  80       1s
+browncompute-dal-browncompute-dal  dal.brown.case            80       1s
 
 ```
 
@@ -198,19 +207,38 @@ helm upgrade browncompute-dal
 helm list --namespace browncompute
 
 # remove the app
-helm del --purge default-casedal
+helm del --purge browncompute-dal
 ```
 
-Verify ingress rules
+Verify ingress rules are well set. The IP address is the one from the cluster proxy server.
 ```
 $ kubectl get ing --namespace browncompute
 NAME                                HOSTS                 ADDRESS        PORTS     AGE
-browncompute-dal-browncompute-dal   case.dal.local        172.16.40.31   80        3m
-casewebportal-casewebportal         casewebportal.local   172.16.40.31   80        4d
+browncompute-dal-browncompute-dal   dal.brown.case        172.16.40.31   80        3m
+casewebportal-casewebportal         portal.brown.case     172.16.40.31   80        4d
 ```
 
 ## Access to the application
+The ingress will look at the HTTP header for the Host variable. As an alternate you can add in your local host resolution `/etc/hosts` the host name mapped to the cluster proxy IP address.
+
 To see the exposed WSDL:
 ```
 curl -k -H "Host:case.dal.local" http://172.16.40.31/dal/inventory/ws?wsdl
+```
+
+Then to be sure the access to the database via the service we have developed a small script which is doing a SOAP call using `curl`. Go to src/test/scripts and then execute `./getItemByIdDALICP.sh` you should get the item 13408 from the data as an example.
+```xml
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+  <soapenv:Header/>
+     <soapenv:Body>
+        <ws:itemById>
+           <id>13408</id>
+        </ws:itemById>
+    </soapenv:Body>
+</soapenv:Envelope>
+```
+
+The URL uses the name of the server defined in the ingress configuration. It needs to be resolved with your DNS server or in your /etc/hosts to point to the IP address of the cluster proxy.
+```
+curl -v -k --header "Content-Type: text/xml;charset=UTF-8"  --data @item13408.xml http://dal.brown.case/inventory/ws
 ```
