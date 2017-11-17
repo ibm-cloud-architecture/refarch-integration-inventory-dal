@@ -1,12 +1,22 @@
 # Deploy the Data Access Layer to IBM Cloud Private
 
+Updated 11/16/2017
+
 There are two ways to deploy the Data Access layer component:
 1. deploy the Webpshere Liberty chart to ICP from the Catalog and then deploy the application on it: this is the current concept of operations used on JEE application server
 1. dockerize the app with its own liberty image and deploy it to ICP
 
 We start by documenting the second approach by packaging the code as a docker image, build a helm chart and then publish it to an ICP cluster.
 
+The ICP topology looks like the image below:
+![](dal-on-icp.png)
 
+The data access layer is accessing the DB2 running on premise using the JDBC protocol, and is exposed to the external world via Ingress rules so a SOAP request to the URL http://dal.brown.case/inventory/ws will return item(s) from the database.
+
+## Tutorial
+For deploying this application the following steps are done:
+1. [Build](#build)
+1. 
 ## Pre-requisites
 * Have an instance of ICP up and running.
 * The DAL code is running on WAS Liberty on premise server connected to the DB
@@ -218,7 +228,7 @@ browncompute-dal-browncompute-dal   dal.brown.case        172.16.40.31   80     
 casewebportal-casewebportal         portal.brown.case     172.16.40.31   80        4d
 ```
 
-## Access to the application
+## Testing the access to the application
 The ingress will look at the HTTP header for the Host variable. As an alternate you can add in your local host resolution `/etc/hosts` the host name mapped to the cluster proxy IP address.
 
 To see the exposed WSDL:
