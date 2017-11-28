@@ -1,6 +1,7 @@
 # Inventory Data Access Layer
 This project is part of the 'IBM Hybrid Integration Reference Architecture' solution, available at [https://github.com/ibm-cloud-architecture/refarch-integration](https://github.com/ibm-cloud-architecture/refarch-integration). 
-Update 11/27/2017
+
+Updated 11/27/2017.
 
 The goal of this project is to implement a set of SOA services to manage inventory, supplier and stock per site. This is on purpose that we centralize those three components inside the same application to represent an older application design done in the 2000s. 
 In 2017, most likely, we will have separated those three entities into three micro services.
@@ -11,22 +12,24 @@ In 2017, most likely, we will have separated those three entities into three mic
 * [Code explanation](#code-explanation)
 * [Build and deploy](#build-and-deploy)
 * [Install on ICP](docs/icp/README.md)
+* [TDD](#test-driven-development)
 
 ## Goals
 The goal of this project is to define a SOAP interface for the Inventory datasource and implement the data access object as JPA entities. The operations are visibles in the wsdl saved [here](docs/ws.wsdl). This wsdl is used for documentation purpose but it can also be imported in API Connect or IBM Integration Bus for interface mapping.
 
 ## Technology
 The application is packaged as a war file to be deployed to a lightweight server like [IBM WebSphere Liberty profile](https://developer.ibm.com/wasdev/downloads/download-latest-stable-websphere-liberty-runtime).
-The code uses JPA 2.0 and JAXWS 2.2 APIs (See JAXWS summary)[docs/jaxws.md].
+The code uses JPA 2.0 and JAXWS 2.2 APIs (See [JAXWS summary](docs/jaxws.md)).
 
 The server configuration defines the features needed and the datasource configuration. See the explanation [here](docs/liberty-server.md) about Liberty server.xml configuration.
 
-The data model is simple as illustrated below:
+The data model is simple as illustrated below:  
+
 ![](docs/datamodel.png)
 
 * Item is the main product description and may include sub components.
 * The Inventory specifies how many items are in a given site
-* A Supplier deliver item.
+* A Supplier delivers items and is-a Party.
 
 ## Code Explanation
 The source code is organized to follow maven and gradle conventions: src/main/java or src/test/java...
@@ -98,7 +101,7 @@ $ sudo apt-get install oracle-java8-installer
 $ sudo apt-get install oracle-java8-set-default
 ```
 
-* Install the WebSphere Liberty profile by downloading it from [WAS dev](https://developer.ibm.com/wasdev/downloads/download-latest-stable-websphere-liberty-runtime). See configuration explanation [details](docs/liberty-server.md)
+* Install the WebSphere Liberty profile by downloading it from [WAS dev](https://developer.ibm.com/wasdev/downloads/download-latest-stable-websphere-liberty-runtime). See our configuration explanations [here](docs/liberty-server.md).
 
 ### Docker
 Once you build the code with gradle (see next section) you can build a docker image that will include JDK, WebSphere Liberty, the good server configuration and the deployed war.
@@ -176,9 +179,9 @@ Using a web broswer to the localhost should display the wsdl: [http://localhost:
 The SOA service operations defines in this project are not exposed to Bluemix application or microservices directly. Most likely a integration bus gateway flow will expose interfaces in the necessary different format. 
 The project  [Inventory Flow - Integration Bus](https://github.com/ibm-cloud-architecture/refarch-integration-esb) provides the implementation of this mapping flow.
 
-Also we define an `Inventory` API product in IBM API Connect. See project [API](https://github.com/ibm-cloud-architecture/refarch-integration-api)
+Also we define an `Inventory` API product in IBM API Connect. See project [API](https://github.com/ibm-cloud-architecture/refarch-integration-api).
 
 # Contribute
 We welcome contribution. Contribution is not only PRs and code, but any help with docs or helping other developers to solve issues are very appreciated! Thanks in advance!
 
-To standardize on contribution guidance see [main brown repository](https://github.com/ibm-cloud-architecture/refarch-integration).
+To standardize on contribution guidance see [main brown compute repository](https://github.com/ibm-cloud-architecture/refarch-integration).

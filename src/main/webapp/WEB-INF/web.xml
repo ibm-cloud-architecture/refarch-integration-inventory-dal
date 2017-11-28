@@ -3,7 +3,7 @@
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 	<display-name>Inventory Service</display-name>
 	<servlet>
-		<display-name>Inventory Service</display-name>
+		<display-name>Data Access Layer Service for Brown</display-name>
 		<servlet-name>DALService</servlet-name>
 		<servlet-class>inventory.ws.DALService</servlet-class>
 	</servlet>

@@ -39,16 +39,68 @@ When starting from a Java endpoint implementation class, it is recommended that 
 
 To expose a java class as a web service we need to add the annotations @WebService and @WebMethod to the implementation class. @WebService declares the class as a web service. The name property lets define the web service name (the wdsl:portType attribute in WDSL 1.1). The serviceName property lets you define the WDSL service name. The @WebMethod annotation is used to indicate which methods are to be exposed by this web service.
 ```
-@WebService(name="ClaimValidation", targetNamespace="http://abrd.claimValidation")
-public class ClaimValidationLegacyImpl implements ClaimValidation {
+@WebService
+public class DALService {
 
-    @WebMethod(operationName="claimValidation",action="urn:executeClaimValidation")
-    Result validateClaim(Claim theClaim) throws SomeException ;
+   @WebMethod(operationName="newItem")
+	public Item newItem(Item inItem) throws DALException{
 ```
 
-To get no error during edition and compilation we need to include the following jar files in the project classpath:  `jaxws-api.jar` and the Java tools.jar
+To get no error during edition and compilation we need to include the following jar files in the project classpath:  
+`jaxws-api.jar` and the Java `tools.jar`
 
+The above definitions will generate a wsdl with the following elements:
+```
+<wsdl:portType name="DALService">
+	<wsdl:operation name="newItem">
+		<wsdl:input message="tns:newItem" name="newItem"></wsdl:input>
+		<wsdl:output message="tns:newItemResponse" name="newItemResponse"></wsdl:output>
+		<wsdl:fault message="tns:DALException" name="DALException"></wsdl:fault>
+	</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="DALServiceServiceSoapBinding" type="tns:DALService">
+	<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+			<wsdl:operation name="newItem">
+				<soap:operation soapAction="" style="document"/>
+				<wsdl:input name="newItem">
+					<soap:body use="literal"/>
+				</wsdl:input>
+				<wsdl:output name="newItemResponse">
+					<soap:body use="literal"/>
+				</wsdl:output>
+				<wsdl:fault name="DALException">
+					<soap:fault name="DALException" use="literal"/>
+				</wsdl:fault>
+			</wsdl:operation>
+```
+The SOAP binding is using HTTP transport and is document style.
 
+The project needs to include a web.xml file to expose the service and to map it to a URL pattern (`/ws`):
+
+```xml
+	<servlet>
+		<display-name>Data Access Layer Service for Brown</display-name>
+		<servlet-name>DALService</servlet-name>
+		<servlet-class>inventory.ws.DALService</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DALService</servlet-name>
+		<url-pattern>/ws</url-pattern>
+	</servlet-mapping>
+```
+
+When deployed to an application server like WebSphere Liberty the wsdl is automatically created and visible under the URL path:
+`http://hostname:9080/appcontext/ws?wsdl`
+
+The DALException is to report issue from the server to the client and will be mapped to a SOAP Fault:
+```xml
+<xs:complexType name="dalFault">
+	<xs:sequence>
+		<xs:element minOccurs="0" name="code" type="xs:string"/>
+		<xs:element minOccurs="0" name="message" type="xs:string"/>
+	</xs:sequence>
+</xs:complexType>
+```
 ## Client side
 
 JAX-WS relies on JAXB for data binding. When you invoke *wsimport* Tool on a wsdl, it in-turn calls XJC tool in JAXB RI to generate the beans used by the JAX-WS runtime. For each element types of the XML schema there is a java class. The name of the class is the name of the xml type, and can be enforced by the annotation @XmlType. The package name is coming from the namespace defined in the wsimport command.
