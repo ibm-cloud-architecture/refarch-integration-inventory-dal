@@ -8,12 +8,11 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import inventory.model.ItemEntity;
-import inventory.model.PartyType;
 import inventory.model.Supplier;
 import inventory.ws.DALException;
 import inventory.ws.Item;
 
-public class TestSuppplierItems extends BaseTest{
+public class TestSupplierItems extends BaseTest{
 
 	static long supplierId=0;
 	
@@ -27,7 +26,7 @@ public class TestSuppplierItems extends BaseTest{
 		s.setCity("San Francisco");
 		s.setStreet("10 first street");
 		s.setZipcode("90000");
-		s.setType(PartyType.ORGANIZATION);
+		s.setType("ORGANIZATION");
 		Supplier sOut=null;
 		try {
 			s = serv.newSupplier(s);
@@ -46,7 +45,7 @@ public class TestSuppplierItems extends BaseTest{
 		s2.setCity("San Francisco");
 		s2.setStreet("11 Market street");
 		s2.setZipcode("90000");
-		s2.setType(PartyType.ORGANIZATION);
+		s.setType("ORGANIZATION");
 		try {
 			sOut = serv.newSupplier(s2);
 		} catch (DALException e) {

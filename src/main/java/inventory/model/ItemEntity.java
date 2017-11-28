@@ -33,7 +33,7 @@ public class ItemEntity implements Serializable {
 	private String type;
 	@Column(nullable=true, length=50)
 	private String model;
-	@Column(nullable=true, length=2000)
+	@Column(nullable=true, length=5000)
 	private String description;
 	@Column(precision=8, scale=2)
 	private Double price=null;

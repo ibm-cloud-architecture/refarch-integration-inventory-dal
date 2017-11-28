@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -16,10 +17,13 @@ import javax.persistence.Table;
 @NamedQuery(name="Supplier.findAll", query="SELECT i FROM Supplier i")
 public class Supplier extends Party {
 
-
+	@Column(nullable=true, length=200)
 	protected String street;
+	@Column(nullable=true, length=50)
 	protected String city;
+	@Column(nullable=true, length=10)
 	protected String zipcode;
+	@Column(nullable=true, length=50)
 	protected String state;
 	@JoinTable(name="supplier_delivers_item")
 	@ManyToMany(cascade=CascadeType.MERGE)

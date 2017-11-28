@@ -6,8 +6,6 @@ import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
-
-import inventory.model.PartyType;
 import inventory.model.Supplier;
 import inventory.ws.DALException;
 
@@ -41,7 +39,7 @@ public class TestSuppliers extends BaseTest{
 		s.setCity("San Francisco");
 		s.setStreet("10 first street");
 		s.setZipcode("90000");
-		s.setType(PartyType.ORGANIZATION);
+		s.setType("ORGANIZATION");
 		Supplier sOut=null;
 		try {
 			sOut = serv.newSupplier(s);

@@ -29,6 +29,7 @@ public class Inventory {
 	private Integer quantity;
 	private Timestamp updateDate;
 	private Timestamp creationDate;
+	@Column(nullable=true, length=50)
 	private String site;
 	
 	public Inventory(){}

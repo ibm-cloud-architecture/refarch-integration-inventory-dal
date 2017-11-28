@@ -21,7 +21,8 @@ public abstract class Party {
 	@Column(nullable=false, length=100)
 	protected String name;
 	@Column(nullable=false, length=10)
-	protected PartyType type;
+	protected String type;
+	@Column(nullable=false, length=20)
 	protected String status;
 	protected Date creationDate;
 	protected Date updateDate;
@@ -38,10 +39,10 @@ public abstract class Party {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public PartyType getType() {
+	public String getType() {
 		return type;
 	}
-	public void setType(PartyType type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 	public String getStatus() {
