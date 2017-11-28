@@ -1,10 +1,13 @@
 package inventory.ws;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import inventory.model.ItemEntity;
 import inventory.model.Supplier;
 
 public class SupplierDAOImpl extends BaseDao implements SupplierDAO {
@@ -13,13 +16,18 @@ public class SupplierDAOImpl extends BaseDao implements SupplierDAO {
 		if (ie.getName() == null || ie.getName().length() == 0) return false;
 		return true;
 	}
+	
+	public boolean validId(Supplier ie){
+		if (ie.getId() == null) return false;
+		return true;
+	}
 
 	@Override
-	public String saveSupplier(Supplier s) throws DALException {
+	public Supplier saveSupplier(Supplier s) throws DALException {
 		if (!validName(s)){
 			throw new DALException("ERRDAO3000","Supplier name attribute is mandatory");
 		}
-		return save(s);
+		return (Supplier)save(s);
 	}
 
 	@Override
@@ -45,6 +53,74 @@ public class SupplierDAOImpl extends BaseDao implements SupplierDAO {
 		if (l != null && ! l.isEmpty()) 
 			return l.get(0);
 		return null;
+	}
+
+	@Override
+	public Supplier updateSupplier(Supplier s) throws DALException {
+		if (!validName(s)){
+			throw new DALException("ERRDAO5000","Mandatory name attribute needs to be present");
+		}
+		if (!validId(s)){
+			throw new DALException("ERRDAO5001","On update operation id attribute needs to be present");
+		}
+		merge(s);
+		return s;
+	}
+
+	@Override
+	public String deleteSupplier(long id) throws DALException {
+		Supplier entity=null;
+		EntityManager em =null;
+		try {
+			 em = begin();
+			 entity=em.find(Supplier.class, id);
+			 if (entity != null) {
+					logger.info("Removing entity "+entity.getId()+" "+entity.getName());
+					 em.remove(entity);
+					 em.getTransaction().commit();
+				} 
+		}catch (Exception e){
+			e.printStackTrace();
+			 throw new DALException("ERRDAO5000","Error on delete operation at tx level id="+id);
+		} finally {
+			if (em != null) {
+				if (em.getTransaction().isActive()) {
+					em.getTransaction().rollback();
+				}
+				em.close();
+			}
+		}
+		if (entity == null) {
+			 throw new DALException("ERRDAO5001","Error on delete, entity not found for id="+id);
+		}
+		
+		 return "Success";
+	}
+
+	@Override
+	public Collection<Supplier> getSuppliers() throws DALException {
+		EntityManager em = getEntityManager();
+		List<Supplier> results = new ArrayList<Supplier>();
+		try{ 
+			Query query =em.createNamedQuery("Supplier.findAll");
+			results = query.getResultList ();
+		
+		} finally {
+			em.close();
+		}
+		return results;
+	}
+
+	@Override
+	public Supplier getById(long supplierId) throws DALException{
+		if (supplierId <= 0) {
+			DALFault f = new DALFault("ERRDAO4001","Supplier identifier negative or 0");
+			throw new DALException("DAL exception input data", f);
+		}
+		EntityManager em = getEntityManager();
+		Supplier entity=em.find(Supplier.class, supplierId);
+		em.close();
+		return entity;
 	}
 
 }

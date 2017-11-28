@@ -1,38 +1,35 @@
 package inventory.model;
 
-import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity(name="Supplier")
 @Table(name="SUPPLIERS")
 @NamedQuery(name="Supplier.findAll", query="SELECT i FROM Supplier i")
-public class Supplier implements Serializable{
+public class Supplier extends Party {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8580561240813581595L;
 
-	@Id
-	@GeneratedValue (strategy=GenerationType.SEQUENCE)
-	protected Long id=null;
-	protected String name;
 	protected String street;
 	protected String city;
 	protected String zipcode;
 	protected String state;
-	protected String status;
-	protected Timestamp creationDate;
-	protected Timestamp updateDate;
+	@JoinTable(name="supplier_delivers_item")
+	@ManyToMany(cascade=CascadeType.MERGE)
+	protected Collection<ItemEntity> items;
 	
 	public Supplier(){}
+	
+	public String toString(){
+		return getId()+" "+getName()+" "+getStatus();
+	}
 
 	public Long getId() {
 		return id;
@@ -90,24 +87,19 @@ public class Supplier implements Serializable{
 		this.status = status;
 	}
 
-	public Timestamp getCreationDate() {
-		return creationDate;
+
+	public void addItemEntity(ItemEntity ie) {
+		getItems().add(ie);
 	}
 
-	public void setCreationDate(Timestamp creationDate) {
-		this.creationDate = creationDate;
+	public Collection<ItemEntity> getItems() {
+		if (items == null) items= new ArrayList<ItemEntity>();
+		return items;
 	}
 
-	public Timestamp getUpdateDate() {
-		return updateDate;
+	public void setItems(Collection<ItemEntity> items) {
+		this.items = items;
 	}
 
-	public void setUpdateDate(Timestamp updateDate) {
-		this.updateDate = updateDate;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 	
 }

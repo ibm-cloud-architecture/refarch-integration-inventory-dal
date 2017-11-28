@@ -29,6 +29,10 @@ public class Item {
 		this.name=n;
 	}
 	
+	public String toString(){
+		return getId()+" "+getName();
+	}
+	
 	 public Item(long id) { 
 		    this.id = id;
 	}
@@ -41,14 +45,14 @@ public class Item {
 	    this.imgAlt = img_alt; 
 	  }
 
-	public Item(ItemEntity ie){
+	public Item(ItemEntity ie,int q){
 		this.name=ie.getName();
 		this.description=ie.getDescription();
 		this.id=ie.getId();
 		this.img=ie.getImg();
 		this.imgAlt=ie.getImg_alt();
 		this.price=ie.getPrice();
-		this.quantity=ie.getQuantity().intValue();
+		this.quantity=q;
 	}
 	
 	public String getName() {

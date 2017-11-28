@@ -3,6 +3,8 @@
 	<persistence-unit name="inventory" transaction-type="RESOURCE_LOCAL">
 	  <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>	
       <class>inventory.model.ItemEntity</class>
+      <class>inventory.model.Inventory</class>
+      <class>inventory.model.Party</class>
       <class>inventory.model.Supplier</class>
 	  <properties>
 		<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>	

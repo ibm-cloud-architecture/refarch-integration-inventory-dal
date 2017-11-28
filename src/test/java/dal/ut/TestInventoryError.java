@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import inventory.ws.DALException;
-import inventory.ws.InventoryService;
+import inventory.ws.DALService;
 import inventory.ws.Item;
 
 /**
@@ -26,12 +26,12 @@ import inventory.ws.Item;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestInventoryError extends BaseTest{
 
-	static InventoryService serv;
+	static DALService serv;
 	static long idToKeep=351;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		 serv = new InventoryService();
+		 serv = new DALService();
 	}
 	
 

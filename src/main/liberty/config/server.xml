@@ -54,7 +54,7 @@
    <library id="DB2JCC4Lib">
       <fileset dir="${shared.config.dir}/lib" includes="db2jcc4.jar"/>
    </library>
-   <dataSource id="db2" jndiName="jdbc/invdbds" type="javax.sql.ConnectionPoolDataSource">
+   <dataSource id="db2" jndiName="jdbc/browndb" type="javax.sql.ConnectionPoolDataSource">
      <connectionManager maxPoolSize="8" minPoolSize="2"
                        connectionTimeout="5s" agedTimeout="10m"/>
      <jdbcDriver libraryRef="DB2JCC4Lib"/>

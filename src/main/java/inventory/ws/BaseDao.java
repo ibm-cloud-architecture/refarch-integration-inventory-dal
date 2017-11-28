@@ -60,7 +60,8 @@ public abstract class BaseDao {
     }
 	
 
-	public String save(Object entity) throws DALException{
+	
+	public Object save(Object entity) throws DALException{
 		EntityManager em=null;
     	try {
 			 em = begin();
@@ -73,7 +74,7 @@ public abstract class BaseDao {
     	finally {
 			if (em != null) em.close();
 		}
-		 return "Success";
+		 return entity;
     }
 	
 	public String delete(Object entity) throws DALException{

@@ -1,22 +1,24 @@
 package inventory.ws;
 
-import java.util.List;
+import java.util.Collection;
 
-import inventory.model.ItemEntity;
+import inventory.model.Inventory;
 
 public interface InventoryDAO {
+	// Inventory API
+	Collection<Inventory> getItemsPerSite(String siteName);
 
-	List<ItemEntity> getItems() throws DALException;
-
-	ItemEntity updateItem(ItemEntity inItem) throws DALException;
-
-	ItemEntity getItemEntityById(long id) throws DALException;
-
-	String createItem(ItemEntity ie) throws DALException;
-
-	String deleteItem(long id) throws DALException;
+	Inventory createInventoryEntry(Inventory iv) throws DALException;
 	
-	ItemEntity getItemEntityByName(String name) throws DALException;
+	Inventory updateInventoryEntry(Inventory iv) throws DALException;
 
-	List<ItemEntity> searchItemEntitiesByName(String name) throws DALException;
+	Inventory getInventoryById(long inventoryId) throws DALException;
+	
+	String deleteInventoryEntry(long id) throws DALException;
+
+	Inventory getInventoryForSiteAndItemId(long itemIdToKeep, String siteName)  throws DALException;
+
+	Collection<Inventory> getInventoryCrossSite()  throws DALException;
+
+	int getStock(Long id) throws DALException;
 }
