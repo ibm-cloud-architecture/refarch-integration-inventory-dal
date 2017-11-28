@@ -1,19 +1,11 @@
 package dal.ut;
 
-import static org.junit.Assert.fail;
-
-import java.io.File;
-import java.util.Collection;
-
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import inventory.ws.DALException;
-import inventory.ws.DALService;
 import inventory.ws.Item;
 
 /**
@@ -26,15 +18,9 @@ import inventory.ws.Item;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestInventoryError extends BaseTest{
 
-	static DALService serv;
+
 	static long idToKeep=351;
 	
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		 serv = new DALService();
-	}
-	
-
 	@Test
 	// name is a not null attribute
 	public void saveWithoutNameItem(){

@@ -2,28 +2,20 @@ package dal.ut;
 
 import static org.junit.Assert.fail;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import inventory.model.ItemEntity;
 import inventory.model.PartyType;
 import inventory.model.Supplier;
 import inventory.ws.DALException;
-import inventory.ws.DALService;
+import inventory.ws.Item;
 
 public class TestSuppplierItems extends BaseTest{
-	static DALService serv;
-	static long supplierId=0;
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		 serv = new DALService();
-	}
-	
+	static long supplierId=0;
 	
 	@Test
 	public void mainTest() {
@@ -74,9 +66,16 @@ public class TestSuppplierItems extends BaseTest{
 			sOut=serv.updateSupplier(s);
 		} catch (DALException e) {
 			e.printStackTrace();
-			fail("Exception");
+			fail("Exception while updating supplier");
 		}
+		System.out.println("STEP 3 - now 3 new items where created");
 		Assert.assertTrue(sOut.getItems().size()== 3);
+		try {
+			Item ie=serv.getItemByName("item_2");
+			System.out.println(ie.getId()+" "+ie.getPrice());
+		} catch (DALException e) {
+			e.printStackTrace();
+		}
 		
 	}
 

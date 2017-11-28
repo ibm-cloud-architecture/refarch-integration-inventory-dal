@@ -26,17 +26,11 @@ import inventory.ws.Item;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestInventoryDB extends BaseTest{
 
-	static DALService serv;
+
 	// keep ids for item and inventory
 	static long itemIdToKeep=351;
 	static long inventoryId=0;
-	
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		 serv = new DALService();
-	}
-	
-	
+
 
 	@Test
 	public void saveOneItem(){

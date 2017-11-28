@@ -25,7 +25,7 @@ One important decision when developing WS is to decide whether to start from the
 * Develop a client project to call the service, use Ant or Maven wsimport to import the WSDL and generate
 
 
-## Starting from JAVA
+# Starting from JAVA
 
 We must provide the JAX-WS tools with a valid endpoint implementation class. This implementation class is the class that implements the desired web service. A valid endpoint implementation class must meet the following requirements:
 
@@ -46,9 +46,9 @@ public class ClaimValidationLegacyImpl implements ClaimValidation {
     Result validateClaim(Claim theClaim) throws SomeException ;
 ```
 
-To get no error during edition and compilation we need to include the following jar files in the project classpath: *        jaxws-api.jar* and the Java tools.jar
+To get no error during edition and compilation we need to include the following jar files in the project classpath:  `jaxws-api.jar` and the Java tools.jar
 
 
-** Client side
+## Client side
 
 JAX-WS relies on JAXB for data binding. When you invoke *wsimport* Tool on a wsdl, it in-turn calls XJC tool in JAXB RI to generate the beans used by the JAX-WS runtime. For each element types of the XML schema there is a java class. The name of the class is the name of the xml type, and can be enforced by the annotation @XmlType. The package name is coming from the namespace defined in the wsimport command.

@@ -21,6 +21,12 @@ public class Item {
 	private String img;
 	@XmlElement( nillable = true )
 	private int quantity;
+	@XmlElement( nillable = true )
+	private String type;
+	@XmlElement( nillable = true )
+	private String serialNumber;
+	@XmlElement( nillable = true )
+	private String model;
 
 	
 	public Item(){}
@@ -53,6 +59,9 @@ public class Item {
 		this.imgAlt=ie.getImg_alt();
 		this.price=ie.getPrice();
 		this.quantity=q;
+		this.model=ie.getModel();
+		this.type=ie.getType();
+		this.serialNumber=ie.getSerialNumber();
 	}
 	
 	public String getName() {
@@ -109,6 +118,34 @@ public class Item {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getSerialNumber() {
+		return serialNumber;
+	}
+
+	public void setSerialNumber(String serialNumber) {
+		this.serialNumber = serialNumber;
+	}
+
+	public String getModel() {
+		return model;
+	}
+
+	public void setModel(String model) {
+		this.model = model;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
 	
 }

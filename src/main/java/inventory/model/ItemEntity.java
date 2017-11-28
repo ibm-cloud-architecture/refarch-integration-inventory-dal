@@ -25,16 +25,23 @@ public class ItemEntity implements Serializable {
 	@Id
 	@GeneratedValue (strategy=GenerationType.SEQUENCE)
 	protected Long id=null;
-	@Column(nullable=true, length=2000)
-	private String description;
 	@Column(nullable=false, length=100)
 	protected String name;
+	@Column(nullable=true, length=50)
+	protected String serialNumber;
+	@Column(nullable=true, length=50)
+	private String type;
+	@Column(nullable=true, length=50)
+	private String model;
+	@Column(nullable=true, length=2000)
+	private String description;
 	@Column(precision=8, scale=2)
 	private Double price=null;
 	@Column(nullable=true, length=50)
 	private String img;
 	@Column(name="IMG_ALT", length=75)
 	private String imgAlt;
+	
 	@ManyToMany(mappedBy = "items")
 	protected Collection<Supplier> suppliers;
 	private Date updateDate;
@@ -145,5 +152,33 @@ public class ItemEntity implements Serializable {
 
 	public void setSuppliers(Collection<Supplier> suppliers) {
 		this.suppliers = suppliers;
+	}
+
+	public String getSerialNumber() {
+		return serialNumber;
+	}
+
+	public void setSerialNumber(String serialNumber) {
+		this.serialNumber = serialNumber;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getModel() {
+		return model;
+	}
+
+	public void setModel(String model) {
+		this.model = model;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 }

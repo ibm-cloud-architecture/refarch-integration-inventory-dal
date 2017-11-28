@@ -1,7 +1,9 @@
 # Inventory Data Access Layer
-This project is part of the 'IBM Hybrid Integration Reference Architecture' solution, available at [https://github.com/ibm-cloud-architecture/refarch-integration](https://github.com/ibm-cloud-architecture/refarch-integration)
+This project is part of the 'IBM Hybrid Integration Reference Architecture' solution, available at [https://github.com/ibm-cloud-architecture/refarch-integration](https://github.com/ibm-cloud-architecture/refarch-integration). 
+Update 11/27/2017
 
-The goal of this project is to implement a set of SOA services to manage inventory, supplier and stock. This is on purpose that we centralize those three components inside the same application to present an older design. In 2017 we will have separated those three entities into three micro services.
+The goal of this project is to implement a set of SOA services to manage inventory, supplier and stock per site. This is on purpose that we centralize those three components inside the same application to represent an older application design done in the 2000s. 
+In 2017, most likely, we will have separated those three entities into three micro services.
 
 ## Table of Contents
 * [Goals](https://github.com/ibm-cloud-architecture/refarch-integration-inventory-dal#goals)
@@ -11,7 +13,7 @@ The goal of this project is to implement a set of SOA services to manage invento
 * [Install on ICP](docs/icp/README.md)
 
 ## Goals
-The goal of this project is to define a SOAP interface for the Inventory datasource and implement the data access object as JPA entities The operations are visibles in the wsdl saved [here](docs/ws.wsdl). This wsdl is used for documentation purpose but it can also be imported in API Connect or IBM Integration Bus for interface mapping.
+The goal of this project is to define a SOAP interface for the Inventory datasource and implement the data access object as JPA entities. The operations are visibles in the wsdl saved [here](docs/ws.wsdl). This wsdl is used for documentation purpose but it can also be imported in API Connect or IBM Integration Bus for interface mapping.
 
 ## Technology
 The application is packaged as a war file to be deployed to a lightweight server like [IBM WebSphere Liberty profile](https://developer.ibm.com/wasdev/downloads/download-latest-stable-websphere-liberty-runtime).
@@ -19,13 +21,20 @@ The code uses JPA 2.0 and JAXWS 2.2 APIs (See JAXWS summary)[docs/jaxws.md].
 
 The server configuration defines the features needed and the datasource configuration. See the explanation [here](docs/liberty-server.md) about Liberty server.xml configuration.
 
+The data model is simple as illustrated below:
+![](docs/datamodel.png)
+
+* Item is the main product description and may include sub components.
+* The Inventory specifies how many items are in a given site
+* A Supplier deliver item.
+
 ## Code Explanation
 The source code is organized to follow maven and gradle conventions: src/main/java or src/test/java...
 
-The SOAP service is defined in the class inventory.ws.InventoryService and uses JAXWS annotations to define the service and the operations
+The SOAP service is defined in the class inventory.ws.DALService and uses [JAXWS](docs/jaxws.md) annotations to define the service and the operations.
 ```
 @WebService
-public class InventoryService {
+public class DALService {
   ...
 
   @WebMethod(operationName="items")
@@ -64,6 +73,7 @@ public class ItemEntity implements Serializable {
   private Timestamp creationDate;
 
 ```
+The same approach is done for the Inventory and the Supplier.
 
 The unit tests are using an embedded derby to validate the service and data access object layer without dependencies to external DB. In production the data base is DB2.
 Therefore two persistence.xml are defined one for testing ( src/test/resources) and one for production to be packaged into the war (src/java/resources).
@@ -71,12 +81,14 @@ Therefore two persistence.xml are defined one for testing ( src/test/resources) 
 # Build and deploy
 ## Preparing the project
 The project was developed with [Eclipse Neon](http://www.eclipse.org/neon) with the following plugins added to the base eclipse:
-* Websphere Developer Tool for Liberty: using the Marketplace and searching Websphere developer
+* Websphere Developer Tool for Liberty: using the Marketplace and searching Websphere developer, then use the Eclipse way to install stuff.
 * Gradle eclipse plugin
 
-Install gradle CLI on your computer so you can build, unit test and assemble war.  For that see the installation instruction at [gradle](http://gradle.org)
+Install gradle CLI on your computer so you can build, unit test and assemble war.  For that see the installation instructions at [gradle](http://gradle.org)
 
 ## Preparing your App server
+You can use two approaches: install everything on your computer or use our docker file we have defined in this project.
+### Install everything
 * Install Java JDK, preferably Oracle one. For example for a ubuntu build server we did the following commands
 ```
 $ sudo update-ca-certificates -f
@@ -87,6 +99,15 @@ $ sudo apt-get install oracle-java8-set-default
 ```
 
 * Install the WebSphere Liberty profile by downloading it from [WAS dev](https://developer.ibm.com/wasdev/downloads/download-latest-stable-websphere-liberty-runtime). See configuration explanation [details](docs/liberty-server.md)
+
+### Docker
+Once you build the code with gradle (see next section) you can build a docker image that will include JDK, WebSphere Liberty, the good server configuration and the deployed war.
+```
+# Execute only when there is a new image
+$ docker build -t ibmcase/dal .
+# Start the container
+$ docker run -p 9080:9080 ibmcase/dal
+```
 
 ## Build
 The build is supported by gradle. The project folder has a gradle wrapper so running
@@ -109,16 +130,19 @@ Starting a Gradle Daemon (subsequent builds will be faster)
 :testClasses
 :test
 ```
+
+We also propose to leverage a build server and do continuous integration and deployment, see detail in [this note.](docs/cicd.md)
+
 ## Test Driven development
-The service and data access object classes were developed by starting by the tests. The first test to validate the access to data and to validate CRUD operation happy path. The tests user the service API level of the InventoryService classes. Here is an example of tests:
+The service and data access object classes were developed by starting by the tests. The first test to validate the access to data and to validate CRUD operation happy path. The tests use the service API of the DALService classes. Here is an example of tests:
 ```
 public class TestInventoryDB {
 
-	static InventoryService serv;
+	static DALService serv;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		 serv = new InventoryService();
+		 serv = new DALService();
 	}
   ....
   @Test
@@ -134,18 +158,25 @@ public class TestInventoryDB {
 		Assert.assertTrue(items.size() >= 1);
 	}
 ```
+The tests are using a Derby embbeded database so it is easier to start and execute tests in isolation. The AfterClass method is deleting the created `INVDB` instance. See the `BaseTest` class.
 
 When tests are executed by `gradlew` the reports are in the build/reports folder.
 
 ## Deploy
-The script ./deployToWlp.sh copy the created war to a local wlp, modify the path in this script to reflect your local environment if you do not have your WebSphere Liberty profile under ~/IBM/wlp.
+The script ./deployToWlp.sh copy the created war to your local wlp, modify the path in this script to reflect your local environment if you do not have your WebSphere Liberty profile under ~/IBM/wlp.
 The server name was *appServer*.
+
+You do not need that if you use docker. 
+To deploy to IBM Cloud Private [this note](docs/icp/README.md) will go in detail.
 
 ## Access deployed wsdl
 Using a web broswer to the localhost should display the wsdl: [http://localhost:9080/inventory/ws?wsdl](http://localhost:9080/inventory/ws?wsdl)
 
 # Conclusion
-The SOA service operations defines in this simple project are not exposed to Bluemix application or microservices directly. Mostlikly a integration bus exposing interfaces in different format may be added. For this architecture IBM API Connect is use to front end this data access layer. See project [API](https://github.com/ibm-cloud-architecture/refarch-integration-api)
+The SOA service operations defines in this project are not exposed to Bluemix application or microservices directly. Most likely a integration bus gateway flow will expose interfaces in the necessary different format. 
+The project  [Inventory Flow - Integration Bus](https://github.com/ibm-cloud-architecture/refarch-integration-esb) provides the implementation of this mapping flow.
+
+Also we define an `Inventory` API product in IBM API Connect. See project [API](https://github.com/ibm-cloud-architecture/refarch-integration-api)
 
 # Contribute
 We welcome contribution. Contribution is not only PRs and code, but any help with docs or helping other developers to solve issues are very appreciated! Thanks in advance!
