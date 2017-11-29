@@ -12,7 +12,7 @@ import javax.jws.WebService;
 
 import inventory.model.Inventory;
 import inventory.model.ItemEntity;
-import inventory.model.Supplier;
+import inventory.model.SupplierEntity;
 
 @WebService
 public class DALService {
@@ -69,6 +69,7 @@ public class DALService {
 	@WebMethod(operationName="updateItem")
 	public Item updateItem(Item inItem) throws DALException{
 		ItemEntity ie = new ItemEntity(inItem);
+		ie.setUpdateDate(new Date());
 		return new Item(itemDao.updateItem(ie),inItem.getQuantity());
 	}
 	
@@ -76,7 +77,7 @@ public class DALService {
 	public Item newItem(Item inItem) throws DALException{
 		ItemEntity ie = new ItemEntity(inItem);
 		ie.setId(null);
-		ie.setCreationDate(new Timestamp((new Date()).getTime()));
+		ie.setCreationDate(new Date());
 		ie.setUpdateDate(ie.getCreationDate());		
 		ItemEntity outItem=itemDao.createItem(ie);
 		return new Item(outItem,0);
@@ -95,7 +96,6 @@ public class DALService {
 	// ----------------------------------------------------------------
 	// Inventory
 	// ----------------------------------------------------------------
-	@WebMethod(operationName="itemsPerSite")
 	public Collection<Item> getItemsPerSite(String siteName) throws DALException{
 		Collection<Inventory> il=invDao.getItemsPerSite(siteName);
 		List<Item> li=new ArrayList<Item>();
@@ -107,32 +107,39 @@ public class DALService {
 		return li;
 	}
 	
-	@WebMethod(operationName="getInventoryBySite")
+
 	public Collection<Inventory> getInventoryBySite(String siteName) throws DALException{
 		if (siteName != null) return invDao.getItemsPerSite(siteName);
 		return null;
 	}
 	
-	@WebMethod(operationName="newInventoryEntry")
+
 	public Inventory newInventoryEntry(long it, int q, String site) throws DALException {
 		Inventory iv = new Inventory();
 		iv.setQuantity(q);
 		iv.setSite(site);
 		iv.setItem(it);
+		iv.setUpdateDate(new Date());
+		iv.setCreationDate(iv.getUpdateDate());
 		return invDao.createInventoryEntry(iv);
 	}
 	
-	@WebMethod(operationName="inventoryById")
+
 	public Inventory getInventoryById(long inventoryId) throws DALException {
 		return invDao.getInventoryById(inventoryId);
 	}
 	
-	@WebMethod(operationName="updateInventoryEntry")
+	@WebMethod(operationName="updateInventory")
+	public String updateInventory(long itemid,String site,int quantity) throws DALException {
+		return "Success";
+	}
+	
 	public Inventory updateInventoryEntry(Inventory iv) throws DALException {
+		iv.setUpdateDate(new Date());
 		return invDao.updateInventoryEntry(iv);
 	}
 	
-	@WebMethod(operationName="getInventoryForSiteAndItemId")
+
 	public Inventory getInventoryForSiteAndItemId(long itemIdToKeep, String siteName)  throws DALException {
 		if (siteName != null && itemIdToKeep > 0) {
 			return invDao.getInventoryForSiteAndItemId(itemIdToKeep,siteName);
@@ -140,12 +147,12 @@ public class DALService {
 		return null;
 	}
 	
-	@WebMethod(operationName="getInventoryCrossSite")
+
 	public Collection<Inventory> getInventoryCrossSite()  throws DALException{
 		return invDao.getInventoryCrossSite();
 	}
 
-	@WebMethod(operationName="deleteInventory")
+
 	public String deleteInventoryEntry(long inventoryId) throws DALException {
 		return invDao.deleteInventoryEntry(inventoryId);
 	}
@@ -156,27 +163,41 @@ public class DALService {
 	// ----------------------------------------------------------------
 	@WebMethod(operationName="newSupplier")
 	public Supplier newSupplier(Supplier s) throws DALException{
-		return supplierDao.saveSupplier(s);
+		SupplierEntity se = new SupplierEntity(s);
+		se.setUpdateDate(new Date());
+		se.setCreationDate(se.getUpdateDate());
+		SupplierEntity se2= supplierDao.saveSupplier(se);
+		return new Supplier(se2);
 	}
 
 	@WebMethod(operationName="supplierById")
 	public Supplier getSupplierById(long supplierId)  throws DALException {
-		return supplierDao.getById(supplierId);
+		SupplierEntity se =supplierDao.getById(supplierId);
+		return new Supplier(se);
 	}
 
 	@WebMethod(operationName="supplierByName")
 	public Supplier getSupplierByName(String name) throws DALException {
-		return supplierDao.getByName(name);
+		return new Supplier( supplierDao.getByName(name));
 	}
 
 	@WebMethod(operationName="suppliers")
-	public Collection<Supplier> getSuppliers() throws DALException {
-		return supplierDao.getSuppliers();
+	public Collection<Supplier> getSuppliers() throws DALException {		
+		Collection<SupplierEntity> sel=supplierDao.getSuppliers();
+		List<Supplier> sl=new ArrayList<Supplier>();
+		for (SupplierEntity se : sel){
+			Supplier s = new Supplier(se);
+			sl.add(s);
+		}
+		return sl;
 	}
 	
 	@WebMethod(operationName="updateSupplier")
 	public Supplier updateSupplier(Supplier s) throws DALException{
-		return supplierDao.updateSupplier(s);
+		SupplierEntity se = new SupplierEntity(s);
+		se.setUpdateDate(new Date());
+		supplierDao.updateSupplier(se);
+		return s;
 	}
 	
 	@WebMethod(operationName="deleteSupplier")

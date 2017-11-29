@@ -5,7 +5,7 @@
       <class>inventory.model.ItemEntity</class>
       <class>inventory.model.Inventory</class>
       <class>inventory.model.Party</class>
-      <class>inventory.model.Supplier</class>
+      <class>inventory.model.SupplierEntity</class>
 	  <properties>
 		<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>	
 		<property name="javax.persistence.jdbc.url" value="jdbc:derby:invdb;create=true"/>

@@ -43,7 +43,7 @@ public class ItemEntity implements Serializable {
 	private String imgAlt;
 	
 	@ManyToMany(mappedBy = "items")
-	protected Collection<Supplier> suppliers;
+	protected Collection<SupplierEntity> suppliers;
 	private Date updateDate;
 	private Date creationDate;
 
@@ -146,11 +146,11 @@ public class ItemEntity implements Serializable {
 		this.imgAlt = imgAlt;
 	}
 
-	public Collection<Supplier> getSuppliers() {
+	public Collection<SupplierEntity> getSuppliers() {
 		return suppliers;
 	}
 
-	public void setSuppliers(Collection<Supplier> suppliers) {
+	public void setSuppliers(Collection<SupplierEntity> suppliers) {
 		this.suppliers = suppliers;
 	}
 

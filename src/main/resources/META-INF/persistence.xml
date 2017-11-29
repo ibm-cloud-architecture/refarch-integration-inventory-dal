@@ -9,9 +9,9 @@
     	<class>inventory.model.ItemEntity</class>
     	<class>inventory.model.Inventory</class>
     	<class>inventory.model.Party</class>
-    	<class>inventory.model.Supplier</class>
+    	<class>inventory.model.SupplierEntity</class>
 		<properties>
-			<property name="javax.persistence.jdbc.url" value="jdbc:db2://172.16.254.23:50000/INVDB:retrieveMessagesFromServerOnGetMessage=true;;create=true;"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:db2://172.16.254.23:50000/INVDB:retrieveMessagesFromServerOnGetMessage=true; "/>
 			<property name="javax.persistence.jdbc.user" value="DB2INST1"/>
 			<property name="javax.persistence.jdbc.password" value="Brown01"/>
 			<property name="javax.persistence.jdbc.driver" value="com.ibm.db2.jcc.DB2Driver"/>

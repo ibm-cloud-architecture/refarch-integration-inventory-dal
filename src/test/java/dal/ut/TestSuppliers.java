@@ -6,8 +6,10 @@ import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
-import inventory.model.Supplier;
+
+import inventory.model.SupplierEntity;
 import inventory.ws.DALException;
+import inventory.ws.Supplier;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestSuppliers extends BaseTest{

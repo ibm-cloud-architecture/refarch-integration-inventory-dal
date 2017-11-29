@@ -1,16 +1,13 @@
 package inventory.model;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
@@ -27,8 +24,8 @@ public class Inventory {
 	private Long item;
 	@Column(precision=5)
 	private Integer quantity;
-	private Timestamp updateDate;
-	private Timestamp creationDate;
+	private Date updateDate;
+	private Date creationDate;
 	@Column(nullable=true, length=50)
 	private String site;
 	
@@ -58,19 +55,19 @@ public class Inventory {
 		this.quantity = quantity;
 	}
 
-	public Timestamp getUpdateDate() {
+	public Date getUpdateDate() {
 		return updateDate;
 	}
 
-	public void setUpdateDate(Timestamp updateDate) {
+	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
 	}
 
-	public Timestamp getCreationDate() {
+	public Date getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(Timestamp creationDate) {
+	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
 	}
 

@@ -8,18 +8,24 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import inventory.model.ItemEntity;
-import inventory.model.Supplier;
+import inventory.model.SupplierEntity;
 import inventory.ws.DALException;
 import inventory.ws.Item;
+import inventory.ws.SupplierDAO;
+import inventory.ws.SupplierDAOImpl;
 
 public class TestSupplierItems extends BaseTest{
 
 	static long supplierId=0;
+	SupplierDAO dao = new SupplierDAOImpl();
 	
+	/*
+	 * This test plays with different entry points: DAO or service. The objects are not the same: some are DTO some are entities
+	 */
 	@Test
 	public void mainTest() {
 		System.out.println("STEP 1 - Add 2 suppliers");
-		Supplier s = new Supplier();
+		SupplierEntity s = new SupplierEntity();
 		s.setName("TestSupplier1");
 		s.setStatus("New");
 		s.setState("CA");
@@ -27,9 +33,9 @@ public class TestSupplierItems extends BaseTest{
 		s.setStreet("10 first street");
 		s.setZipcode("90000");
 		s.setType("ORGANIZATION");
-		Supplier sOut=null;
+		SupplierEntity sOut=null;
 		try {
-			s = serv.newSupplier(s);
+			s = dao.saveSupplier(s);
 			supplierId=s.getId();
 		} catch (DALException e) {
 			e.printStackTrace();
@@ -38,7 +44,7 @@ public class TestSupplierItems extends BaseTest{
 		Assert.assertNotNull(s);
 		Assert.assertTrue(s.getId()>0);
 		
-		Supplier s2 = new Supplier();
+		SupplierEntity s2 = new SupplierEntity();
 		s2.setName("TestSupplier2");
 		s2.setStatus("New");
 		s2.setState("CA");
@@ -47,7 +53,7 @@ public class TestSupplierItems extends BaseTest{
 		s2.setZipcode("90000");
 		s.setType("ORGANIZATION");
 		try {
-			sOut = serv.newSupplier(s2);
+			sOut =  dao.saveSupplier(s2);
 		} catch (DALException e) {
 			e.printStackTrace();
 			Assert.fail("Exception in save new supplier");
@@ -62,7 +68,7 @@ public class TestSupplierItems extends BaseTest{
 			s.addItemEntity(ie);
 		}
 		try {
-			sOut=serv.updateSupplier(s);
+			sOut=dao.updateSupplier(s);
 		} catch (DALException e) {
 			e.printStackTrace();
 			fail("Exception while updating supplier");

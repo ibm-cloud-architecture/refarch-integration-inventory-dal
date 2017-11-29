@@ -1,6 +1,5 @@
 package inventory.model;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -12,10 +11,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import inventory.ws.Supplier;
+
 @Entity(name="Supplier")
 @Table(name="SUPPLIERS")
 @NamedQuery(name="Supplier.findAll", query="SELECT i FROM Supplier i")
-public class Supplier extends Party {
+public class SupplierEntity extends Party {
 
 	@Column(nullable=true, length=200)
 	protected String street;
@@ -29,7 +30,18 @@ public class Supplier extends Party {
 	@ManyToMany(cascade=CascadeType.MERGE)
 	protected Collection<ItemEntity> items;
 	
-	public Supplier(){}
+	public SupplierEntity(){}
+	
+	public SupplierEntity(Supplier s){
+		this.name=s.getName();
+		this.id=s.getId();
+		this.type=s.getType();
+		this.status=s.getStatus();
+		this.street=s.getStreet();
+		this.city=s.getCity();
+		this.zipcode=s.getZipcode();
+		this.state=s.getState();
+	}
 	
 	public String toString(){
 		return getId()+" "+getName()+" "+getStatus();

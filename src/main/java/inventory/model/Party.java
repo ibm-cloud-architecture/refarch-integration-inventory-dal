@@ -20,9 +20,9 @@ public abstract class Party {
 	protected Long id=null;
 	@Column(nullable=false, length=100)
 	protected String name;
-	@Column(nullable=false, length=10)
+	@Column(nullable=true, length=20)
 	protected String type;
-	@Column(nullable=false, length=20)
+	@Column(nullable=true, length=20)
 	protected String status;
 	protected Date creationDate;
 	protected Date updateDate;

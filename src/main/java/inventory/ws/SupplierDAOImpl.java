@@ -8,38 +8,38 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import inventory.model.ItemEntity;
-import inventory.model.Supplier;
+import inventory.model.SupplierEntity;
 
 public class SupplierDAOImpl extends BaseDao implements SupplierDAO {
 	
-	public boolean validName(Supplier ie){
+	public boolean validName(SupplierEntity ie){
 		if (ie.getName() == null || ie.getName().length() == 0) return false;
 		return true;
 	}
 	
-	public boolean validId(Supplier ie){
+	public boolean validId(SupplierEntity ie){
 		if (ie.getId() == null) return false;
 		return true;
 	}
 
 	@Override
-	public Supplier saveSupplier(Supplier s) throws DALException {
+	public SupplierEntity saveSupplier(SupplierEntity s) throws DALException {
 		if (!validName(s)){
 			throw new DALException("ERRDAO3000","Supplier name attribute is mandatory");
 		}
-		return (Supplier)save(s);
+		return (SupplierEntity)save(s);
 	}
 
 	@Override
-	public Supplier getByName(String name) throws DALException  {
+	public SupplierEntity getByName(String name) throws DALException  {
 		if (name == null || name.isEmpty()) {
 			DALFault f = new DALFault("ERRDAO3012","Supplier name is empty");
 			throw new DALException("DAL exception input data", f);
 		}
 		EntityManager em = getEntityManager();
-		List<Supplier> l=null;
+		List<SupplierEntity> l=null;
 		try{ 
-			Query query =em.createQuery("select p from Supplier p where p.name = ?1",Supplier.class);
+			Query query =em.createQuery("select p from Supplier p where p.name = ?1",SupplierEntity.class);
 			query.setParameter (1, name);
 			l=query.getResultList();
 		} finally {
@@ -56,7 +56,7 @@ public class SupplierDAOImpl extends BaseDao implements SupplierDAO {
 	}
 
 	@Override
-	public Supplier updateSupplier(Supplier s) throws DALException {
+	public SupplierEntity updateSupplier(SupplierEntity s) throws DALException {
 		if (!validName(s)){
 			throw new DALException("ERRDAO5000","Mandatory name attribute needs to be present");
 		}
@@ -69,11 +69,11 @@ public class SupplierDAOImpl extends BaseDao implements SupplierDAO {
 
 	@Override
 	public String deleteSupplier(long id) throws DALException {
-		Supplier entity=null;
+		SupplierEntity entity=null;
 		EntityManager em =null;
 		try {
 			 em = begin();
-			 entity=em.find(Supplier.class, id);
+			 entity=em.find(SupplierEntity.class, id);
 			 if (entity != null) {
 					logger.info("Removing entity "+entity.getId()+" "+entity.getName());
 					 em.remove(entity);
@@ -98,9 +98,9 @@ public class SupplierDAOImpl extends BaseDao implements SupplierDAO {
 	}
 
 	@Override
-	public Collection<Supplier> getSuppliers() throws DALException {
+	public Collection<SupplierEntity> getSuppliers() throws DALException {
 		EntityManager em = getEntityManager();
-		List<Supplier> results = new ArrayList<Supplier>();
+		List<SupplierEntity> results = new ArrayList<SupplierEntity>();
 		try{ 
 			Query query =em.createNamedQuery("Supplier.findAll");
 			results = query.getResultList ();
@@ -112,13 +112,13 @@ public class SupplierDAOImpl extends BaseDao implements SupplierDAO {
 	}
 
 	@Override
-	public Supplier getById(long supplierId) throws DALException{
+	public SupplierEntity getById(long supplierId) throws DALException{
 		if (supplierId <= 0) {
 			DALFault f = new DALFault("ERRDAO4001","Supplier identifier negative or 0");
 			throw new DALException("DAL exception input data", f);
 		}
 		EntityManager em = getEntityManager();
-		Supplier entity=em.find(Supplier.class, supplierId);
+		SupplierEntity entity=em.find(SupplierEntity.class, supplierId);
 		em.close();
 		return entity;
 	}

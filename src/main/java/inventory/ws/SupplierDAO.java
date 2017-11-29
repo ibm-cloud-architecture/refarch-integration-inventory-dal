@@ -2,19 +2,19 @@ package inventory.ws;
 
 import java.util.Collection;
 
-import inventory.model.Supplier;
+import inventory.model.SupplierEntity;
 
 public interface SupplierDAO {
 
-	Supplier saveSupplier(Supplier s) throws DALException ;
+	SupplierEntity saveSupplier(SupplierEntity s) throws DALException ;
 
-	Supplier getByName(String name) throws DALException ;
+	SupplierEntity getByName(String name) throws DALException ;
 
-	Supplier updateSupplier(Supplier s) throws DALException ;
+	SupplierEntity updateSupplier(SupplierEntity s) throws DALException ;
 	
 	String deleteSupplier(long id) throws DALException ;
 	
-	Collection<Supplier> getSuppliers() throws DALException ;
+	Collection<SupplierEntity> getSuppliers() throws DALException ;
 
-	Supplier getById(long supplierId) throws DALException;
+	SupplierEntity getById(long supplierId) throws DALException;
 }

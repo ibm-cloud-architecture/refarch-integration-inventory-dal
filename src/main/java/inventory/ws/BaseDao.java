@@ -33,7 +33,7 @@ public abstract class BaseDao {
           return em;
     }
 
-	public String merge(Object entity) throws DALException{
+	public Object merge(Object entity) throws DALException{
 		EntityManager em=null;
 		try{
 			em = begin();
@@ -56,7 +56,7 @@ public abstract class BaseDao {
 				throw new DALException("ERRDAO1005","Error in merge-close operation "+e.getMessage());
 			}
 		}
-		 return "Success";
+		 return entity;
     }
 	
 
