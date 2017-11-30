@@ -30,7 +30,7 @@ public class ItemEntity implements Serializable {
 	@Column(nullable=true, length=50)
 	protected String serialNumber;
 	@Column(nullable=true, length=50)
-	private String type;
+	private String productType;  // type is a predefined keyword in db2 better to have another name
 	@Column(nullable=true, length=50)
 	private String model;
 	@Column(nullable=true, length=5000)
@@ -162,13 +162,6 @@ public class ItemEntity implements Serializable {
 		this.serialNumber = serialNumber;
 	}
 
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
 
 	public String getModel() {
 		return model;
@@ -180,5 +173,13 @@ public class ItemEntity implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public String getProductType() {
+		return productType;
+	}
+
+	public void setProductType(String productType) {
+		this.productType = productType;
 	}
 }

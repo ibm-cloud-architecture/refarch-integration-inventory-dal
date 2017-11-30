@@ -15,17 +15,12 @@ public class Item {
 	@XmlElement( nillable = false )
 	protected String name;
 	private String description;
-	@XmlElement( nillable = true )
     private double price;
 	private String imgAlt;  
 	private String img;
-	@XmlElement( nillable = true )
 	private int quantity;
-	@XmlElement( nillable = true )
 	private String type;
-	@XmlElement( nillable = true )
 	private String serialNumber;
-	@XmlElement( nillable = true )
 	private String model;
 
 	
@@ -60,7 +55,7 @@ public class Item {
 		this.price=ie.getPrice();
 		this.quantity=q;
 		this.model=ie.getModel();
-		this.type=ie.getType();
+		this.type=ie.getProductType();
 		this.serialNumber=ie.getSerialNumber();
 	}
 	

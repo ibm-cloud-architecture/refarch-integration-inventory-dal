@@ -12,19 +12,12 @@ import inventory.model.SupplierEntity;
 public class Supplier {
 	@XmlElement( nillable=true )
 	protected Long id=null;
-	@XmlElement( nillable = false )
 	protected String name;
-	@XmlElement( nillable = true )
 	protected String type;
-	@XmlElement( nillable = true )
 	protected String status;
-	@XmlElement( nillable = true )
 	protected String street;
-	@XmlElement( nillable = true )
 	protected String city;
-	@XmlElement( nillable = false )
 	protected String zipcode;
-	@XmlElement( nillable = true )
 	protected String state;
 
 	
