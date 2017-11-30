@@ -1,9 +1,9 @@
 # Deploy the Data Access Layer to IBM Cloud Private
 
-Updated 11/16/2017.
+Updated 11/30/2017.
 
 There are two ways to deploy the Data Access layer component:
-1. deploy the Webpshere Liberty chart to ICP using ICP Catalog and then deploy the application on the Liberty server: this is the classical concept of operation used on JEE application server. 
+1. deploy the Webpshere Liberty chart to ICP using ICP Catalog and then deploy the application on the Liberty server: this is the classical concept of operation used on JEE application server.
 1. dockerize the app with its own liberty image and deploy it to ICP
 
 We start by documenting the second approach by packaging the code as a docker image, build a helm chart and then publish it to an ICP cluster.
@@ -15,8 +15,11 @@ The data access layer is accessing the DB2 running on premise using the JDBC pro
 
 ## Tutorial
 For deploying this application the following steps are done:
-1. [Build](#build)
-1.
+1. [Build Docker Image](#build)
+1. [Define Helm configuration](#build-the-helm-package)
+1. [Deploy to ICP](#deploy-the-helm-package)
+1. [Validate](#validation)
+
 ### Pre-requisites
 * Have an instance of ICP up and running.
 * The DAL code is running on WAS Liberty on premise server connected to the DB
@@ -34,30 +37,31 @@ You can build the image to your local repository using the following commands:
 # first compile and build the App war file
 $ gradlew build
 # build the image
-$ docker build -t ibmcase/inventorydal .
+$ docker build -t ibmcase/dal .
 $ docker images
-#... should see ibmcase/inventorydal image
+#... should see ibmcase/dal image
 ```
 
 You can run the application from the container to verify it works fine.
 ```
-$ docker run -d -p 9080:9080 --name idal -rm ibmcase/inventorydal
+$ docker run -d -p 9080:9080 --name idal -rm ibmcase/dal
 # then point your webbrowser to http://localhost:9080/inventory/ws?wsdl to see the WSDL of the SOA service.
 $
 ```
 
-Then tag your local image with the name of the remote server where the docker registry resides, and the namespace to use. (*master.cfc:8500* is the remote server and *default* is the namespace)
+Then tag your local image with the name of the remote server where the docker registry resides, and the namespace to use. (*master.cfc:8500* is the remote server and *browncompute* is the namespace used). Increase the version number overtime for major deployment.
+
 ```
-$ docker tag case/dal master.cfc:8500/browncompute/dal:v0.0.1
+$ docker tag ibmcase/dal master.cfc:8500/browncompute/dal:v0.0.1
 $ docker images
 # you should get something like:
 REPOSITORY                        TAG                 IMAGE ID            CREATED              SIZE
-master.cfc:8500/browncompute/dal   v0.0.1              906ad6fc851e        About a minute ago   474MB
-case/dal                          latest              906ad6fc851e        About a minute ago   474MB
+master.cfc:8500/browncompute/dal   v0.0.1             906ad6fc851e        About a minute ago   474MB
+ibmcase/dal                          latest           906ad6fc851e        About a minute ago   474MB
 websphere-liberty                 webProfile7         905fc63e8e9b        
 ```
 
-## Push docker image to ICP private docker repository
+### Push docker image to ICP private docker repository
 Be sure to have the **master.cfc:8500** hostname mapped to the IP address of the ICP master node. (Use /etc/hosts or update the DNS server settings)
 
 ```
@@ -164,7 +168,7 @@ spec:
 So the following diagram illustrates the IP settings:  
 ![]()
 
-## Build the application package with helm
+### Build the application package with helm
 ```
 $ cd chart
 $ helm lint browncompute-dal
@@ -212,6 +216,7 @@ To update, rollout, a new version of the code, after packaging the docker images
 helm upgrade browncompute-dal
 ```
 
+## Validation
 ### Verify the release is deployed
 ```
 helm list --namespace browncompute
@@ -228,7 +233,7 @@ browncompute-dal-browncompute-dal   dal.brown.case        172.16.40.31   80     
 casewebportal-casewebportal         portal.brown.case     172.16.40.31   80        4d
 ```
 
-## Testing the access to the application
+### Testing the access to the application
 The ingress will look at the HTTP header for the Host variable. As an alternate you can add in your local host resolution `/etc/hosts` the host name mapped to the cluster proxy IP address.
 
 To see the exposed WSDL:
