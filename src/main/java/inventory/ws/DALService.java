@@ -139,7 +139,7 @@ public class DALService {
 		return invDao.updateInventoryEntry(iv);
 	}
 	
-
+	@WebMethod(operationName="getInventoryForSiteAndItemId")
 	public Inventory getInventoryForSiteAndItemId(long itemIdToKeep, String siteName)  throws DALException {
 		if (siteName != null && itemIdToKeep > 0) {
 			return invDao.getInventoryForSiteAndItemId(itemIdToKeep,siteName);
