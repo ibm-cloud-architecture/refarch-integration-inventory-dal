@@ -24,7 +24,7 @@ For deploying this application the following steps are done:
 * Have an instance of ICP up and running.
 * The DAL code is running on WAS Liberty on premise server connected to the DB
 
-If you did not configure your ICP environment with SSH certificates, ... please read [this note](https://github.com/ibm-cloud-architecture/refarch-integration/blob/master/docs/icp-deploy.md#common-installation-tasks)
+If you did not configure your ICP environment with SSH certificates, ... please read [this note](https://github.com/ibm-cloud-architecture/refarch-integration/blob/master/docs/icp/README.md#common-installation-tasks)
 
 ## Build
 This project includes a docker file to build a docker image. It uses the public liberty image from public docker hub, and then copy the code and configuration for Liberty server to the image.
@@ -157,7 +157,7 @@ spec:
     - host: {{ $host }}
       http:
         paths:
-          - path: /dal
+          - path: /
             backend:
               serviceName: {{ $serviceName }}
               servicePort: {{ $servicePort }}
@@ -234,11 +234,11 @@ casewebportal-casewebportal         portal.brown.case     172.16.40.31   80     
 ```
 
 ### Testing the access to the application
-The ingress will look at the HTTP header for the Host variable. As an alternate you can add in your local host resolution `/etc/hosts` the host name mapped to the cluster proxy IP address.
+The ingress will look at the HTTP header for the Host variable. As an alternate you can add in your local host resolution `/etc/hosts` file, the host name mapped to the cluster proxy IP address (e.g. 172.16.40.31).
 
 To see the exposed WSDL:
 ```
-curl -k -H "Host:case.dal.local" http://172.16.40.31/dal/inventory/ws?wsdl
+curl -k -H "Host:case.dal.local" http://172.16.40.31/inventory/ws?wsdl
 ```
 
 Then to be sure the access to the database via the service we have developed a small script which is doing a SOAP call using `curl`. Go to src/test/scripts and then execute `./getItemByIdDALICP.sh` you should get the item 13408 from the data as an example.
