@@ -257,3 +257,52 @@ The URL uses the name of the server defined in the ingress configuration. It nee
 ```
 curl -v -k --header "Content-Type: text/xml;charset=UTF-8"  --data @item13408.xml http://dal.brown.case/inventory/ws
 ```
+
+### Troubleshooting
+
+You can access to the pod logs file via the ICP console or via kubectl:
+1. Get the name of the pods
+  ```
+  kubectl get pods --namespace browncompute
+  > NAME                                                 READY     STATUS    RESTARTS   AGE
+  brown-iib-ibm-integratio-3760761505-30dds            0/1       Running   0          21d
+  browncompute-dal-browncompute-dal-3380701816-3wt2s   1/1       Running   0          4h
+  browncompute-dal-browncompute-dal-3380701816-m92xm   1/1       Running   0          4h
+  casewebportal-casewebportal-614624477-wkf8j          1/1       Running   0          10d
+
+  ```
+1. Get the logs for a given pod
+
+  ```
+  kubectl logs pods browncompute-dal-browncompute-dal-3380701816-3wt2s --namespace browncompute
+  ```
+
+#### default backend - 404
+This error can occur if the ingress rules are not working well.
+
+1. Assess if ingress is well defined: virtual hostname, proxy adddress and status/age of running
+  ```
+  kubectl get ing --namespace browncompute
+
+  > NAME                                HOSTS               ADDRESS        PORTS     AGE
+browncompute-dal-browncompute-dal   dal.brown.case      172.16.40.31   80        59m
+casewebportal-casewebportal         portal.brown.case   172.16.40.31   80        10d
+  ```
+
+  1. Get the detail of ingress rules, and its mapping to the expected service, the path and host mapping.
+  ```
+  kubectl describe ingress browncompute-dal-browncompute-dal  --namespace browncompute
+
+
+  Name:			browncompute-dal-browncompute-dal
+Namespace:		browncompute
+Address:		172.16.40.31
+Default backend:	default-http-backend:80 (10.100.221.196:8080)
+Rules:
+  Host			Path	Backends
+  ----			----	--------
+  dal.brown.case
+    			/ 	inventorydalsvc:9080 (<none>)
+Annotations:
+No events.
+  ```
