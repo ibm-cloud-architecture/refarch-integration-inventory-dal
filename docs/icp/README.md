@@ -6,7 +6,7 @@ There are two ways to deploy the Data Access layer component:
 1. deploy the Webpshere Liberty chart to ICP using ICP Catalog and then deploy the application on the Liberty server: this is the classical concept of operation used on JEE application server.
 1. dockerize the app with its own liberty image and deploy it to ICP
 
-We start by documenting the second approach by packaging the code as a docker image, build a helm chart and then publish it to an ICP cluster.
+We are documenting the second approach by packaging the code as a docker image, build a helm chart and then publish it to an ICP cluster.
 
 The ICP topology looks like the image below:
 ![](dal-on-icp.png)
@@ -22,17 +22,23 @@ For deploying this application the following steps are done:
 
 ### Pre-requisites
 * Have an instance of ICP up and running.
-* The DAL code is running on WAS Liberty on premise server connected to the DB
+* The DAL code is tested and runs on WAS Liberty on premise server or within docker and can get data from the INVDB.
 
-If you did not configure your ICP environment with SSH certificates, ... please read [this note](https://github.com/ibm-cloud-architecture/refarch-integration/blob/master/docs/icp/README.md#common-installation-tasks)
+If you did not configure your ICP environment with SSH certificates, ... please read [this note](https://github.com/ibm-cloud-architecture/refarch-integration/blob/master/docs/icp/dev-env-install.md#configure-ssh-for-remote-access)
 
 ## Build
-This project includes a docker file to build a docker image. It uses the public liberty image from public docker hub, and then copy the code and configuration for Liberty server to the image.
+This project includes a docker file to build the image. It uses the public liberty image from public docker hub, and then copy the code and Liberty server configuration file to the image.
 ```
 FROM websphere-liberty:webProfile7
+
+RUN mkdir /dalapp
+WORKDIR /dalapp
+COPY . /dalapp
+ADD src/main/liberty/config/server.xml /opt/ibm/wlp/usr/servers/defaultServer
+...
 ```
 
-You can build the image to your local repository using the following commands:
+You can build the image to your local docker repository using the following commands:
 ```
 # first compile and build the App war file
 $ gradlew build
@@ -49,7 +55,7 @@ $ docker run -d -p 9080:9080 --name idal -rm ibmcase/dal
 $
 ```
 
-Then tag your local image with the name of the remote server where the docker registry resides, and the namespace to use. (*master.cfc:8500* is the remote server and *browncompute* is the namespace used). Increase the version number overtime for major deployment.
+Then tag your local image with the name of the remote server where the docker registry resides, and the namespace to use. (*master.cfc:8500* is the remote ICP master cluster name  and *browncompute* is the namespace used). Increase the version number for each new deployment.
 
 ```
 $ docker tag ibmcase/dal master.cfc:8500/browncompute/dal:v0.0.1
@@ -97,7 +103,7 @@ Specify in this file the docker image name and tags.
 image:
   repository: master.cfc:8500/brown/dal
   tag: v0.0.1
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 ```
 
 Try to align the number of helm package with docker image tag.
@@ -113,6 +119,17 @@ service:
   internalSPort: 9443
 ```
 The internalPort is the docker exposed port. The service type is ClusterIP as we are using ingress for HTTP routing, load balancing,...
+
+The memory needs can also be configured. We had an issue when deploying the container if the memory is not set right: the server was killed immediately. So allocate enough resources:
+```yaml
+resources:
+  limits:
+    cpu: 100m
+    memory: 2048Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+```
 
 ### Services
 
@@ -137,7 +154,7 @@ The **selector.app** is used by the service created in k8s to route traffic to t
 
 
 ### Ingress
-First we enable to use Ingress in the values.yaml and we specify a hostname
+First we enable to use Ingress in the `values.yaml` and we specify a hostname
 ```yaml
 ingress:
   enabled: true
@@ -165,8 +182,6 @@ spec:
 
 ```
 
-So the following diagram illustrates the IP settings:  
-![]()
 
 ### Build the application package with helm
 ```
@@ -277,32 +292,4 @@ You can access to the pod logs file via the ICP console or via kubectl:
   kubectl logs pods browncompute-dal-browncompute-dal-3380701816-3wt2s --namespace browncompute
   ```
 
-#### default backend - 404
-This error can occur if the ingress rules are not working well.
-
-1. Assess if ingress is well defined: virtual hostname, proxy adddress and status/age of running
-  ```
-  kubectl get ing --namespace browncompute
-
-  > NAME                                HOSTS               ADDRESS        PORTS     AGE
-browncompute-dal-browncompute-dal   dal.brown.case      172.16.40.31   80        59m
-casewebportal-casewebportal         portal.brown.case   172.16.40.31   80        10d
-  ```
-
-  1. Get the detail of ingress rules, and its mapping to the expected service, the path and host mapping.
-  ```
-  kubectl describe ingress browncompute-dal-browncompute-dal  --namespace browncompute
-
-
-  Name:			browncompute-dal-browncompute-dal
-Namespace:		browncompute
-Address:		172.16.40.31
-Default backend:	default-http-backend:80 (10.100.221.196:8080)
-Rules:
-  Host			Path	Backends
-  ----			----	--------
-  dal.brown.case
-    			/ 	inventorydalsvc:9080 (<none>)
-Annotations:
-No events.
-  ```
+[See this note for more troubleshooting practices](https://github.com/ibm-cloud-architecture/refarch-integration/blob/master/docs/icp/troubleshooting.md)

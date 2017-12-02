@@ -3,9 +3,9 @@
 # Declare variables to be passed into your templates.
 replicaCount: 2
 image:
-  repository: vh-icp-21-master.icp:8500/browncompute/dal
+  repository: greencluster.icp:8500/browncompute/dal
   tag: v0.0.4
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 service:
   name: inventorydalsvc
   type: ClusterIP
@@ -29,7 +29,7 @@ ingress:
 resources:
   limits:
     cpu: 100m
-    memory: 128Mi
+    memory: 2048Mi
   requests:
     cpu: 100m
-    memory: 128Mi
+    memory: 256Mi
