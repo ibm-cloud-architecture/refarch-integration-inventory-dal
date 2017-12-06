@@ -67,7 +67,7 @@ public abstract class BaseDao {
 			 em = begin();
 			 em.persist(entity);
 			 em.getTransaction().commit();		 
-		} catch (PersistenceException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new DALException("ERRDAO1001","Error in save operation "+e.getMessage());
 		} 

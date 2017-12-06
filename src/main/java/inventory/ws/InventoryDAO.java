@@ -20,5 +20,8 @@ public interface InventoryDAO {
 
 	Collection<Inventory> getInventoryCrossSite()  throws DALException;
 
-	int getStock(Long id) throws DALException;
+	Collection<Inventory> getSiteInventoryByItemId(long itemId) throws DALException;
+
+	Collection<Inventory> getInventoryPerSupplier(Long supplierId) throws DALException;
+
 }

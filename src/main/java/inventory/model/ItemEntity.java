@@ -42,8 +42,6 @@ public class ItemEntity implements Serializable {
 	@Column(name="IMG_ALT", length=75)
 	private String imgAlt;
 	
-	@ManyToMany(mappedBy = "items")
-	protected Collection<SupplierEntity> suppliers;
 	private Date updateDate;
 	private Date creationDate;
 
@@ -144,14 +142,6 @@ public class ItemEntity implements Serializable {
 
 	public void setImgAlt(String imgAlt) {
 		this.imgAlt = imgAlt;
-	}
-
-	public Collection<SupplierEntity> getSuppliers() {
-		return suppliers;
-	}
-
-	public void setSuppliers(Collection<SupplierEntity> suppliers) {
-		this.suppliers = suppliers;
 	}
 
 	public String getSerialNumber() {

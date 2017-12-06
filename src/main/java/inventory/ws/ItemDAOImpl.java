@@ -9,14 +9,14 @@ import javax.persistence.Query;
 
 import inventory.model.ItemEntity;
 
-public class ItemDaoImpl extends BaseDao implements ItemDAO {
-	Logger logger = Logger.getLogger(ItemDaoImpl.class.getName());
+public class ItemDAOImpl extends BaseDao implements ItemDAO {
+	Logger logger = Logger.getLogger(ItemDAOImpl.class.getName());
 	
-	public ItemDaoImpl(){
+	public ItemDAOImpl(){
 		
 	}
 	
-	public ItemDaoImpl(String persistanceName) {
+	public ItemDAOImpl(String persistanceName) {
 		
 	}
 	

@@ -87,10 +87,6 @@ public class Item {
 		return price;
 	}
 
-	public void setPrice(int price) {
-		this.price = price;
-	}
-
 	public String getImgAlt() {
 		return imgAlt;
 	}

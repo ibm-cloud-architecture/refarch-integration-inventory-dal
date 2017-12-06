@@ -43,7 +43,7 @@ public class TestInventoryDB extends BaseTest{
 		try {
 			ie=serv.newItem(ie);
 			// add to the inventory
-			iv=serv.newInventoryEntry(ie.getId(),10,"site A");
+			iv=serv.newInventoryEntry(ie.getId(),10,"site A",501,50);
 			
 		} catch (DALException e) {
 			e.printStackTrace();
@@ -168,7 +168,7 @@ public class TestInventoryDB extends BaseTest{
 	 */
 	public void testCrossSite(){
 		try {
-			Inventory iv=serv.newInventoryEntry(itemIdToKeep,2,"site B");
+			Inventory iv=serv.newInventoryEntry(itemIdToKeep,2,"site B",501,50);
 			Assert.assertTrue(12 == serv.getItemById(itemIdToKeep).getQuantity());
 		} catch (DALException e) {
 			e.printStackTrace();

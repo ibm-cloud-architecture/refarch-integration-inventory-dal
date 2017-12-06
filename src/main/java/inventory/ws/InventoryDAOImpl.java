@@ -10,14 +10,14 @@ import javax.persistence.Query;
 
 import inventory.model.Inventory;
 
-public class InventoryDaoImpl extends BaseDao implements InventoryDAO {
-	Logger logger = Logger.getLogger(InventoryDaoImpl.class.getName());
+public class InventoryDAOImpl extends BaseDao implements InventoryDAO {
+	Logger logger = Logger.getLogger(InventoryDAOImpl.class.getName());
 	
-	public InventoryDaoImpl(){
+	public InventoryDAOImpl(){
 		
 	}
 	
-	public InventoryDaoImpl(String persistanceName) {
+	public InventoryDAOImpl(String persistanceName) {
 		
 	}
 	
@@ -107,7 +107,7 @@ public class InventoryDaoImpl extends BaseDao implements InventoryDAO {
 		EntityManager em = getEntityManager();
 		List<Inventory> results = null;
 		try{ 
-			Query query =em.createQuery("select p from Inventory p where p.item = ?1 and p.site like ?2",Inventory.class);
+			Query query =em.createQuery("select p from Inventory p where p.itemId = ?1 and p.site like ?2",Inventory.class);
 			query.setParameter (2, siteName+"%");
 			query.setParameter (1, new Long(itemId));
 			results=query.getResultList();
@@ -141,11 +141,12 @@ public class InventoryDaoImpl extends BaseDao implements InventoryDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Collection<Inventory> getSiteInventoryByItemId(long itemId){
+	@Override
+	public Collection<Inventory> getSiteInventoryByItemId(long itemId) throws DALException{
 		EntityManager em = getEntityManager();
 		List<Inventory> results = null;
 		try{ 
-			Query query =em.createQuery("select p from Inventory p where p.item = ?1",Inventory.class);
+			Query query =em.createQuery("select p from Inventory p where p.itemId = ?1",Inventory.class);
 			query.setParameter (1, itemId);
 			results=query.getResultList();
 		} finally {
@@ -160,12 +161,22 @@ public class InventoryDaoImpl extends BaseDao implements InventoryDAO {
 	}
 	
 	@Override
-	public int getStock(Long id) throws DALException {
-		int total=0;
-		Collection<Inventory> results = getSiteInventoryByItemId(id);
-		for (Inventory iv : results) {
-			total+=iv.getQuantity();
+	public Collection<Inventory> getInventoryPerSupplier(Long supplierId) throws DALException {
+		EntityManager em = getEntityManager();
+		List<Inventory> results = null;
+		try{ 
+			Query query =em.createQuery("select p from Inventory p where p.supplierId = ?1",Inventory.class);
+			query.setParameter (1, supplierId);
+			results=query.getResultList();
+		} finally {
+			if (em != null) {
+				if (em.getTransaction().isActive()) {
+					em.getTransaction().rollback();
+				}
+				em.close();
+			}
 		}
-		return total;
+		return results;	
 	}
+	
 }

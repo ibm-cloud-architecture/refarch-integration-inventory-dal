@@ -1,13 +1,7 @@
 package inventory.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
@@ -26,9 +20,7 @@ public class SupplierEntity extends Party {
 	protected String zipcode;
 	@Column(nullable=true, length=50)
 	protected String state;
-	@JoinTable(name="supplier_delivers_item")
-	@ManyToMany(cascade=CascadeType.MERGE)
-	protected Collection<ItemEntity> items;
+
 	
 	public SupplierEntity(){}
 	
@@ -101,20 +93,6 @@ public class SupplierEntity extends Party {
 
 	public void setStatus(String status) {
 		this.status = status;
-	}
-
-
-	public void addItemEntity(ItemEntity ie) {
-		getItems().add(ie);
-	}
-
-	public Collection<ItemEntity> getItems() {
-		if (items == null) items= new ArrayList<ItemEntity>();
-		return items;
-	}
-
-	public void setItems(Collection<ItemEntity> items) {
-		this.items = items;
 	}
 
 	

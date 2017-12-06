@@ -1,6 +1,5 @@
 package inventory.ws;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -22,8 +21,8 @@ public class DALService {
     private SupplierDAO supplierDao;
     
     public DALService(){
-    	invDao = new InventoryDaoImpl();
-    	itemDao = new ItemDaoImpl();
+    	invDao = new InventoryDAOImpl();
+    	itemDao = new ItemDAOImpl();
     	supplierDao=new SupplierDAOImpl();
     }
     
@@ -52,7 +51,7 @@ public class DALService {
 	@WebMethod(operationName="itemById")
 	public Item getItemById(@WebParam(name="id")long id) throws DALException{
 		ItemEntity ie =itemDao.getItemEntityById(id);
-		if (ie != null) return new Item(ie,invDao.getStock(id));
+		if (ie != null) return new Item(ie,getItemStock(id));
 		return null;
 	}
 	
@@ -61,7 +60,7 @@ public class DALService {
 	public Item getItemByName(@WebParam(name="name")String name) throws DALException{
 		ItemEntity ie =itemDao.getItemEntityByName(name);
 		if (ie != null) {
-			return new Item(ie,invDao.getStock(ie.getId()));
+			return new Item(ie,getItemStock(ie.getId()));
 		}
 		return null;
 	}
@@ -96,43 +95,109 @@ public class DALService {
 	// ----------------------------------------------------------------
 	// Inventory
 	// ----------------------------------------------------------------
+	@WebMethod(operationName="getItemsPerSite")
 	public Collection<Item> getItemsPerSite(String siteName) throws DALException{
 		Collection<Inventory> il=invDao.getItemsPerSite(siteName);
 		List<Item> li=new ArrayList<Item>();
 		for (Inventory iv : il){
-			ItemEntity ie=itemDao.getItemEntityById(iv.getItem());
+			ItemEntity ie=itemDao.getItemEntityById(iv.getItemId());
 			Item i = new Item(ie,iv.getQuantity());
 			li.add(i);
 		}
 		return li;
 	}
 	
-
+	@WebMethod(operationName="getInventoryPerSite")
 	public Collection<Inventory> getInventoryBySite(String siteName) throws DALException{
 		if (siteName != null) return invDao.getItemsPerSite(siteName);
 		return null;
 	}
 	
+	@WebMethod(operationName="getInventoryPerSupplier")
+	public Collection<Inventory> getInventoryBySupplier(Long supplierId) throws DALException{
+		if (supplierId != null) {
+			return invDao.getInventoryPerSupplier(supplierId);
+		}
+		return null;
+	}
+	
+	@WebMethod(operationName="getSuppliersOfItem")
+	public Collection<Supplier> getSuppliersOfItem(Long itemId) throws DALException{
+		Collection<Supplier> ls = new ArrayList<Supplier>();
+		if (itemId != null) {
+				Collection<Inventory> l=invDao.getSiteInventoryByItemId(itemId);
+				if (l != null) {
+					for (Inventory iv :l) {
+						SupplierEntity sue = supplierDao.getById(iv.getSupplierId());
+						Supplier su = new Supplier(sue);
+						ls.add(su);
+					}
+					return ls;
+				}
+		}
+		return null;
+	}
+	
+	@WebMethod(operationName="getItemStock")
+	public int getItemStock(Long id) throws DALException {
+		int total=0;
+		Collection<Inventory> results = invDao.getSiteInventoryByItemId(id);
+		for (Inventory iv : results) {
+			total+=iv.getQuantity();
+		}
+		return total;
+	}
 
-	public Inventory newInventoryEntry(long it, int q, String site) throws DALException {
+	@WebMethod(operationName="addItemToSite")
+	/**
+	 * 
+	 * @param item ID
+	 * @param quantity
+	 * @param site name
+	 * @param supplierId
+	 * @return an inventory with an id
+	 * @throws DALException
+	 */
+	public Inventory newInventoryEntry(long it, int q, String site, long supplierId,double cost) throws DALException {
 		Inventory iv = new Inventory();
 		iv.setQuantity(q);
 		iv.setSite(site);
-		iv.setItem(it);
+		iv.setItemId(it);
+		iv.setSupplierId(supplierId);
 		iv.setUpdateDate(new Date());
+		iv.setCost(cost);
 		iv.setCreationDate(iv.getUpdateDate());
 		return invDao.createInventoryEntry(iv);
 	}
 	
+	@WebMethod(operationName="provisionItem")
+	// ATTENTION this code is not XA transactional, it can lead to bad data in DB
+	public Inventory newItemToSite(Item it, Supplier s, String siteName, int q,double cost)  throws DALException {
+		ItemEntity ie = new ItemEntity(it);
+		ItemEntity ieOut=itemDao.createItem(ie);
+		SupplierEntity sue = new SupplierEntity(s);
+		SupplierEntity sueOut = supplierDao.saveSupplier(sue);
+		return newInventoryEntry(ieOut.getId(),q,siteName,sueOut.getId(),cost);
+	}
 
+	@WebMethod(operationName="sellItem")
+	public Inventory sellItem(long it, int q, String site, long customerId,double amount)  throws DALException {
+		Inventory iv = new Inventory();
+		if (q > 0) q=-q;
+		iv.setQuantity(q);
+		iv.setSite(site);
+		iv.setItemId(it);
+		iv.setCustomerId(customerId);
+		iv.setUpdateDate(new Date());
+		iv.setSoldPrice(amount);
+		iv.setCreationDate(iv.getUpdateDate());
+		return invDao.createInventoryEntry(iv);
+	}
+	
 	public Inventory getInventoryById(long inventoryId) throws DALException {
 		return invDao.getInventoryById(inventoryId);
 	}
 	
-	@WebMethod(operationName="updateInventory")
-	public String updateInventory(long itemid,String site,int quantity) throws DALException {
-		return "Success";
-	}
 	
 	public Inventory updateInventoryEntry(Inventory iv) throws DALException {
 		iv.setUpdateDate(new Date());
@@ -156,6 +221,7 @@ public class DALService {
 	public String deleteInventoryEntry(long inventoryId) throws DALException {
 		return invDao.deleteInventoryEntry(inventoryId);
 	}
+
 
 	
 	// ----------------------------------------------------------------
@@ -204,4 +270,6 @@ public class DALService {
 	public String deleteSupplier(long id) throws DALException {
 		return supplierDao.deleteSupplier(id);
 	}
+
+
 }
