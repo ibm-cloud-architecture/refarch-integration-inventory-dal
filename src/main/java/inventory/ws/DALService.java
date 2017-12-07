@@ -212,12 +212,12 @@ public class DALService {
 		return null;
 	}
 	
-
+	@WebMethod(operationName="getInventoryCrossSite")
 	public Collection<Inventory> getInventoryCrossSite()  throws DALException{
 		return invDao.getInventoryCrossSite();
 	}
 
-
+	@WebMethod(operationName="deleteInventoryEntry")
 	public String deleteInventoryEntry(long inventoryId) throws DALException {
 		return invDao.deleteInventoryEntry(inventoryId);
 	}

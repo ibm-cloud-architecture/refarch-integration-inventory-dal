@@ -30,13 +30,15 @@ If you did not configure your ICP environment with SSH certificates, ... please 
 This project includes a docker file to build the image. It uses the public liberty image from public docker hub, and then copy the code and Liberty server configuration file to the image.
 ```
 FROM websphere-liberty:webProfile7
-
+RUN installUtility install --acceptLicense jpa-2.0 jaxws-2.2 adminCenter-1.0
 RUN mkdir /dalapp
 WORKDIR /dalapp
 COPY . /dalapp
 ADD src/main/liberty/config/server.xml /opt/ibm/wlp/usr/servers/defaultServer
 ...
 ```
+
+The dockerfile executes the liberty command to install the necessary library for java web service, JPA,...
 
 You can build the image to your local docker repository using the following commands:
 ```
@@ -228,7 +230,7 @@ Also visible in the ICP admin console:
 To update, rollout, a new version of the code, after packaging the docker images and uploaded it to ICP internal docker repository, use the **upgrade**
 
 ```
-helm upgrade browncompute-dal
+helm upgrade browncompute-dal browncompute-dal --namespace browncompute
 ```
 
 ## Validation
@@ -244,16 +246,18 @@ Verify ingress rules are well set. The IP address is the one from the cluster pr
 ```
 $ kubectl get ing --namespace browncompute
 NAME                                HOSTS                 ADDRESS        PORTS     AGE
-browncompute-dal-browncompute-dal   dal.brown.case        172.16.40.31   80        3m
-casewebportal-casewebportal         portal.brown.case     172.16.40.31   80        4d
+browncompute-dal-browncompute-dal   dal.brown.case        172.16.40.131   80        3m
+casewebportal-casewebportal         portal.brown.case     172.16.40.131   80        4d
 ```
 
 ### Testing the access to the application
-The ingress will look at the HTTP header for the Host variable. As an alternate you can add in your local host resolution `/etc/hosts` file, the host name mapped to the cluster proxy IP address (e.g. 172.16.40.31).
+The ingress will look at the HTTP header for the Host variable to accept the message and then route to the appropriate pod. 
+As an alternate to set the host attribute in the HTTP header you can add dal.brown.case hostname in your local host resolution `/etc/hosts` file, 
+mapped to the cluster proxy IP address (e.g. 172.16.40.131).
 
 To see the exposed WSDL:
 ```
-curl -k -H "Host:case.dal.local" http://172.16.40.31/inventory/ws?wsdl
+curl -k -H "Host:case.dal.local" http://172.16.40.131/inventory/ws?wsdl
 ```
 
 Then to be sure the access to the database via the service we have developed a small script which is doing a SOAP call using `curl`. Go to src/test/scripts and then execute `./getItemByIdDALICP.sh` you should get the item 13408 from the data as an example.
