@@ -34,7 +34,7 @@
 
     <httpEndpoint httpPort="9080" httpsPort="9443"
         id="defaultHttpEndpoint" host="*"/>
-    <quickStartSecurity userName="admin" userPassword="admin01" />
+
     <basicRegistry id="basic">
       <user name="admin" password="admin01" />
       <user name="tester" password="tester" />
