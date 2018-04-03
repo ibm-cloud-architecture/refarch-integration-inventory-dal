@@ -8,17 +8,17 @@ import java.util.Date;
 import org.junit.Assert;
 import org.junit.Test;
 
+import inventory.dao.ItemDAO;
+import inventory.dao.ItemDAOImpl;
+import inventory.dao.SupplierDAO;
+import inventory.dao.SupplierDAOImpl;
 import inventory.model.Inventory;
 import inventory.model.ItemEntity;
 import inventory.model.SupplierEntity;
 import inventory.ws.DALException;
 import inventory.ws.DALService;
 import inventory.ws.Item;
-import inventory.ws.ItemDAO;
-import inventory.ws.ItemDAOImpl;
 import inventory.ws.Supplier;
-import inventory.ws.SupplierDAO;
-import inventory.ws.SupplierDAOImpl;
 
 public class TestSupplierItems extends BaseTest{
 

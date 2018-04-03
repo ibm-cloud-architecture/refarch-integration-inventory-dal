@@ -1,8 +1,9 @@
-package inventory.ws;
+package inventory.dao;
 
 import java.util.Collection;
 
 import inventory.model.SupplierEntity;
+import inventory.ws.DALException;
 
 public interface SupplierDAO {
 

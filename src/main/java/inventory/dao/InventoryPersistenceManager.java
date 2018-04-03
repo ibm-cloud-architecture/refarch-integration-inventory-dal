@@ -1,4 +1,4 @@
-package inventory.ws;
+package inventory.dao;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;

@@ -1,4 +1,4 @@
-package inventory.ws;
+package inventory.dao;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,6 +9,8 @@ import javax.persistence.Query;
 
 import inventory.model.ItemEntity;
 import inventory.model.SupplierEntity;
+import inventory.ws.DALException;
+import inventory.ws.DALFault;
 
 public class SupplierDAOImpl extends BaseDao implements SupplierDAO {
 	

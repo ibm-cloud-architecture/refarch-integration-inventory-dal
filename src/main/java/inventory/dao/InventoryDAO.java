@@ -1,8 +1,9 @@
-package inventory.ws;
+package inventory.dao;
 
 import java.util.Collection;
 
 import inventory.model.Inventory;
+import inventory.ws.DALException;
 
 public interface InventoryDAO {
 	// Inventory API

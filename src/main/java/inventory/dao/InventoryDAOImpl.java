@@ -1,4 +1,4 @@
-package inventory.ws;
+package inventory.dao;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,6 +9,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import inventory.model.Inventory;
+import inventory.ws.DALException;
+import inventory.ws.DALFault;
 
 public class InventoryDAOImpl extends BaseDao implements InventoryDAO {
 	Logger logger = Logger.getLogger(InventoryDAOImpl.class.getName());

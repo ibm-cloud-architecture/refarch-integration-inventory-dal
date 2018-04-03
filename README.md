@@ -1,9 +1,9 @@
 # Inventory Data Access Layer
 This project is part of the 'IBM Hybrid Integration Reference Architecture' solution, available at [https://github.com/ibm-cloud-architecture/refarch-integration](https://github.com/ibm-cloud-architecture/refarch-integration).
 
-Updated 11/27/2017.
+Updated 04/02/2018.
 
-The goal of this project is to implement a set of SOA services to manage inventory, supplier and stock per site. This is on purpose that we centralize those three components inside the same application to represent an older application design done in the 2000s.
+The goal of this project is to implement a set of SOA services to manage a product Inventory, suppliers and stock management. This is on purpose that we centralize those three components inside the same application to represent an older application design done in the 2000s.
 In 2017, most likely, we will have separated those three entities into three micro services.
 
 ## Table of Contents
@@ -17,14 +17,14 @@ In 2017, most likely, we will have separated those three entities into three mic
 ## Goals
 The goal of this project is to define a SOAP interface for the Inventory datasource and implement the data access object as JPA entities. The operations are visible in the wsdl saved [here](docs/ws.wsdl). This wsdl is used for documentation purpose but it can also be imported in API Connect or IBM Integration Bus for interface mapping. The WSDL can be visible by using a web browser to the following URL:
 * when deploy on premise liberty server: http://172.16.254.44:9080/inventory/ws?WSDL
-* when deploy on ICP, you need to have a name resolution for the dal.brown.case then the URL is http://dal.brown.case/inventory/ws?WSDL
+* when deploy on ICP, you need to have a name resolution for the dal.brown.case (map the ICP proxy IP address to this hostname in your /etc/hosts) then the URL is http://dal.brown.case/inventory/ws?WSDL
 
 
 ## Technology
 The application is packaged as a war file to be deployed to a lightweight server like [IBM WebSphere Liberty profile](https://developer.ibm.com/wasdev/downloads/download-latest-stable-websphere-liberty-runtime).
 The code uses JPA 2.0 and JAXWS 2.2 APIs (See [JAXWS summary note](docs/jaxws.md)).
 
-The server configuration defines the features needed and the datasource configuration. To get understanding on our server configuration see the explanation [here](docs/liberty-server.md).
+The server configuration defines the features needed and the data source configurations. To get understanding on our server configuration see the explanation [here](docs/liberty-server.md).
 
 The data model is simple as illustrated below:  
 
@@ -79,21 +79,22 @@ public class ItemEntity implements Serializable {
   private Timestamp creationDate;
 
 ```
-The same approach is done for the Inventory and the Supplier table. Inventory is not expose to the SOAP service.
+The same approach is done for the Inventory and the Supplier tables. 
 
 The unit tests are using an embedded derby to validate the service and data access object layer without dependency to external DB. In production the data base is DB2.
 Therefore two persistence.xml are defined: one for testing ( src/test/resources) and one for production to be packaged into the war (src/java/resources).
 
 # Build and deploy
 ## Preparing the project
-The project was developed with [Eclipse Neon](http://www.eclipse.org/neon) with the following plugins added to the base eclipse:
+The project was developed with [Eclipse Neon](http://www.eclipse.org/neon) with the following plug-ins added to the base eclipse:
 * Websphere Developer Tool for Liberty: using the Marketplace and searching WebSphere developer, then use the Eclipse way to install stuff.
-* Gradle eclipse plugin
+* Gradle eclipse plug-in
 
 Install gradle CLI on your computer so you can build, unit test and assemble war.  For that see the installation instructions at [gradle](http://gradle.org)
 
 ## Preparing your App server
-You can use two approaches: install everything on your computer or use our docker file we have defined in this project.
+You can use two approaches: install everything on your computer or use our docker file we have defined in this project. We recommend using docker, therefore you need to get docker installed on your machine (see [that section](#docker).
+
 ### Install everything
 * Install Java JDK, preferably Oracle one. For example for a Ubuntu build server we did the following commands
 ```
@@ -107,9 +108,8 @@ $ sudo apt-get install oracle-java8-set-default
 * Install the WebSphere Liberty profile by downloading it from [WAS dev](https://developer.ibm.com/wasdev/downloads/download-latest-stable-websphere-liberty-runtime). See our configuration explanations [here](docs/liberty-server.md).
 
 ### Docker
-Once you build the code with `gradlew build` (see next section) you can build a docker image that will include JDK, WebSphere Liberty, the good server configuration and the deployed war.
+Once you build the code with `gradlew build` (see [next section](#build)) you can build a docker image that will include JDK, WebSphere Liberty, the good server configuration and the deployed war.
 ```
-# Execute only when there is a new image
 $ docker build -t ibmcase/dal .
 # Start the container
 $ docker run -p 9080:9080 ibmcase/dal
@@ -140,8 +140,8 @@ Starting a Gradle Daemon (subsequent builds will be faster)
 
 We also propose to leverage a build server and do continuous integration and deployment, see detail in [this note.](docs/cicd.md) about it.
 
-## Test Driven development
-The service and data access object classes were developed by starting by the tests. The first test to validate the access to data and to validate CRUD operation happy path. The tests use the service API of the DALService classes. Here is an example of tests:
+## Test Driven Development
+The service and data access object classes were developed by starting from the tests. The first tests were to validate the access to data and to validate CRUD operation happy path. The tests use the service API of the DALService classes. Here is an example of tests:
 ```
 public class TestInventoryDB {
 

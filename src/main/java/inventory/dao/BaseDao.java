@@ -1,10 +1,12 @@
-package inventory.ws;
+package inventory.dao
+;
 
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
+
+import inventory.ws.DALException;
 
 
 public abstract class BaseDao {

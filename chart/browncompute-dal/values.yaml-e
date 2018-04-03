@@ -3,8 +3,8 @@
 # Declare variables to be passed into your templates.
 replicaCount: 2
 image:
-  repository: jk-hacluster01.icp:8500/browncompute/dal
-  tag: v0.0.2
+  repository: $k8cluster:8500/browncompute/dal
+  tag: v0.0.5
   pullPolicy: Always
 service:
   name: inventorydalsvc

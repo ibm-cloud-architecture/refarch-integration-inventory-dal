@@ -1,10 +1,10 @@
 # Deploy the Data Access Layer to IBM Cloud Private
 
-Updated 11/30/2017.
+Updated 04/02/2018.
 
 There are two ways to deploy the Data Access layer component:
-1. deploy the Webpshere Liberty chart to ICP using ICP Catalog and then deploy the application on the Liberty server: this is the classical concept of operation used on JEE application server.
-1. dockerize the app with its own liberty image and deploy it to ICP
+1. deploy the Webpshere Liberty chart to ICP using ICP Catalog and then deploy the application on the Liberty server: this is the classical concept of operation used on JEE application server where developers can deploy multiple applications on the same JEE container.
+1. dockerize the app with its own liberty server image and deploy it to ICP.
 
 We are documenting the second approach by packaging the code as a docker image, build a helm chart and then publish it to an ICP cluster.
 
