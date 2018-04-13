@@ -3,7 +3,7 @@
 # modify the version number for the different element 
 progname=dal
 dalserv=src/main/java/inventory/ws/DALService.java
-k8cluster=jk-hacluster01.icp
+k8cluster=green2-cluster.icp
 nspace=browncompute
 
 # Get default version if the version is not the first argument
@@ -28,7 +28,7 @@ sed -i -e s/$prev/$v/ $dalserv
 docker tag ibmcase/$progname $k8cluster:8500/$nspace/$progname:$v
 
 docker images
-exp bf7ff06082824558a651feff220ce30b docker login -u admin jk-hacluster01.icp:8500
+exp  admin docker login -u admin $k8cluster:8500
 docker push $k8cluster:8500/$nspace/$progname:$v
 
 ## modify helm version
@@ -37,6 +37,6 @@ a=$(grep 'version' Chart.yaml)
 sed -i -e 's/"$a"/version: "$v"/' Chart.yaml
 ## same for the tag in values.yaml
 sed -i -e 's/tag: "$prev"/tag: "$v"/' values.yaml
-sed -i -e 's/greencluster.icp/"$k8cluster"/' values.yaml
+sed -i -e 's/green2-cluster.icp/$k8cluster/' values.yaml
 cd ..
 #helm install --name bc-$progname browncompute-dal --namespace=$nspace

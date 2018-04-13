@@ -14,6 +14,8 @@ public abstract class BaseDao {
 	
 	@PersistenceContext(unitName = "inventory")
 	protected EntityManager em;
+	
+	
 	 /**
 	  *  An EntityManager is not a heavy object.
 	  *  It's not safe to traverse lazy-loaded relationships once the EntityManager is closed

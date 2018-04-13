@@ -9,7 +9,7 @@ import org.junit.runners.MethodSorters;
 
 import inventory.model.SupplierEntity;
 import inventory.ws.DALException;
-import inventory.ws.Supplier;
+import inventory.ws.dto.Supplier;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestSuppliers extends BaseTest{
@@ -22,7 +22,7 @@ public class TestSuppliers extends BaseTest{
 		Supplier s = new Supplier();
 		Supplier sOut=null;
 		try {
-			sOut = serv.newSupplier(s);
+			sOut = dalWebService.newSupplier(s);
 		} catch (DALException e) {
 			gotIt=true;
 		}
@@ -44,7 +44,7 @@ public class TestSuppliers extends BaseTest{
 		s.setType("ORGANIZATION");
 		Supplier sOut=null;
 		try {
-			sOut = serv.newSupplier(s);
+			sOut = dalWebService.newSupplier(s);
 			supplierId=sOut.getId();
 		} catch (DALException e) {
 			e.printStackTrace();
@@ -61,7 +61,7 @@ public class TestSuppliers extends BaseTest{
 		System.out.println("@@@ testReadSupplierById");
 		Supplier sOut=null;
 		try {
-			sOut = serv.getSupplierById(supplierId);
+			sOut = dalWebService.getSupplierById(supplierId);
 		} catch (DALException e) {
 			e.printStackTrace();
 			Assert.fail("Exception in load supplier");
@@ -76,7 +76,7 @@ public class TestSuppliers extends BaseTest{
 		System.out.println("@@@ testReadSupplierByName");
 		Supplier sOut=null;
 		try {
-			sOut = serv.getSupplierByName("TestSupplier");
+			sOut = dalWebService.getSupplierByName("TestSupplier");
 		} catch (DALException e) {
 			e.printStackTrace();
 			Assert.fail("Exception in load supplier");
@@ -90,9 +90,9 @@ public class TestSuppliers extends BaseTest{
 	public void testUpdateSupplier(){
 		Supplier sOut=null;
 		try {
-			Supplier s = serv.getSupplierById(supplierId);
+			Supplier s = dalWebService.getSupplierById(supplierId);
 			s.setStatus("Accepted");
-			sOut=serv.updateSupplier(s);
+			sOut=dalWebService.updateSupplier(s);
 		} catch (DALException e) {
 			e.printStackTrace();
 			Assert.fail("Exception in load supplier");
@@ -105,7 +105,7 @@ public class TestSuppliers extends BaseTest{
 	public void testGetSuppliers(){
 		Collection<Supplier> sOut=null;
 		try {
-			sOut = serv.getSuppliers();
+			sOut = dalWebService.getSuppliers();
 		} catch (DALException e) {
 			e.printStackTrace();
 			Assert.fail("Exception in load supplier");
@@ -120,7 +120,7 @@ public class TestSuppliers extends BaseTest{
 	public void testWDeleteSupplier(){
 		String s=null;
 		try {
-			s = serv.deleteSupplier(supplierId);
+			s = dalWebService.deleteSupplier(supplierId);
 		} catch (DALException e) {
 			e.printStackTrace();
 			Assert.fail("Exception in load supplier");

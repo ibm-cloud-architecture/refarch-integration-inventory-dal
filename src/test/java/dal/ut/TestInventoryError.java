@@ -5,12 +5,14 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import inventory.model.ItemEntity;
+import inventory.service.InventoryProvider;
 import inventory.ws.DALException;
-import inventory.ws.Item;
+import inventory.ws.dto.Item;
 
 /**
  * Test at the service level the basic CRUD operation on inventory item.
- * The persistence.xml uses derby embedded for testing purpose so testcase
+ * The persistence.xml uses derby embedded for testing purpose so testcases
  * can delete the DB at the end of their unit tests
  * @author jerome boyer
  *
@@ -20,15 +22,16 @@ public class TestInventoryError extends BaseTest{
 
 
 	static long idToKeep=351;
+	static InventoryProvider invProvider = new InventoryProvider();
 	
 	@Test
 	// name is a not null attribute
 	public void saveWithoutNameItem(){
 		boolean gotIt=false;
-		Item ie= new Item();
+		ItemEntity ie= new ItemEntity();
 		ie.setDescription("wrong item without name");
 		try {
-			ie=serv.newItem(ie);
+			ie=invProvider.newItem(ie);
 		} catch (DALException e) {
 			Assert.assertTrue("ERRDAO1000".equals(e.getFaultInfo().getCode()));
 			System.out.println(e.getFaultInfo().getMessage());
@@ -44,7 +47,7 @@ public class TestInventoryError extends BaseTest{
 	public void testGetWrongId(){
 		boolean gotIt=false;
 		try {
-			Item item = serv.getItemById(-1);
+			ItemEntity item = invProvider.getItemById(-1);
 		} catch (DALException e) {
 			Assert.assertTrue("ERRDAO3001".equals(e.getFaultInfo().getCode()));
 			System.out.println(e.getFaultInfo().getMessage());
@@ -58,7 +61,7 @@ public class TestInventoryError extends BaseTest{
 	@Test
 	public void testGetWrongName(){
 		try {
-			Item item = serv.getItemByName("wrong product name");
+			ItemEntity item = invProvider.getItemByName("wrong product name");
 			Assert.assertNull(item);
 		} catch (DALException e) {
 			Assert.fail("Should not have an exception reported");
@@ -69,8 +72,8 @@ public class TestInventoryError extends BaseTest{
 	public void testUpdateWithoutName(){
 		boolean gotIt=false;
 		try {
-			Item ie= new Item();
-			Item item = serv.updateItem(ie);
+			ItemEntity ie= new ItemEntity();
+			ItemEntity item = invProvider.updateItem(ie);
 		} catch (DALException e) {
 			Assert.assertTrue("ERRDAO2000".equals(e.getFaultInfo().getCode()));
 			System.out.println(e.getFaultInfo().getMessage());
@@ -86,8 +89,8 @@ public class TestInventoryError extends BaseTest{
 	public void testUpdateWithoutId(){
 		boolean gotIt=false;
 		try {
-			Item ie= new Item("Name is good");
-			Item item = serv.updateItem(ie);
+			ItemEntity ie= new ItemEntity("Name of a good");
+			ItemEntity item = invProvider.updateItem(ie);
 		} catch (DALException e) {
 			Assert.assertTrue("ERRDAO2001".equals(e.getFaultInfo().getCode()));
 			System.out.println(e.getFaultInfo().getMessage());
@@ -102,7 +105,7 @@ public class TestInventoryError extends BaseTest{
 	public void deleteWithoutId(){
 		boolean gotIt=false;
 		try {
-			serv.deleteItem(0);
+			invProvider.deleteItem(0);
 		} catch (DALException e) {
 			Assert.assertTrue("ERRDAO4001".equals(e.getFaultInfo().getCode()));
 			System.out.println(e.getFaultInfo().getMessage());

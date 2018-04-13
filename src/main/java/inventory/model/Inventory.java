@@ -11,12 +11,12 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
- * Inventory tracks the management of the item life cycle. It also maintains the relation with the supplier who
- * deliver the item to a site. The following are tracked in one inventory object
- * - the item delivered to a site with its quantity
+ * Inventory tracks the management of the item life cycle. It also maintains the relation with the suppliers who
+ * deliver items to a site. The following are tracked in one inventory object
+ * - the product identifier of the product delivered to a site with its quantity
  * - the transaction date
- * - who deliver the item
- * @author jeromeboyer
+ * - which supplier delivers the item
+ * @author jerome boyer
  *
  */
 @Entity(name="Inventory")

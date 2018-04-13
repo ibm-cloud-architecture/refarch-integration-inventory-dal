@@ -2,70 +2,67 @@ package dal.ut;
 
 import static org.junit.Assert.fail;
 
-import java.util.List;
 import java.util.Collection;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import inventory.model.Inventory;
+import inventory.model.ItemEntity;
+import inventory.service.InventoryProvider;
 import inventory.ws.DALException;
-import inventory.ws.DALService;
-import inventory.ws.Item;
 
 /**
- * Test at the service level the basic CRUD operation on inventory item.
- * The persistence.xml uses derby embedded for testing purpose so each test case
- * can delete the DB at the end of their unit tests
+ * Test at the service level the basic CRUD operation on inventory item. The
+ * persistence.xml uses derby embedded for testing purpose so each test case can
+ * delete the DB at the end of their unit tests
+ * 
  * @author jerome boyer
  *
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class TestInventoryDB extends BaseTest{
-
+public class TestInventoryProvider extends BaseTest {
 
 	// keep ids for item and inventory
-	static long itemIdToKeep=351;
-	static long inventoryId=0;
-
+	static long itemIdToKeep = 351;
+	static long inventoryId = 0;
+	static InventoryProvider invProvider = new InventoryProvider();
 
 	@Test
-	public void saveOneItem(){
-		System.out.println("Save one item with the inventory on one site");
+	public void saveOneItem() {
+		System.out.println("Save one item into the inventory for site A should give an item.id and inventory entry");
 		Inventory iv = null;
-		Item ie= new Item("Old Stuff");
+		ItemEntity ie = new ItemEntity("Old Stuff");
 		ie.setDescription("This is an old computer");
 		ie.setPrice(1000);
 		ie.setImg("a path to an image");
 		try {
-			ie=serv.newItem(ie);
+			ie = invProvider.newItem(ie);
 			// add to the inventory
-			iv=serv.newInventoryEntry(ie.getId(),10,"site A",501,50);
-			
+			iv = invProvider.newInventoryEntry(ie.getId(), 10, "site A", 501, 50);
+
 		} catch (DALException e) {
 			e.printStackTrace();
 			fail("Exception");
 		}
 		Assert.assertNotNull(ie);
-		Assert.assertTrue(ie.getId()>0);
-		itemIdToKeep=ie.getId();
-		System.out.println("Id of the new record:"+itemIdToKeep);
+		Assert.assertTrue(ie.getId() > 0);
+		itemIdToKeep = ie.getId();
+		System.out.println("item Id of the new record:" + itemIdToKeep);
 		Assert.assertNotNull(iv);
-		Assert.assertTrue(iv.getId()>0);
-		inventoryId=iv.getId();
-		System.out.println(iv.toString());
+		Assert.assertTrue(iv.getId() > 0);
+		inventoryId = iv.getId();
+		System.out.println("new inventory record:" + iv.toString());
 	}
-	
 
 	@Test
 	public void testGetOneItem() {
-		System.out.println("Load Item Id:"+itemIdToKeep);
-		Item item = null;
+		System.out.println("Should load Item Id:" + itemIdToKeep);
+		ItemEntity item = null;
 		try {
-			item = serv.getItemById(itemIdToKeep);
+			item = invProvider.getItemById(itemIdToKeep);
 		} catch (DALException e) {
 			e.printStackTrace();
 			fail("Exception to get one item");
@@ -73,13 +70,13 @@ public class TestInventoryDB extends BaseTest{
 		Assert.assertNotNull(item);
 		Assert.assertTrue(item.getId() == itemIdToKeep);
 	}
-	
+
 	@Test
 	public void testGetOneInventory() {
-		System.out.println("Load inventory Id:"+inventoryId);
+		System.out.println("Load inventory Id:" + inventoryId);
 		Inventory ivt = null;
 		try {
-			ivt = serv.getInventoryById(inventoryId);
+			ivt = invProvider.getInventoryById(inventoryId);
 		} catch (DALException e) {
 			e.printStackTrace();
 			fail("Exception to get one item");
@@ -87,12 +84,12 @@ public class TestInventoryDB extends BaseTest{
 		Assert.assertNotNull(ivt);
 		Assert.assertTrue(ivt.getId() == inventoryId);
 	}
-	
+
 	@Test
 	public void testLoadAllItems() {
-		Collection<Item> items =null;
+		Collection<ItemEntity> items = null;
 		try {
-			items = serv.getItems();
+			items = invProvider.getItems();
 		} catch (DALException e) {
 			e.printStackTrace();
 			fail("Exception");
@@ -100,12 +97,12 @@ public class TestInventoryDB extends BaseTest{
 		Assert.assertNotNull(items);
 		Assert.assertTrue(items.size() >= 1);
 	}
-	
+
 	@Test
 	public void testLoadAllInventory() {
-		Collection<Inventory> items =null;
+		Collection<Inventory> items = null;
 		try {
-			items = serv.getInventoryCrossSite();
+			items = invProvider.getInventoryCrossSite();
 		} catch (DALException e) {
 			e.printStackTrace();
 			fail("Exception");
@@ -113,75 +110,72 @@ public class TestInventoryDB extends BaseTest{
 		Assert.assertNotNull(items);
 		Assert.assertTrue(items.size() >= 1);
 	}
-	
-	
+
 	@Test
-	public void testUpdateQuantity(){
-		System.out.println("Update inventory for site A and item:"+itemIdToKeep);
+	public void testUpdateQuantity() {
+		System.out.println("Update inventory for site A and item:" + itemIdToKeep);
 		try {
-			Inventory entry= serv.getInventoryForSiteAndItemId(itemIdToKeep,"site A");
+			Inventory entry = invProvider.getInventoryForSiteAndItemId(itemIdToKeep, "site A");
 			Assert.assertNotNull(entry);
-			long currentQuantity=entry.getQuantity();
+			long currentQuantity = entry.getQuantity();
 			Assert.assertEquals(10, currentQuantity);
-			entry.setQuantity(entry.getQuantity()+1);
-			serv.updateInventoryEntry(entry);
-			Inventory ivOut=serv.getInventoryById(entry.getId());
-			Assert.assertTrue(ivOut.getQuantity()==currentQuantity +1);
+			entry.setQuantity(entry.getQuantity() + 1);
+			invProvider.updateInventoryEntry(entry);
+			Inventory ivOut = invProvider.getInventoryById(entry.getId());
+			Assert.assertTrue(ivOut.getQuantity() == currentQuantity + 1);
 		} catch (DALException e) {
 			e.printStackTrace();
 			fail("Exception in update Inventory test");
-		}	
+		}
 	}
-	
-	
-	
+
 	@Test
 	public void testItemsPerSite() {
 		System.out.println("Get items per site for site A");
-		Collection<Inventory> il=null;
+		Collection<Inventory> il = null;
 		try {
-			il = serv.getInventoryBySite("site A");
+			il = invProvider.getInventoryBySite("site A");
 		} catch (DALException e) {
 			e.printStackTrace();
 			fail("Exception in accessing inventory tables");
 		}
 		Assert.assertNotNull(il);
-		Assert.assertTrue(il.size()>0);
+		Assert.assertTrue(il.size() > 0);
 		System.out.println(il.iterator().next().toString());
 		// or with items
 		try {
-			Collection<Item> items = serv.getItemsPerSite("site A");
+			Collection<ItemEntity> items = invProvider.getItemsPerSite("site A");
 			Assert.assertNotNull(items);
-			Assert.assertTrue(items.size()>0);
+			Assert.assertTrue(items.size() > 0);
 			System.out.println(items.iterator().next().toString());
 		} catch (DALException e) {
 			e.printStackTrace();
 			fail("Exception in accessing inventory tables");
 		}
-		
+
 	}
-	
-	
+
 	@Test
 	/**
 	 * Add a site for the same item; compute stock
 	 */
-	public void testCrossSite(){
+	public void testCrossSite() {
+		System.out.println("Adding an existing item to second side should add to total quantity");
 		try {
-			Inventory iv=serv.newInventoryEntry(itemIdToKeep,2,"site B",501,50);
-			Assert.assertTrue(12 == serv.getItemById(itemIdToKeep).getQuantity());
+			Inventory iv = invProvider.newInventoryEntry(itemIdToKeep, 2, "site B", 501, 50);
+			Assert.assertNotNull(iv);
+			Assert.assertTrue(12 == invProvider.getItemStock(itemIdToKeep));
 		} catch (DALException e) {
 			e.printStackTrace();
 			fail("Exception to get one item");
 		}
 	}
-	
-	
+
 	@Test
 	public void testWDeleteAInventory() {
-		String s=null;
+		String s = null;
 		try {
-			s = serv.deleteInventoryEntry(inventoryId);
+			s = invProvider.deleteInventoryEntry(inventoryId);
 		} catch (DALException e) {
 			e.printStackTrace();
 			fail("Exception in delete Inventory test");
@@ -189,12 +183,12 @@ public class TestInventoryDB extends BaseTest{
 		Assert.assertNotNull(s);
 		Assert.assertTrue("Success".equals(s));
 	}
-	
+
 	@Test
 	public void testWDeleteOneItem() {
-		String s=null;
+		String s = null;
 		try {
-			s = serv.deleteItem(itemIdToKeep);
+			s = invProvider.deleteItem(itemIdToKeep);
 		} catch (DALException e) {
 			e.printStackTrace();
 			fail("Exception in delete item test");
@@ -202,36 +196,36 @@ public class TestInventoryDB extends BaseTest{
 		Assert.assertNotNull(s);
 		Assert.assertTrue("Success".equals(s));
 	}
-	
+
 	@Test
-	public void wellDoASearch(){
+	public void wellDoASearch() {
 		try {
-			Item ie= new Item("item1");
+			ItemEntity ie = new ItemEntity("item1");
 			ie.setDescription("This is item");
 			ie.setPrice(1000);
 			ie.setImg("a path to an image");
 			ie.setPrice(10000);
-			ie=serv.newItem(ie);
-			ie= new Item("item2");
+			ie = invProvider.newItem(ie);
+			ie = new ItemEntity("item2");
 			ie.setDescription("This is item");
 			ie.setPrice(1000);
 			ie.setImg("a path to an image");
 			ie.setPrice(10000);
-			ie=serv.newItem(ie);
-			ie= new Item("item3");
+			ie = invProvider.newItem(ie);
+			ie = new ItemEntity("item3");
 			ie.setDescription("This is item");
 			ie.setPrice(1000);
 			ie.setImg("a path to an image");
 			ie.setPrice(10000);
-			ie=serv.newItem(ie);
-			Collection<Item>  items = serv.getItems();
+			ie = invProvider.newItem(ie);
+			Collection<ItemEntity> items = invProvider.getItems();
 			Assert.assertTrue(items.size() >= 3);
-			items=serv.searchByName("item");
+			items = invProvider.searchByName("item");
 			Assert.assertTrue(items.size() >= 3);
 		} catch (DALException e) {
 			e.printStackTrace();
 			fail("Exception");
 		}
 	}
-	
+
 }

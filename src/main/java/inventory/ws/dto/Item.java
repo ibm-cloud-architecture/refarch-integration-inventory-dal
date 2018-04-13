@@ -1,4 +1,4 @@
-package inventory.ws;
+package inventory.ws.dto;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -59,6 +59,17 @@ public class Item {
 		this.serialNumber=ie.getSerialNumber();
 	}
 	
+	public ItemEntity toItemEntity() {
+		ItemEntity ie = new ItemEntity(this.getName());
+		ie.setDescription(this.getDescription());
+		if (this.getId() <=0) ie.setId(null);
+		else setId(this.getId());
+		ie.setImg(this.getImg());
+		ie.setImgAlt(this.getImgAlt());
+		ie.setPrice(this.getPrice());
+		return ie;
+	}
+
 	public String getName() {
 		return name;
 	}

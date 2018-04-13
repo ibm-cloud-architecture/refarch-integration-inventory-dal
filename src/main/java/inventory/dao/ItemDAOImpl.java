@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 
 import inventory.model.ItemEntity;
@@ -18,7 +19,7 @@ public class ItemDAOImpl extends BaseDao implements ItemDAO {
 		
 	}
 	
-	public ItemDAOImpl(String persistanceName) {
+	public ItemDAOImpl(EntityManagerFactory emf) {
 		
 	}
 	

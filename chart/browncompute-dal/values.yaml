@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 replicaCount: 2
 image:
-  repository: jk-hacluster01.icp:8500/browncompute/dal
+  repository: green2-cluster.icp:8500/browncompute/dal
   tag: v0.0.2
   pullPolicy: Always
 service:

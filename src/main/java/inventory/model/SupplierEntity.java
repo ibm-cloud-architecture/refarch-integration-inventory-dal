@@ -5,12 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import inventory.ws.Supplier;
+import inventory.ws.dto.Supplier;
 
 @Entity(name="Supplier")
 @Table(name="SUPPLIERS")
 @NamedQuery(name="Supplier.findAll", query="SELECT i FROM Supplier i")
-public class SupplierEntity extends Party {
+public class SupplierEntity extends PartyEntity {
 
 	@Column(nullable=true, length=200)
 	protected String street;

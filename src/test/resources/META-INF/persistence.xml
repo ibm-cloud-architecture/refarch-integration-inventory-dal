@@ -4,7 +4,7 @@
 	  <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>	
       <class>inventory.model.ItemEntity</class>
       <class>inventory.model.Inventory</class>
-      <class>inventory.model.Party</class>
+      <class>inventory.model.PartyEntity</class>
       <class>inventory.model.SupplierEntity</class>
 	  <properties>
 		<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>	

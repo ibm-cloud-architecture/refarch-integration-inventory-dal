@@ -37,7 +37,7 @@ The data model is simple as illustrated below:
 ## Code Explanation
 The source code is organized to follow maven and gradle conventions: src/main/java or src/test/java...
 
-The SOAP service is defined in the class inventory.ws.DALService and uses [JAXWS](docs/jaxws.md) annotations to define the service and the operations.
+The SOAP service is defined in the class inventory.ws.DALService and uses [JAXWS](docs/jaxws.md) annotations to define the service and the operations exposed as part of the unique application WSDL.
 ```
 @WebService
 public class DALService {
@@ -46,9 +46,9 @@ public class DALService {
   @WebMethod(operationName="items")
 	public Collection<Item> getItems() throws DALException {
 ```
-The Item and Supplier classes are [Data Transfer Object Pattern](https://martinfowler.com/eaaCatalog/dataTransferObject.html) classes to deliver a simple view of the entities persisted in the database and not expose all the attributes persisted in the DB.
+The Item and Supplier classes are [Data Transfer Object Pattern](https://martinfowler.com/eaaCatalog/dataTransferObject.html) classes to deliver a simple view of the entities persisted in the database to do not expose all the attributes persisted in the DB.
 
-For information about the DB2 Inventory schema refer to the [Database github repository](https://github.com/ibm-cloud-architecture/refarch-integration-inventory-db2)
+For information about the DB2 Inventory schema refers to the [Database github repository](https://github.com/ibm-cloud-architecture/refarch-integration-inventory-db2)
 
 The Item from the data base table ITEMS was mapped to the inventory.model.ItemEntity class which uses a set of JPA annotations to map to the DB2 tables.
 
@@ -87,7 +87,7 @@ Therefore two persistence.xml are defined: one for testing ( src/test/resources)
 # Build and deploy
 ## Preparing the project
 The project was developed with [Eclipse Neon](http://www.eclipse.org/neon) with the following plug-ins added to the base eclipse:
-* Websphere Developer Tool for Liberty: using the Marketplace and searching WebSphere developer, then use the Eclipse way to install stuff.
+* Websphere Developer Tool for Liberty: using the Eclipse Marketplace and search for WebSphere developer tool, then use the Eclipse way to install plugins.
 * Gradle eclipse plug-in
 
 Install gradle CLI on your computer so you can build, unit test and assemble war.  For that see the installation instructions at [gradle](http://gradle.org)
