@@ -3,13 +3,18 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                sh './gradlew build'
+                sh './scripts/build.sh'
+            }
+        }
+        stage('integration test') {
+            steps {
+                sh './scripts/tests.sh'
             }
         }
         stage('deploy') {
             steps {
              timeout(time: 3, unit: 'MINUTES') {
-                sh './deployToWlp.sh'
+                sh './scripts/deployToICP.sh'
               }
             }
         }

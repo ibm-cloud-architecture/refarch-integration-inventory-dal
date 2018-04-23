@@ -79,7 +79,7 @@ public class ItemEntity implements Serializable {
   private Timestamp creationDate;
 
 ```
-The same approach is done for the Inventory and the Supplier tables. 
+The same approach is done for the Inventory and the Supplier tables.
 
 The unit tests are using an embedded derby to validate the service and data access object layer without dependency to external DB. In production the data base is DB2.
 Therefore two persistence.xml are defined: one for testing ( src/test/resources) and one for production to be packaged into the war (src/java/resources).
@@ -141,7 +141,11 @@ Starting a Gradle Daemon (subsequent builds will be faster)
 We also propose to leverage a build server and do continuous integration and deployment, see detail in [this note.](docs/cicd.md) about it.
 
 ## Test Driven Development
-The service and data access object classes were developed by starting from the tests. The first tests were to validate the access to data and to validate CRUD operation happy path. The tests use the service API of the DALService classes. Here is an example of tests:
+The service and data access object classes were developed by starting from the tests. Since Ken Bent wrote his book: "Test Driven Development by Example" in 2002, the practice is used in thousand of projects. At ILOG then IBM we adopt this practice since 2003. So without redoing a how to do TDD, we just want to summarize some of the practices we used in this project.
+
+The first tests were to validate the access to data and to validate CRUD operations happy path. The tests use the service Data Access Object to validate we can create, update, read and delete items.
+
+Here is an example of tests:
 ```
 public class TestInventoryDB {
 
@@ -170,18 +174,20 @@ The tests are using a Derby embedded database so it is easier to start and execu
 When tests are executed by `gradlew` the reports are in the build/reports folder.
 
 ## Deploy
-The script ./deployToWlp.sh copy the created war to your local wlp, modify the path in this script to reflect your local environment if you do not have your WebSphere Liberty profile under ~/IBM/wlp.
+The script ../scripts/deployToWlp.sh copy the created war to your local wlp, modify the path in this script to reflect your local environment if you do not have your WebSphere Liberty profile under ~/IBM/wlp.
 The server name was *appServer*.
 
-You do not need that if you use docker.
-To deploy to IBM Cloud Private [this note](docs/icp/README.md) will go in detail.
+You do not need local environment and installation if you use the docker image we have defined in this project dockerfile.
+
+Finally yo deploy to IBM Cloud Private [this note](docs/icp/README.md) will go into details on how we did it on last ICP version.
 
 ## Access deployed wsdl
 Using a web broswer to the localhost should display the wsdl: [http://localhost:9080/inventory/ws?wsdl](http://localhost:9080/inventory/ws?wsdl)
 
 # Conclusion
-The SOA service operations defines in this project are not exposed to Bluemix application or microservices directly. Most likely a integration bus gateway flow will expose interfaces in the necessary different format.
-The project  [Inventory Flow - Integration Bus](https://github.com/ibm-cloud-architecture/refarch-integration-esb) provides the implementation of this mapping flow.
+The SOA service operations defined in this project are not exposed to Bluemix application or to micro services directly. When using ESB pattern, integration flows will be developed to address interface mapping, protocol mapping, or different quality of service configuration.
+
+The project  [Inventory Flow - Integration Bus](https://github.com/ibm-cloud-architecture/refarch-integration-esb) provides the implementation of SOAP to REST interface mapping flow.
 
 Also we define an `Inventory` API product in IBM API Connect. See project [API](https://github.com/ibm-cloud-architecture/refarch-integration-api).
 
