@@ -9,7 +9,7 @@ podTemplate(label: 'mypod',
         containerTemplate(name: 'gradle' , image: 'gradle:jre8-alpine', ttyEnabled: true, command: 'cat'),
         containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl', ttyEnabled: true, command: 'cat'),
         containerTemplate(name: 'docker' , image: 'docker:17.06.1-ce', ttyEnabled: true, command: 'cat'),
-        containerTemplate(name: 'helm', image: helm, ttyEnabled: true, command: 'cat',
+        containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm:v2.8.2', ttyEnabled: true, command: 'cat',
             envVars: [
               containerEnvVar(key: 'TILLER_NAMESPACE', value: tillerNamespace)
         ])
