@@ -24,7 +24,7 @@ import inventory.ws.dto.Supplier;
  */
 @WebService
 public class DALService {
-    private static String version = "v0.0.3"; 
+    private static String version = "v0.0.4"; 
     private SupplierProvider supplierProvider;
     private InventoryProvider inventoryProvider;
     

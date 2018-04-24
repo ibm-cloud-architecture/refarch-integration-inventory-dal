@@ -24,7 +24,7 @@ import inventory.ws.dto.Supplier;
  */
 @WebService
 public class DALService {
-    private static String version = "v0.0.4"; 
+    private static String version = "v0.0.3"; 
     private SupplierProvider supplierProvider;
     private InventoryProvider inventoryProvider;
     
@@ -65,6 +65,11 @@ public class DALService {
 	@WebMethod(operationName = "getItems")
 	public Collection<Item> getItems() throws DALException{
 		return processList(inventoryProvider.getItems());
+	}
+	
+	@WebMethod(operationName = "deleteItems")
+	public String deleteItem(long id) throws DALException{
+		return inventoryProvider.deleteItem(new Long(id));
 	}
 	
 	private Collection<Item>  processList(Collection<ItemEntity> l ){

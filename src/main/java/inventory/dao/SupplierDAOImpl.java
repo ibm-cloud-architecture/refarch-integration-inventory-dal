@@ -7,7 +7,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import inventory.model.ItemEntity;
 import inventory.model.SupplierEntity;
 import inventory.ws.DALException;
 import inventory.ws.DALFault;

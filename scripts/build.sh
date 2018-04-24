@@ -18,9 +18,10 @@ echo 'old version: ' $prev ' new version to use:' $v
 
 # Update version in java code
 sed -i -e s/$prev/$v/ $dalserv
+rm $dalserv-e
 
 # Compile Java Code
-./gradlew build
+./gradlew -Dorg.gradle.daemon=false build
 
 # Build docker
 docker build -t ibmcase/$progname .
@@ -33,4 +34,6 @@ sed -i -e "s/$a/version: ${v:1}/" Chart.yaml
 ## same for the tag in values.yaml
 sed -i -e "s/tag: $prev/tag: $v/" values.yaml
 sed -i -e "s/green2-cluster.icp/$k8cluster/" values.yaml
+rm values.yaml-e
+rm Chart.yaml-e
 cd ..
