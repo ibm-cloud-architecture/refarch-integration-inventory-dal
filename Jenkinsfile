@@ -53,7 +53,7 @@ podTemplate(label: 'mypod',
                 REGISTRY=`cat /var/run/configs/registry-config/registry`
                 DEPLOYMENT=`kubectl --namespace=\${NAMESPACE} get deployments -l app=bluecompute,micro=web-bff -o name`
 
-                helm init --client-only --skip-refresh
+                helm init --skip-refresh --tiller-namespace \${NAMESPACE}
                 helm list
                 """
             }
