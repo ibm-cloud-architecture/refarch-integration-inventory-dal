@@ -54,7 +54,6 @@ podTemplate(label: 'mypod',
 
                 kubectl --namespace=\${NAMESPACE} get pods
                 """
-                fi
             }
         }
         container('helm') {
