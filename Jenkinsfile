@@ -19,10 +19,12 @@ podTemplate(label: 'mypod',
         checkout scm
         container('gradle') {
             stage('Compile Code') {
-                sh """
+                sh 'gradle build'
+                /*sh """
                 #!/bin/bash
-                ./gradlew -Dorg.gradle.daemon=false build
-                """
+                gradlew -Dorg.gradle.daemon=false build
+                gradle build
+                """*/
             }
         }
         container('docker') {
