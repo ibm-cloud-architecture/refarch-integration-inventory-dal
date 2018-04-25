@@ -62,10 +62,6 @@ podTemplate(label: 'mypod',
                 #!/bin/bash
                 set +e
                 NAMESPACE=`cat /var/run/configs/registry-config/namespace`
-                REGISTRY=`cat /var/run/configs/registry-config/registry`
-                DEPLOYMENT=`kubectl --namespace=\${NAMESPACE} get deployments -l app=bluecompute,micro=web-bff -o name`
-
-                kubectl get pods
 
                 helm init --skip-refresh --tiller-namespace \${NAMESPACE} --service-account default
                 helm list
