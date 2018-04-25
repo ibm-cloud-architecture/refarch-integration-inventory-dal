@@ -1,4 +1,5 @@
 podTemplate(label: 'mypod',
+    serviceAccount: 'jenkins',
     volumes: [
         hostPathVolume(hostPath: '/etc/docker/certs.d', mountPath: '/etc/docker/certs.d'),
         hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
@@ -44,7 +45,7 @@ podTemplate(label: 'mypod',
                 """
             }
         }
-        /*container('kubectl') {
+        container('kubectl') {
             stage('Update Docker Image') {
                 sh """
                 #!/bin/bash
@@ -55,7 +56,7 @@ podTemplate(label: 'mypod',
                 """
                 fi
             }
-        }*/
+        }
         container('helm') {
             stage('Deploy Helm Chart') {
                 sh """
@@ -63,7 +64,7 @@ podTemplate(label: 'mypod',
                 set +e
                 NAMESPACE=`cat /var/run/configs/registry-config/namespace`
 
-                helm init --skip-refresh --service-account jenkins
+                helm init --skip-refresh
                 helm list
                 """
             }
