@@ -60,8 +60,8 @@ podTemplate(label: podLabel,
                     # Update Deployment
                     kubectl --namespace=\${NAMESPACE} set image \${DEPLOYMENT} $appName=\${REGISTRY}/\${NAMESPACE}/$appName:${env.BUILD_NUMBER}
                     kubectl --namespace=\${NAMESPACE} rollout status \${DEPLOYMENT}
-                """
                 fi
+                """
             }
         }
     }
