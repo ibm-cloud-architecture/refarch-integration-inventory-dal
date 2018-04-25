@@ -7,7 +7,6 @@ podTemplate(label: 'mypod',
         configMapVolume(configMapName: 'registry-config', mountPath: '/var/run/configs/registry-config')
     ],
     containers: [
-        //containerTemplate(name: 'gradle' , image: 'fabiogomezdiaz/gradle:jre8', ttyEnabled: true, command: 'cat'),
         containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl', ttyEnabled: true, command: 'cat'),
         containerTemplate(name: 'docker' , image: 'docker:17.06.1-ce', ttyEnabled: true, command: 'cat')/*,
         containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm:v2.8.2', ttyEnabled: true, command: 'cat',
@@ -44,7 +43,6 @@ podTemplate(label: 'mypod',
                 """
             }
         }
-        /*
         container('helm') {
             stage('Deploy Helm Chart') {
                 sh """
@@ -54,20 +52,12 @@ podTemplate(label: 'mypod',
                 REGISTRY=`cat /var/run/configs/registry-config/registry`
                 DEPLOYMENT=`kubectl --namespace=\${NAMESPACE} get deployments -l app=bluecompute,micro=web-bff -o name`
 
-                kubectl --namespace=\${NAMESPACE} get \${DEPLOYMENT}
-
-                if [ \${?} -ne "0" ]; then
-                    # No deployment to update
-                    helm init --skip-refresh
-                    helm install --namespace=\${NAMESPACE} chart/browncompute-inventory-dal --set image.repository=\${REGISTRY}/\${NAMESPACE}/browncompute-inventory-dal --image.tag=\${env.BUILD_NUMBER} --set ingress.enabled=false --tls
-                else                
-                    # Update Deployment
-                    kubectl --namespace=\${NAMESPACE} set image \${DEPLOYMENT} web=\${REGISTRY}/\${NAMESPACE}/browncompute-inventory-dal:${env.BUILD_NUMBER}
-                    kubectl --namespace=\${NAMESPACE} rollout status \${DEPLOYMENT}
+                helm init --skip-refresh
+                helm list
                 """
-                fi
             }
         }
+        /*
         container('kubectl') {
             stage('Update Docker Image') {
                 sh """
