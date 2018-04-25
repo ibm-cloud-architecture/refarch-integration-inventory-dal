@@ -1,4 +1,7 @@
-podTemplate(label: 'mypod',
+def podLabel = "mypod-${UUID.randomUUID().toString()}"
+def appName = "browncompute-inventory-dal"
+
+podTemplate(label: podLabel,
     serviceAccount: 'jenkins',
     volumes: [
         hostPathVolume(hostPath: '/etc/docker/certs.d', mountPath: '/etc/docker/certs.d'),
@@ -8,16 +11,11 @@ podTemplate(label: 'mypod',
         configMapVolume(configMapName: 'registry-config', mountPath: '/var/run/configs/registry-config')
     ],
     containers: [
-        containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl', ttyEnabled: true, command: 'cat'),
         containerTemplate(name: 'docker' , image: 'docker:17.06.1-ce', ttyEnabled: true, command: 'cat'),
-        containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm:v2.8.2', ttyEnabled: true, command: 'cat')
-        /*containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm:v2.8.2', ttyEnabled: true, command: 'cat',
-            envVars: [
-              containerEnvVar(key: 'TILLER_NAMESPACE', value: tillerNamespace)
-        ])*/
+        containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl', ttyEnabled: true, command: 'cat')
   ]) {
 
-    node('mypod') {
+    node(podLabel) {
         checkout scm
         container('docker') {
             stage('Build Docker Image') {
@@ -26,7 +24,7 @@ podTemplate(label: 'mypod',
                 NAMESPACE=`cat /var/run/configs/registry-config/namespace`
                 REGISTRY=`cat /var/run/configs/registry-config/registry`
 
-                docker build -t \${REGISTRY}/\${NAMESPACE}/browncompute-inventory-dal:${env.BUILD_NUMBER} .
+                docker build -t \${REGISTRY}/\${NAMESPACE}/$appName:${env.BUILD_NUMBER} .
                 """
             }
             stage('Push Docker Image to Registry') {
@@ -41,34 +39,10 @@ podTemplate(label: 'mypod',
                 docker login -u=\${DOCKER_USER} -p=\${DOCKER_PASSWORD} \${REGISTRY}
                 set -x
 
-                docker push \${REGISTRY}/\${NAMESPACE}/browncompute-inventory-dal:${env.BUILD_NUMBER}
+                docker push \${REGISTRY}/\${NAMESPACE}/$appName:${env.BUILD_NUMBER}
                 """
             }
         }
-        container('kubectl') {
-            stage('Update Docker Image') {
-                sh """
-                #!/bin/bash
-                set +e
-                NAMESPACE=`cat /var/run/configs/registry-config/namespace`
-
-                kubectl --namespace=\${NAMESPACE} get pods
-                """
-            }
-        }
-        container('helm') {
-            stage('Deploy Helm Chart') {
-                sh """
-                #!/bin/bash
-                set +e
-                NAMESPACE=`cat /var/run/configs/registry-config/namespace`
-
-                helm init --skip-refresh
-                helm list --tls
-                """
-            }
-        }
-        /*
         container('kubectl') {
             stage('Update Docker Image') {
                 sh """
@@ -76,7 +50,7 @@ podTemplate(label: 'mypod',
                 set +e
                 NAMESPACE=`cat /var/run/configs/registry-config/namespace`
                 REGISTRY=`cat /var/run/configs/registry-config/registry`
-                DEPLOYMENT=`kubectl --namespace=\${NAMESPACE} get deployments -l app=bluecompute,micro=web-bff -o name`
+                DEPLOYMENT=`kubectl --namespace=\${NAMESPACE} get deployments -l app=$appName -o name`
 
                 kubectl --namespace=\${NAMESPACE} get \${DEPLOYMENT}
 
@@ -84,11 +58,11 @@ podTemplate(label: 'mypod',
                     # No deployment to update
                 else                
                     # Update Deployment
-                    kubectl --namespace=\${NAMESPACE} set image \${DEPLOYMENT} web=\${REGISTRY}/\${NAMESPACE}/browncompute-inventory-dal:${env.BUILD_NUMBER}
+                    kubectl --namespace=\${NAMESPACE} set image \${DEPLOYMENT} $appName=\${REGISTRY}/\${NAMESPACE}/$appName:${env.BUILD_NUMBER}
                     kubectl --namespace=\${NAMESPACE} rollout status \${DEPLOYMENT}
                 """
                 fi
             }
-        }*/
+        }
     }
 }
