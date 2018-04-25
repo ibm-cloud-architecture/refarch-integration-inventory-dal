@@ -44,6 +44,18 @@ podTemplate(label: 'mypod',
                 """
             }
         }
+        container('kubectl') {
+            stage('Update Docker Image') {
+                sh """
+                #!/bin/bash
+                set +e
+                NAMESPACE=`cat /var/run/configs/registry-config/namespace`
+
+                kubectl --namespace=\${NAMESPACE} get pods
+                """
+                fi
+            }
+        }
         container('helm') {
             stage('Deploy Helm Chart') {
                 sh """
