@@ -6,7 +6,7 @@ podTemplate(label: 'mypod',
         configMapVolume(configMapName: 'registry-config', mountPath: '/var/run/configs/registry-config')
     ],
     containers: [
-        containerTemplate(name: 'gradle' , image: 'gradle:jre8-alpine', ttyEnabled: true, command: 'cat'),
+        containerTemplate(name: 'gradle' , image: 'gradle:jre8', ttyEnabled: true, command: 'cat'),
         containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl', ttyEnabled: true, command: 'cat'),
         containerTemplate(name: 'docker' , image: 'docker:17.06.1-ce', ttyEnabled: true, command: 'cat')/*,
         containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm:v2.8.2', ttyEnabled: true, command: 'cat',
@@ -16,28 +16,19 @@ podTemplate(label: 'mypod',
   ]) {
 
     node('mypod') {
-        checkout scm/*
+        checkout scm
         container('gradle') {
             stage('Compile Code') {
-                //sh 'gradle build'
-                sh 'echo hola'
+                sh 'gradle build'
+                //sh 'echo hola'
                 //sh """
                 //#!/bin/bash
                 //gradlew -Dorg.gradle.daemon=false build
                 //gradle build
                 //"""
             }
-        }*/
+        }
         container('docker') {
-            stage('Compile Code') {
-                //sh 'gradle build'
-                sh 'echo hola'
-                /*sh """
-                #!/bin/bash
-                gradlew -Dorg.gradle.daemon=false build
-                gradle build
-                """*/
-            }
             stage('Build Docker Image') {
                 sh """
                 #!/bin/bash
