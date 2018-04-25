@@ -7,7 +7,7 @@ podTemplate(label: 'mypod',
         configMapVolume(configMapName: 'registry-config', mountPath: '/var/run/configs/registry-config')
     ],
     containers: [
-        containerTemplate(name: 'gradle', image: 'gradle:4.5.1-jdk9', command: 'cat', ttyEnabled: true),
+        //containerTemplate(name: 'gradle' , image: 'fabiogomezdiaz/gradle:jre8', ttyEnabled: true, command: 'cat'),
         containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl', ttyEnabled: true, command: 'cat'),
         containerTemplate(name: 'docker' , image: 'docker:17.06.1-ce', ttyEnabled: true, command: 'cat')/*,
         containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm:v2.8.2', ttyEnabled: true, command: 'cat',
@@ -18,17 +18,6 @@ podTemplate(label: 'mypod',
 
     node('mypod') {
         checkout scm
-        container('gradle') {
-            stage('Compile Code') {
-                sh 'gradle build'
-                //sh 'echo hola'
-                //sh """
-                //#!/bin/bash
-                //gradlew -Dorg.gradle.daemon=false build
-                //gradle build
-                //"""
-            }
-        }
         container('docker') {
             stage('Build Docker Image') {
                 sh """
@@ -36,7 +25,7 @@ podTemplate(label: 'mypod',
                 NAMESPACE=`cat /var/run/configs/registry-config/namespace`
                 REGISTRY=`cat /var/run/configs/registry-config/registry`
 
-                docker build -t \${REGISTRY}/\${NAMESPACE}/browncompute-dal:${env.BUILD_NUMBER} .
+                docker build -t \${REGISTRY}/\${NAMESPACE}/browncompute-inventory-dal:${env.BUILD_NUMBER} .
                 """
             }
             stage('Push Docker Image to Registry') {
@@ -51,7 +40,7 @@ podTemplate(label: 'mypod',
                 docker login -u=\${DOCKER_USER} -p=\${DOCKER_PASSWORD} \${REGISTRY}
                 set -x
 
-                docker push \${REGISTRY}/\${NAMESPACE}/browncompute-dal:${env.BUILD_NUMBER}
+                docker push \${REGISTRY}/\${NAMESPACE}/browncompute-inventory-dal:${env.BUILD_NUMBER}
                 """
             }
         }
@@ -70,10 +59,10 @@ podTemplate(label: 'mypod',
                 if [ \${?} -ne "0" ]; then
                     # No deployment to update
                     helm init --skip-refresh
-                    helm install --namespace=\${NAMESPACE} chart/browncompute-dal --set image.repository=\${REGISTRY}/\${NAMESPACE}/browncompute-dal --image.tag=\${env.BUILD_NUMBER} --set ingress.enabled=false --tls
+                    helm install --namespace=\${NAMESPACE} chart/browncompute-inventory-dal --set image.repository=\${REGISTRY}/\${NAMESPACE}/browncompute-inventory-dal --image.tag=\${env.BUILD_NUMBER} --set ingress.enabled=false --tls
                 else                
                     # Update Deployment
-                    kubectl --namespace=\${NAMESPACE} set image \${DEPLOYMENT} web=\${REGISTRY}/\${NAMESPACE}/browncompute-dal:${env.BUILD_NUMBER}
+                    kubectl --namespace=\${NAMESPACE} set image \${DEPLOYMENT} web=\${REGISTRY}/\${NAMESPACE}/browncompute-inventory-dal:${env.BUILD_NUMBER}
                     kubectl --namespace=\${NAMESPACE} rollout status \${DEPLOYMENT}
                 """
                 fi
@@ -94,7 +83,7 @@ podTemplate(label: 'mypod',
                     # No deployment to update
                 else                
                     # Update Deployment
-                    kubectl --namespace=\${NAMESPACE} set image \${DEPLOYMENT} web=\${REGISTRY}/\${NAMESPACE}/browncompute-dal:${env.BUILD_NUMBER}
+                    kubectl --namespace=\${NAMESPACE} set image \${DEPLOYMENT} web=\${REGISTRY}/\${NAMESPACE}/browncompute-inventory-dal:${env.BUILD_NUMBER}
                     kubectl --namespace=\${NAMESPACE} rollout status \${DEPLOYMENT}
                 """
                 fi
