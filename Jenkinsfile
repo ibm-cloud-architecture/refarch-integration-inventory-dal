@@ -44,7 +44,7 @@ podTemplate(label: 'mypod',
                 """
             }
         }
-        container('kubectl') {
+        /*container('kubectl') {
             stage('Update Docker Image') {
                 sh """
                 #!/bin/bash
@@ -55,7 +55,7 @@ podTemplate(label: 'mypod',
                 """
                 fi
             }
-        }
+        }*/
         container('helm') {
             stage('Deploy Helm Chart') {
                 sh """
@@ -63,7 +63,7 @@ podTemplate(label: 'mypod',
                 set +e
                 NAMESPACE=`cat /var/run/configs/registry-config/namespace`
 
-                helm init --skip-refresh --tiller-namespace \${NAMESPACE} --service-account default
+                helm init --skip-refresh --service-account jenkins
                 helm list
                 """
             }
