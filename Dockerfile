@@ -10,6 +10,9 @@ RUN cd /dalapp
 ADD src/main/liberty/config/server.xml /opt/ibm/wlp/usr/servers/defaultServer
 RUN mkdir /opt/ibm/wlp/usr/shared/config/lib
 
+# Build jar
+RUN ./gradlew -Dorg.gradle.daemon=false build
+
 # Add jar and war files
 ADD ./lib/db2jcc4.jar /opt/ibm/wlp/usr/shared/config/lib
 ADD ./build/libs/refarch-integration-inventory-dal.war /opt/ibm/wlp/usr/servers/defaultServer/apps
