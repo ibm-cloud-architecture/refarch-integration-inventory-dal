@@ -56,11 +56,13 @@ podTemplate(label: podLabel,
 
                 if [ \${?} -ne "0" ]; then
                     # No deployment to update
-                else                
-                    # Update Deployment
-                    kubectl --namespace=\${NAMESPACE} set image \${DEPLOYMENT} $appName=\${REGISTRY}/\${NAMESPACE}/$appName:${env.BUILD_NUMBER}
-                    kubectl --namespace=\${NAMESPACE} rollout status \${DEPLOYMENT}
+                    echo 'No deployment to update'
+                    exit 1
                 fi
+
+                # Update Deployment
+                kubectl --namespace=\${NAMESPACE} set image \${DEPLOYMENT} $appName=\${REGISTRY}/\${NAMESPACE}/$appName:${env.BUILD_NUMBER}
+                kubectl --namespace=\${NAMESPACE} rollout status \${DEPLOYMENT}
                 """
             }
         }
