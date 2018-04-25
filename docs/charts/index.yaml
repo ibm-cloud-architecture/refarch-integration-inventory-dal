@@ -1,0 +1,12 @@
+apiVersion: v1
+entries:
+  browncompute-inventory-dal:
+  - apiVersion: v1
+    created: 2018-04-25T18:05:05.788190563-04:00
+    description: A Helm chart to run Brown Compute Data Access Layer on Kubernetes
+    digest: 33794739dedcd4392760cda8106862eace4527b796c8c966eab6de834e54ace8
+    name: browncompute-inventory-dal
+    urls:
+    - https://raw.githubusercontent.com/fabiogomezdiaz/refarch-integration-inventory-dal/master/docs/charts/browncompute-inventory-dal-0.0.4.tgz
+    version: 0.0.4
+generated: 2018-04-25T18:05:05.787209554-04:00
