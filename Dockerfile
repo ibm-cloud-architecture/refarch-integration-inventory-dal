@@ -1,5 +1,5 @@
 # STAGE: Build
-FROM fabiogomezdiaz/gradle:latest as builder
+FROM ibmcase/gradle:latest as builder
 
 # Copy Code Over
 RUN mkdir /dalapp

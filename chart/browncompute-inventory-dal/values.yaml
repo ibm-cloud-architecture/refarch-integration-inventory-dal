@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 replicaCount: 2
 image:
-  repository: fabiogomezdiaz/browncompute-inventory-dal
+  repository: ibmcase/browncompute-inventory-dal
   tag: latest
   pullPolicy: Always
 service:
