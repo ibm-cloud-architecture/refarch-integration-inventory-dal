@@ -16,8 +16,19 @@ podTemplate(label: 'mypod',
   ]) {
 
     node('mypod') {
-        checkout scm
+        checkout scm/*
         container('gradle') {
+            stage('Compile Code') {
+                //sh 'gradle build'
+                sh 'echo hola'
+                //sh """
+                //#!/bin/bash
+                //gradlew -Dorg.gradle.daemon=false build
+                //gradle build
+                //"""
+            }
+        }*/
+        container('docker') {
             stage('Compile Code') {
                 //sh 'gradle build'
                 sh 'echo hola'
@@ -27,8 +38,6 @@ podTemplate(label: 'mypod',
                 gradle build
                 """*/
             }
-        }
-        container('docker') {
             stage('Build Docker Image') {
                 sh """
                 #!/bin/bash
