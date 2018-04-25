@@ -19,7 +19,8 @@ podTemplate(label: 'mypod',
         checkout scm
         container('gradle') {
             stage('Compile Code') {
-                sh 'gradle build'
+                //sh 'gradle build'
+                sh 'echo hola'
                 /*sh """
                 #!/bin/bash
                 gradlew -Dorg.gradle.daemon=false build
