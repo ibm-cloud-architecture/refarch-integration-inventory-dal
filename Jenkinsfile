@@ -64,7 +64,7 @@ podTemplate(label: 'mypod',
                 NAMESPACE=`cat /var/run/configs/registry-config/namespace`
 
                 helm init --skip-refresh
-                helm list
+                helm list --tls
                 """
             }
         }
