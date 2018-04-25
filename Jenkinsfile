@@ -55,7 +55,7 @@ podTemplate(label: 'mypod',
 
                 kubectl get pods
 
-                helm init --skip-refresh --tiller-namespace \${NAMESPACE}
+                helm init --skip-refresh --tiller-namespace \${NAMESPACE} --service-account default
                 helm list
                 """
             }
