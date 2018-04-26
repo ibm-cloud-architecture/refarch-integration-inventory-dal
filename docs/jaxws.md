@@ -26,7 +26,6 @@ One important decision when developing WS is to decide whether to start from the
 
 
 # Starting from JAVA
-
 We must provide the JAX-WS tools with a valid endpoint implementation class. This implementation class is the class that implements the desired web service. A valid endpoint implementation class must meet the following requirements:
 
 * It must carry a javax.jws.WebService annotation
@@ -38,19 +37,22 @@ We must provide the JAX-WS tools with a valid endpoint implementation class. Thi
 When starting from a Java endpoint implementation class, it is recommended that the portable artifacts be generated from source using apt. This because the JAX-WS tools will then have full access to the source code and will be able to utilize parameter names that are otherwise not available through the Java reflection APIs.
 
 To expose a java class as a web service we need to add the annotations @WebService and @WebMethod to the implementation class. @WebService declares the class as a web service. The name property lets define the web service name (the wdsl:portType attribute in WDSL 1.1). The serviceName property lets you define the WDSL service name. The @WebMethod annotation is used to indicate which methods are to be exposed by this web service.
-```
+```java
 @WebService
 public class DALService {
 
    @WebMethod(operationName="newItem")
-	public Item newItem(Item inItem) throws DALException{
+	public Item newItem(Item inItem) throws DALException {
+		...
+	}
+}
 ```
 
 To get no error during edition and compilation we need to include the following jar files in the project classpath:  
 `jaxws-api.jar` and the Java `tools.jar`
 
 The above definitions will generate a wsdl with the following elements:
-```
+```xml
 <wsdl:portType name="DALService">
 	<wsdl:operation name="newItem">
 		<wsdl:input message="tns:newItem" name="newItem"></wsdl:input>
@@ -101,6 +103,6 @@ The DALException is to report issue from the server to the client and will be ma
 	</xs:sequence>
 </xs:complexType>
 ```
-## Client side
 
+## Client side
 JAX-WS relies on JAXB for data binding. When you invoke *wsimport* Tool on a wsdl, it in-turn calls XJC tool in JAXB RI to generate the beans used by the JAX-WS runtime. For each element types of the XML schema there is a java class. The name of the class is the name of the xml type, and can be enforced by the annotation @XmlType. The package name is coming from the namespace defined in the wsimport command.
