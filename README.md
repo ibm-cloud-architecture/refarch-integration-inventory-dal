@@ -1,5 +1,5 @@
 # Inventory Data Access Layer
-This project is part of the 'IBM Hybrid Integration Reference Architecture' solution, available at [https://github.com/ibm-cloud-architecture/refarch-integration](https://github.com/ibm-cloud-architecture/refarch-integration).
+This project is part of the 'IBM Hybrid Integration Reference Architecture' solution, available at https://github.com/ibm-cloud-architecture/refarch-integration.
 
 Updated 04/02/2018.
 
@@ -7,18 +7,30 @@ The goal of this project is to implement a set of SOA services to manage a produ
 In 2017, most likely, we will have separated those three entities into three micro services.
 
 ## Table of Contents
-* [Goals](https://github.com/ibm-cloud-architecture/refarch-integration-inventory-dal#goals)
+* [Table of Contents](#table-of-contents)
+* [Goals](#goals)
 * [Technology](#technology)
-* [Code explanation](#code-explanation)
-* [Build and deploy](#build-and-deploy)
-* [Install on IBM Cloud Private](docs/icp/README.md)
-* [TDD](#test-driven-development)
+* [Pre-Requisites](#pre-requisites)
+* [Code Explanation](#code-explanation)
+* [Build & Deployment Options](#build--deployment-options)
+  + [Option 1: Local WebSphere Liberty Profile](#option-1-local-websphere-liberty-profile)
+    - [Install & Configure Eclipse](#install--configure-eclipse)
+    - [Install Java JDK](#install-java-jdk)
+    - [Install WebSphere Liberty profile](#install-websphere-liberty-profile)
+    - [Gradle Build](#gradle-build)
+    - [Deploy to Local IBM WebSphere Liberty Profile](#deploy-to-local-ibm-websphere-liberty-profile)
+    - [Access the WSDL](#access-the-wsdl)
+  + [Option 2: Docker](#option-2-docker)
+  + [Option 3: IBM Cloud Private](#option-3-ibm-cloud-private)
+* [Continuous Integration](#continuous-integration)
+* [Test Driven Development](#test-driven-development)
+* [Conclusion](#conclusion)
+* [Contribute](#contribute)
 
 ## Goals
 The goal of this project is to define a SOAP interface for the Inventory datasource and implement the data access object as JPA entities. The operations are visible in the wsdl saved [here](docs/ws.wsdl). This wsdl is used for documentation purpose but it can also be imported in API Connect or IBM Integration Bus for interface mapping. The WSDL can be visible by using a web browser to the following URL:
 * when deploy on premise liberty server: http://172.16.254.44:9080/inventory/ws?WSDL
 * when deploy on ICP, you need to have a name resolution for the dal.brown.case (map the ICP proxy IP address to this hostname in your /etc/hosts) then the URL is http://dal.brown.case/inventory/ws?WSDL
-
 
 ## Technology
 The application is packaged as a war file to be deployed to a lightweight server like [IBM WebSphere Liberty profile](https://developer.ibm.com/wasdev/downloads/download-latest-stable-websphere-liberty-runtime).
@@ -34,6 +46,13 @@ The data model is simple as illustrated below:
 * The Inventory specifies how many items are in a given site
 * A Supplier delivers items and is-a Party.
 
+## Pre-Requisites
+You will need the following Command-line Interfaces (CLIs) to be able to build and deploy the app:
+* [docker](https://docs.docker.com) (Docker Container Runtime & CLI) - Follow the instructions [here](https://docs.docker.com/install/) to install it on your platform.
+* [kubectl](https://kubernetes.io/docs/user-guide/kubectl-overview/) (Kubernetes CLI) - Follow the instructions [here](https://kubernetes.io/docs/tasks/tools/install-kubectl/) to install it on your platform.
+* [helm](https://github.com/kubernetes/helm) (Kubernetes package manager) - Follow the instructions [here](https://github.com/kubernetes/helm/blob/master/docs/install.md) to install it on your platform.
+  + If using `IBM Cloud Private` version `2.1.0.2` or newer, we recommend you follow these [instructions](https://www.ibm.com/support/knowledgecenter/SSBS6K_2.1.0.2/app_center/create_helm_cli.html) to install `helm`.
+
 ## Code Explanation
 The source code is organized to follow maven and gradle conventions: src/main/java or src/test/java...
 
@@ -46,13 +65,14 @@ public class DALService {
   @WebMethod(operationName="items")
 	public Collection<Item> getItems() throws DALException {
 ```
+
 The Item and Supplier classes are [Data Transfer Object Pattern](https://martinfowler.com/eaaCatalog/dataTransferObject.html) classes to deliver a simple view of the entities persisted in the database to do not expose all the attributes persisted in the DB.
 
 For information about the DB2 Inventory schema refers to the [Database github repository](https://github.com/ibm-cloud-architecture/refarch-integration-inventory-db2)
 
 The Item from the data base table ITEMS was mapped to the inventory.model.ItemEntity class which uses a set of JPA annotations to map to the DB2 tables.
 
-```
+```java
 Entity(name="Item")
 @Table(name="ITEMS")
 @NamedQuery(name="Item.findAll", query="SELECT i FROM Item i")
@@ -77,27 +97,32 @@ public class ItemEntity implements Serializable {
   private int quantity;
   private Timestamp updateDate;
   private Timestamp creationDate;
-
+  ...
+}
 ```
+
 The same approach is done for the Inventory and the Supplier tables.
 
 The unit tests are using an embedded derby to validate the service and data access object layer without dependency to external DB. In production the data base is DB2.
 Therefore two persistence.xml are defined: one for testing ( src/test/resources) and one for production to be packaged into the war (src/java/resources).
 
-# Build and deploy
-## Preparing the project
+## Build & Deployment Options
+To build & deploy the application, you can use 1 of the following 3 approaches:
+1. Deploy to local `IBM WebSphere Liberty Profile` app server (least preferred).
+2. Use the provided `Dockerfile` and deploy to local docker engine (easiest).
+3. Use the provided `Helm Chart` and deploy to `IBM Cloud Private cluster`.
+
+### Option 1: Local WebSphere Liberty Profile
+#### Install & Configure Eclipse
 The project was developed with [Eclipse Neon](http://www.eclipse.org/neon) with the following plug-ins added to the base eclipse:
 * Websphere Developer Tool for Liberty: using the Eclipse Marketplace and search for WebSphere developer tool, then use the Eclipse way to install plugins.
 * Gradle eclipse plug-in
 
 Install gradle CLI on your computer so you can build, unit test and assemble war.  For that see the installation instructions at [gradle](http://gradle.org)
 
-## Preparing your App server
-You can use two approaches: install everything on your computer or use our docker file we have defined in this project. We recommend using docker, therefore you need to get docker installed on your machine (see [that section](#docker).
-
-### Install everything
-* Install Java JDK, preferably Oracle one. For example for a Ubuntu build server we did the following commands
-```
+#### Install Java JDK
+* Install Java JDK, preferably Oracle one. For example for a Ubuntu build server we did the following commands:
+```bash
 $ sudo update-ca-certificates -f
 $ sudo add-apt-repository ppa:webupd8team/java
 $ sudo apt-get update
@@ -105,25 +130,17 @@ $ sudo apt-get install oracle-java8-installer
 $ sudo apt-get install oracle-java8-set-default
 ```
 
-* Install the WebSphere Liberty profile by downloading it from [WAS dev](https://developer.ibm.com/wasdev/downloads/download-latest-stable-websphere-liberty-runtime). See our configuration explanations [here](docs/liberty-server.md).
+#### Install WebSphere Liberty profile
+Install the WebSphere Liberty profile by downloading it from [WAS dev](https://developer.ibm.com/wasdev/downloads/download-latest-stable-websphere-liberty-runtime). See our configuration explanations [here](docs/liberty-server.md).
 
-### Docker
-Once you build the code with `gradlew build` (see [next section](#build)) you can build a docker image that will include JDK, WebSphere Liberty, the good server configuration and the deployed war.
-```
-$ docker build -t ibmcase/dal .
-# Start the container
-$ docker run -p 9080:9080 ibmcase/dal
+#### Gradle Build
+The build is supported by `gradle` & the project includes the [gradlew](gradlew) wrapper. To run the gradle build (which compiles the code, runs the [unit tests](src/test/java/dal/ut), and builds the war files under `build/libs`) run the following command:
+```bash
+$ ./gradlew build
 ```
 
-From this docker image it will be easy to [deploy to IBM Cloud Private](docs/icp/README.md)
-## Build
-The build is supported by `gradlew`. The project folder has a gradle wrapper so running
-```
-> ./gradlew build
-```
-should compile, unit tests and build a war under build/libs
-Here is an example of execution trace
-```
+If successful, you should see an execution trace similar to the following:
+```bash
 Starting a Gradle Daemon (subsequent builds will be faster)
 :compileJava
 :openjpaEnhance
@@ -138,7 +155,38 @@ Starting a Gradle Daemon (subsequent builds will be faster)
 :test
 ```
 
-We also propose to leverage a build server and do continuous integration and deployment, see detail in [this note.](docs/cicd.md) about it.
+#### Deploy to Local IBM WebSphere Liberty Profile
+The script [scripts/deployToWlp.sh](scripts/deployToWlp.sh) copies the created war to your local WLP, modify the path in this script to reflect your local environment if you do not have your WebSphere Liberty profile under ~/IBM/wlp.
+The server name was *appServer*.
+
+#### Access the WSDL
+To access the WSDL, open a web browser and enter the following link:
+- http://localhost:9080/inventory/ws?wsdl
+
+### Option 2: Docker
+The included [Multi-staged Dockerfile](https://docs.docker.com/develop/develop-images/multistage-build/#use-multi-stage-builds) contains 2 stages:
+1. The first stage performs a `gradle build`, which produces the `jar` and `war` files.
+2. The second stage creates the `WebSphere Liberty profile` server and puts the `jar` and `war` from the previous files in the WPL server directories.
+
+To build & run the [Dockerfile](Dockerfile) in your local Docker runtime, use the following commands:
+```bash
+# Build the container image
+$ docker build -t ibmcase/browncompute-inventory-dal .
+
+# Start the container
+$ docker run -p 9080:9080 ibmcase/browncompute-inventory-dal
+```
+
+To access the WSDL, open a web browser and enter the following link:
+- http://localhost:9080/inventory/ws?wsdl
+
+### Option 3: IBM Cloud Private
+To deploy to IBM Cloud Private [this note](README-ICP.md) will go into details on how we did it on last ICP version.
+
+## Continuous Integration
+We recommend setting up a Continuous Integration Continuous Delivery (CICD) server to automate the build and deploy of new app updates. To setup a CICD Jenkins server, follow the steps [here](https://github.com/ibm-cloud-architecture/refarch-integration/blob/master/docs/devops/README.md#jenkins-on-ibm-cloud-private-icp).
+
+Once your Jenkins server is fully setup, follow the steps [here](README-CICD.md) to setup a CICD pipeline for `browncompute-inventory-dal`.
 
 ## Test Driven Development
 The service and data access object classes were developed by starting from the tests. Since Ken Bent wrote his book: "Test Driven Development by Example" in 2002, the practice is used in thousand of projects. At ILOG then IBM we adopt this practice since 2003. So without redoing a how to do TDD, we just want to summarize some of the practices we used in this project.
@@ -146,7 +194,7 @@ The service and data access object classes were developed by starting from the t
 The first tests were to validate the access to data and to validate CRUD operations happy path. The tests use the service Data Access Object to validate we can create, update, read and delete items.
 
 Here is an example of tests:
-```
+```java
 public class TestInventoryDB {
 
 	static DALService serv;
@@ -168,30 +216,21 @@ public class TestInventoryDB {
 		Assert.assertNotNull(items);
 		Assert.assertTrue(items.size() >= 1);
 	}
+  ...
+}
 ```
 The tests are using a Derby embedded database so it is easier to start and execute tests in isolation. The AfterClass method is deleting the locally created `INVDB` instance. See the `BaseTest` class.
 
 When tests are executed by `gradlew` the reports are in the build/reports folder.
 
-## Deploy
-The script ../scripts/deployToWlp.sh copy the created war to your local wlp, modify the path in this script to reflect your local environment if you do not have your WebSphere Liberty profile under ~/IBM/wlp.
-The server name was *appServer*.
-
-You do not need local environment and installation if you use the docker image we have defined in this project dockerfile.
-
-Finally yo deploy to IBM Cloud Private [this note](docs/icp/README.md) will go into details on how we did it on last ICP version.
-
-## Access deployed wsdl
-Using a web broswer to the localhost should display the wsdl: [http://localhost:9080/inventory/ws?wsdl](http://localhost:9080/inventory/ws?wsdl)
-
-# Conclusion
+## Conclusion
 The SOA service operations defined in this project are not exposed to Bluemix application or to micro services directly. When using ESB pattern, integration flows will be developed to address interface mapping, protocol mapping, or different quality of service configuration.
 
 The project  [Inventory Flow - Integration Bus](https://github.com/ibm-cloud-architecture/refarch-integration-esb) provides the implementation of SOAP to REST interface mapping flow.
 
 Also we define an `Inventory` API product in IBM API Connect. See project [API](https://github.com/ibm-cloud-architecture/refarch-integration-api).
 
-# Contribute
+## Contribute
 We welcome contribution. Contribution is not only PRs and code, but any help with docs or helping other developers to solve issues are very appreciated! Thanks in advance!
 
 To standardize on contribution guidance see [main brown compute repository](https://github.com/ibm-cloud-architecture/refarch-integration).
