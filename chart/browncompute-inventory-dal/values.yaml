@@ -14,7 +14,7 @@ service:
   externalSPort: 9443
   internalSPort: 9443
 ingress:
-  enabled: true
+  enabled: false
   # Used to create Ingress record (should used with service.type: ClusterIP).
   hosts:
     - dal.brown.case
