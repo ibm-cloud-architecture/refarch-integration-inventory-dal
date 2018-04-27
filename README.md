@@ -1,13 +1,12 @@
 # Inventory Data Access Layer
 This project is part of the 'IBM Hybrid Integration Reference Architecture' solution, available at https://github.com/ibm-cloud-architecture/refarch-integration.
 
-Updated 04/02/2018.
+The goal of this project is to implement a set of SOA service operations to manage a product inventory, suppliers and stock. This is on purpose, that we centralize those three components inside the same application to represent an older application design done in the 2000s.
+In 2017, most likely, we will have separated those three entities into three microservices.
 
-The goal of this project is to implement a set of SOA services to manage a product Inventory, suppliers and stock management. This is on purpose that we centralize those three components inside the same application to represent an older application design done in the 2000s.
-In 2017, most likely, we will have separated those three entities into three micro services.
+Updated 04/27/2018.
 
 ## Table of Contents
-* [Table of Contents](#table-of-contents)
 * [Goals](#goals)
 * [Technology](#technology)
 * [Pre-Requisites](#pre-requisites)
@@ -28,7 +27,7 @@ In 2017, most likely, we will have separated those three entities into three mic
 * [Contribute](#contribute)
 
 ## Goals
-The goal of this project is to define a SOAP interface for the Inventory datasource and implement the data access object as JPA entities. The operations are visible in the wsdl saved [here](docs/ws.wsdl). This wsdl is used for documentation purpose but it can also be imported in API Connect or IBM Integration Bus for interface mapping. The WSDL can be visible by using a web browser to the following URL:
+The goal of this project is to define a SOAP interface for the Inventory datasource and implement the data access object as JPA entities. The operations are visible in the wsdl saved [here](docs/ws.wsdl). This wsdl is used for documentation purpose but it can also be imported in API Connect or IBM Integration Bus to define new API product or implement interface mapping flow. The WSDL can be visible by using a web browser to the following URL:
 * when deploy on premise liberty server: http://172.16.254.44:9080/inventory/ws?WSDL
 * when deploy on ICP, you need to have a name resolution for the dal.brown.case (map the ICP proxy IP address to this hostname in your /etc/hosts) then the URL is http://dal.brown.case/inventory/ws?WSDL
 
@@ -181,12 +180,12 @@ To access the WSDL, open a web browser and enter the following link:
 - http://localhost:9080/inventory/ws?wsdl
 
 ### Option 3: IBM Cloud Private
-To deploy to IBM Cloud Private [this note](README-ICP.md) will go into details on how we did it on last ICP version.
+To deploy to IBM Cloud Private [this note](./docs/icp/README.md) will go into details on how we did it on last ICP version.
 
 ## Continuous Integration
 We recommend setting up a Continuous Integration Continuous Delivery (CICD) server to automate the build and deploy of new app updates. To setup a CICD Jenkins server, follow the steps [here](https://github.com/ibm-cloud-architecture/refarch-integration/blob/master/docs/devops/README.md#jenkins-on-ibm-cloud-private-icp).
 
-Once your Jenkins server is fully setup, follow the steps [here](README-CICD.md) to setup a CICD pipeline for `browncompute-inventory-dal`.
+Once your Jenkins server is fully setup, follow the steps [here](./docs/devops/README.md) to setup a CICD pipeline for `browncompute-inventory-dal`.
 
 ## Test Driven Development
 The service and data access object classes were developed by starting from the tests. Since Ken Bent wrote his book: "Test Driven Development by Example" in 2002, the practice is used in thousand of projects. At ILOG then IBM we adopt this practice since 2003. So without redoing a how to do TDD, we just want to summarize some of the practices we used in this project.
@@ -224,7 +223,7 @@ The tests are using a Derby embedded database so it is easier to start and execu
 When tests are executed by `gradlew` the reports are in the build/reports folder.
 
 ## Conclusion
-The SOA service operations defined in this project are not exposed to Bluemix application or to micro services directly. When using ESB pattern, integration flows will be developed to address interface mapping, protocol mapping, or different quality of service configuration.
+The SOA service operations defined in this project are not exposed to Bluemix application or to microservices directly. When using ESB pattern, integration flows will be developed to address interface mapping, protocol mapping, or different quality of service configuration.
 
 The project  [Inventory Flow - Integration Bus](https://github.com/ibm-cloud-architecture/refarch-integration-esb) provides the implementation of SOAP to REST interface mapping flow.
 

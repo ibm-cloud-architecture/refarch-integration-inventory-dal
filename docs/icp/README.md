@@ -55,7 +55,7 @@ You have 3 options to install the chart:
 2. Install the chart from our [`Helm Chart Repository`](https://github.com/kubernetes/helm/blob/master/docs/chart_repository.md), which is served [here](docs/charts) directly from GitHub.
 3. Install the chart from our [`Helm Chart Repository`](https://github.com/kubernetes/helm/blob/master/docs/chart_repository.md) using ICP's Charts Catalog.
 
-### Option 1: Clone the Repo & Install the Chart 
+### Option 1: Clone the Repo & Install the Chart
 To clone the repo & install the [`browncompute-inventory-dal`](chart/browncompute-inventory-dal) chart from source, run the following commands:
 ```bash
 # Clone the repo
