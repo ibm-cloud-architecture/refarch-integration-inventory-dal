@@ -35,7 +35,7 @@ The goal of this project is to define a SOAP interface for the Inventory datasou
 The application is packaged as a war file to be deployed to a lightweight server like [IBM WebSphere Liberty profile](https://developer.ibm.com/wasdev/downloads/download-latest-stable-websphere-liberty-runtime).
 The code uses JPA 2.0 and JAXWS 2.2 APIs (See [JAXWS summary note](docs/jaxws.md)).
 
-The server configuration defines the features needed and the data source configurations. To get understanding on our server configuration see the explanation [here](docs/liberty-server.md).
+The server configuration defines the features needed and the data source configurations. To get understanding on our server configuration see the explanation [here](docs/liberty-server.md) but as we delivered dockerfile and server.xml for you there is nothing really to do.
 
 The data model is simple as illustrated below:  
 
@@ -188,7 +188,7 @@ We recommend setting up a Continuous Integration Continuous Delivery (CICD) serv
 Once your Jenkins server is fully setup, follow the steps [here](./docs/devops/README.md) to setup a CICD pipeline for `browncompute-inventory-dal`.
 
 ## Test Driven Development
-The service and data access object classes were developed by starting from the tests. Since Ken Bent wrote his book: "Test Driven Development by Example" in 2002, the practice is used in thousand of projects. At ILOG then IBM we adopt this practice since 2003. So without redoing a how to do TDD, we just want to summarize some of the practices we used in this project.
+The service and data access object classes were developed by starting from the tests. Since Ken Bent wrote his book: "Test Driven Development by Example" in 2002, the practice is used in thousand of projects. At ILOG then IBM, we adopted this practice since 2003. So without redoing a how to do TDD, we just want to summarize some of the practices we used in this project.
 
 The first tests were to validate the access to data and to validate CRUD operations happy path. The tests use the service Data Access Object to validate we can create, update, read and delete items.
 
@@ -223,7 +223,7 @@ The tests are using a Derby embedded database so it is easier to start and execu
 When tests are executed by `gradlew` the reports are in the build/reports folder.
 
 ## Conclusion
-The SOA service operations defined in this project are not exposed to Bluemix application or to microservices directly. When using ESB pattern, integration flows will be developed to address interface mapping, protocol mapping, or different quality of service configuration.
+The SOA service operations defined in this project are not exposed to Bluemix application or to microservice directly. When using ESB pattern, integration flows will be developed to address interface mapping, protocol mapping, or different quality of service configuration.
 
 The project  [Inventory Flow - Integration Bus](https://github.com/ibm-cloud-architecture/refarch-integration-esb) provides the implementation of SOAP to REST interface mapping flow.
 

@@ -1,20 +1,8 @@
 # Deploy the Data Access Layer to IBM Cloud Private
-* Create ICP Cluster
-* Setup Helm
-* Add Helm Repo
-* Install Helm Chart
-* Validate Helm Chart Installation
-* Delete the Helm Chart
-* Setup a CICD Pipeline
+
 
 ## Table of Contents
 * [Topology](#topology)
-* [Setup Helm](#setup-helm)
-* [Install Helm Chart](#install-helm-chart)
-  + [Option 1: Clone the Repo & Install the Chart](#option-1-clone-the-repo--install-the-chart)
-  + [Option 2: Install from Helm Chart Repository](#option-2-install-from-helm-chart-repository)
-  + [Option 3: Install from Helm Chart Repository using ICP Helm Charts Catalog](#option-3-install-from-helm-chart-repository-using-icp-helm-charts-catalog)
-* [Validate Helm Chart](#validate-helm-chart)
 * [Access WSDL](#access-wsdl)
 * [Delete the Helm Chart](#delete-the-helm-chart)
 * [Upgrade Docker Image](#upgrade-docker-image)
@@ -25,86 +13,20 @@
 
 ## Topology
 The ICP topology looks like the image below:
-![](docs/icp/dal-on-icp.png)
+![](dal-on-icp.png)
 
 The data access layer is accessing the DB2 running on premise using the JDBC protocol, and is exposed to the external world via Ingress rules so a SOAP request to the URL http://dal.brown.case/inventory/ws will return item(s) from the database.
 
 ## Setup Helm
-IBM Cloud Private contains integration with Helm that allows you to install the application and all of its components in a few steps. This can be done as an administrator using the following steps:
-1. Click on the user icon on the top right corner and then click on `Configure client`.
-2. Copy the displayed `kubectl` configuration, paste it in your terminal, and press Enter on your keyboard.
-3. Initialize `helm` in your cluster. Use these [instructions](https://www.ibm.com/support/knowledgecenter/SSBS6K_2.1.0.2/app_center/create_helm_cli.html) to install and initialize `helm`.
-
-## Install Helm Chart
-We created a [Helm Chart](https://github.com/kubernetes/helm/blob/master/docs/charts.md) called [`browncompute-inventory-dal`](chart/browncompute-inventory-dal) that packages all of the kubernetes resources required to deploy the `browncompute-inventory-dal` app and expose it to a public endpoint.
-
 The chart consists of the following files:
-* [Chart.yaml](chart/browncompute-inventory-dal/Chart.yaml) - Contains information about the chart.
-* [values.yaml](chart/browncompute-inventory-dal/values.yaml) - Default configuration for the chart.
-* [templates](chart/browncompute-inventory-dal/templates) - Contains all of the templates for Kubernetes YAML files.
-  + [_helpers.tpl](chart/browncompute-inventory-dal/templates/_helpers.tpl) - Contains helper functions for the templates.
-  + [deployment.yaml](chart/browncompute-inventory-dal/templates/deployment.yaml) - Contains the Kubernetes [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) template.
-  + [ingress.yaml](chart/browncompute-inventory-dal/templates/ingress.yaml) - Contains the Kubernetes [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/#what-is-ingress) template.
-  + [NOTES.txt](chart/browncompute-inventory-dal/templates/NOTES.txt) - A plain text file containing short usage notes.
-  + [service.yaml](chart/browncompute-inventory-dal/templates/service.yaml) - Contains the Kubernetes [Service](https://kubernetes.io/docs/concepts/services-networking/service/) template.
-
-For more in-depth details of the inner-workings of Helm Charts, please refer to the [Helm Chart Documentation](https://github.com/kubernetes/helm/blob/master/docs/charts.md) to learn more about charts.
-
-You have 3 options to install the chart:
-1. Clone the Repo and Install the Chart.
-2. Install the chart from our [`Helm Chart Repository`](https://github.com/kubernetes/helm/blob/master/docs/chart_repository.md), which is served [here](docs/charts) directly from GitHub.
-3. Install the chart from our [`Helm Chart Repository`](https://github.com/kubernetes/helm/blob/master/docs/chart_repository.md) using ICP's Charts Catalog.
-
-### Option 1: Clone the Repo & Install the Chart
-To clone the repo & install the [`browncompute-inventory-dal`](chart/browncompute-inventory-dal) chart from source, run the following commands:
-```bash
-# Clone the repo
-$ git clone https://github.com/ibm-cloud-architecture/refarch-integration-inventory-dal.git
-
-# Change to repo directory
-$ cd refarch-integration-inventory-dal
-
-# Install the Chart
-$ helm install chart/browncompute-inventory-dal --name browncompute-dal --tls
-```
-
-### Option 2: Install from Helm Chart Repository
-For this project, we created a [`Helm Chart Repository`](https://github.com/kubernetes/helm/blob/master/docs/chart_repository.md) (located [here](docs/charts)) where we serve a packaged version of the [`browncompute-inventory-dal`](chart/browncompute-inventory-dal) so that you can conveniently install it in your ICP Cluster.
-
-To install the chart from the `Helm Chart Repository`, run the following commands:
-```bash
-# Add Local Reference to Helm Chart Repository
-$ helm repo add browncompute https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-integration-inventory-dal/master/docs/charts
-
-# Install the Chart
-$ helm install browncompute/browncompute-inventory-dal --name browncompute-dal --tls
-```
-
-### Option 3: Install from Helm Chart Repository using ICP Helm Charts Catalog
-Coming Soon
-
-## Validate Helm Chart
-If you installed the chart successfuly, you should see a CLI output similar to the following:
-```
-NAME:   browncompute-dal
-LAST DEPLOYED: Tue Nov 14 22:23:39 2017
-NAMESPACE: browncompute
-STATUS: DEPLOYED
-
-RESOURCES:
-==> v1/Service
-NAME             CLUSTER-IP    EXTERNAL-IP  PORT(S)            AGE
-inventorydalsvc  10.101.0.176  <none>       9080/TCP,9443/TCP  1s
-
-==> v1beta1/Deployment
-NAME                               DESIRED  CURRENT  UP-TO-DATE  AVAILABLE  AGE
-browncompute-dal-browncompute-dal  2        2        2           0          1s
-
-==> v1beta1/Ingress
-NAME                               HOSTS           ADDRESS  PORTS  AGE
-browncompute-dal-browncompute-dal  dal.brown.case            80       1s
-
-```
+* [Chart.yaml](../../chart/browncompute-inventory-dal/Chart.yaml) - Contains information about the chart.
+* [values.yaml](../../chart/browncompute-inventory-dal/values.yaml) - Default configuration for the chart.
+* [templates](../../chart/browncompute-inventory-dal/templates) - Contains all of the templates for Kubernetes YAML files.
+  + [_helpers.tpl](../../chart/browncompute-inventory-dal/templates/_helpers.tpl) - Contains helper functions for the templates.
+  + [deployment.yaml](../../chart/browncompute-inventory-dal/templates/deployment.yaml) - Contains the Kubernetes [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) template.
+  + [ingress.yaml](../../chart/browncompute-inventory-dal/templates/ingress.yaml) - Contains the Kubernetes [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/#what-is-ingress) template.
+  + [NOTES.txt](../../chart/browncompute-inventory-dal/templates/NOTES.txt) - A plain text file containing short usage notes.
+  + [service.yaml](../../chart/browncompute-inventory-dal/templates/service.yaml) - Contains the Kubernetes [Service](https://kubernetes.io/docs/concepts/services-networking/service/) template.
 
 ## Access WSDL
 The `helm install` output from above also includes instructions for accessing the WSDL through a browser, which look as follows:

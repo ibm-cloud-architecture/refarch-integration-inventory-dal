@@ -1,4 +1,4 @@
-# Data Access Layer - Continuous Interation with Jenkins
+# Data Access Layer - Continuous Integration with Jenkins
 Before reading this document, make sure you setup a CICD Jenkins server in ICP by following the steps [here](https://github.com/ibm-cloud-architecture/refarch-integration/blob/master/docs/devops/README.md#jenkins-on-ibm-cloud-private-icp).
 
 ## Table of Contents
