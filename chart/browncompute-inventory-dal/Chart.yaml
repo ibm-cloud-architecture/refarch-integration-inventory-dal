@@ -1,4 +1,6 @@
 apiVersion: v1
-description: A Helm chart to run Brown Compute Data Access Layer on Kubernetes
+description: A Helm chart to run Brown Compute Inventory Data Access Layer on Kubernetes
 name: browncompute-inventory-dal
-version: 0.0.4
+version: 0.0.5
+home: https://github.com/ibm-cloud-architecture/refarch-integration-inventory-dal
+details: JAX-WS based SOAP interface for the Inventory datasource and implements the data access object as JPA entities
