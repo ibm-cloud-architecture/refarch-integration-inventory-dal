@@ -25,6 +25,13 @@ Our [Jenkinsfile](Jenkinsfile) is broken down as follows:
 It is important to note that the Jenkinsfile declares in the first stage [`a config map`](../../Dockerfile#L11) for the docker registry URL and [`a secret`](../../Dockerfile#L10) for the admin user to authenticate to the docker registry. The folder names (registry-account and registry-secret) are declared in the yaml files ([configmap.yaml](https://github.com/ibm-cloud-architecture/refarch-integration/blob/master/docs/devops/registry/configmap.yaml) and [secret.yaml](https://github.com/ibm-cloud-architecture/refarch-integration/blob/master/docs/devops/registry/secret.yaml) in brown main repository.
 
 ## Setup the Pipeline
+Recall that the Jenkins URL is defined in the NodePort of the Jenkins master deployment configuration:
+```
+$  kubectl get services -l component=jenkins-jenkins-master  -n browncompute
+NAME            TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)          AGE
+jenkins         NodePort    10.10.10.4    <none>        8080:32277/TCP   15d
+```
+
 See the generic instructions [to understand how to set a pipeline](https://github.com/ibm-cloud-architecture/refarch-integration/tree/master/docs/devops/README.md#setup-the-pipeline) and for the pipeline configuration, use the following git repository details:  
 
 + **Repository URL:** `https://github.com/ibm-cloud-architecture/refarch-integration-inventory-dal.git`
@@ -35,3 +42,6 @@ Which can be summarized in the figure below:
 ![Create a Sample Job](https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-devops-kubernetes/master/static/imgs/3_setup_pipeline.png)
 
 You should now have a fully setup pipeline.
+
+## Run the pipeline
+Use the 'build now' link.
