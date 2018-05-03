@@ -29,33 +29,10 @@ Our [Jenkinsfile](Jenkinsfile) is broken down as follows:
     + The [`3rd stage`](Jenkinsfile#L47) uses the `kubectl` container to check for an existing Kubernetes Deployment and, if any exists, update the docker image.
 
 ## Setup the Pipeline
-To setup a pipeline, open Jenkins in the browser and follow the steps below:
-
-### 1. Create a Sample Job
-![Create a Sample Job](https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-devops-kubernetes/master/static/imgs/1_create_job.png)
-
-### 2. Select Pipeline Type
-![Create a Sample Job](https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-devops-kubernetes/master/static/imgs/2_select_pipeline_type.png)
-
-### 3. Setup Sample Pipeline
-Use the following git repository details:
+See the generic instructions [here](https://github.com/ibm-cloud-architecture/refarch-integration/tree/master/docs/devops/README.md#setup-the-pipeline) and for the pipeline configuration, use the following git repository details:
 + **Repository URL:** `https://github.com/ibm-cloud-architecture/refarch-integration-inventory-dal.git`
 + **Branch:** `master`
 + **Script Path:** `Jenkinsfile`
 ![Create a Sample Job](https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-devops-kubernetes/master/static/imgs/3_setup_pipeline.png)
 
 You should now have a fully setup pipeline.
-
-## Run the Pipeline
-To run the pipeline, open Jenkins in the browser and follow the steps below:
-
-### 1. Launch Pipeline Build
-![Create a Sample Job](https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-devops-kubernetes/master/static/imgs/4_launch_build.png)
-
-### 2. Open Pipeline Console Output
-![Create a Sample Job](https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-devops-kubernetes/master/static/imgs/5_open_console_output.png)
-
-### 3. Monitor Console Output
-![Create a Sample Job](https://raw.githubusercontent.com/ibm-cloud-architecture/refarch-cloudnative-devops-kubernetes/master/static/imgs/6_see_console_output.png)
-
-If the pipeline finishes successfully, then Congratulations! You have successfully setup a fully working CICD pipeline.
