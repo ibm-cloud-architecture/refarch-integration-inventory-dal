@@ -60,17 +60,17 @@ If you would like to install the chart using your own Docker image, you need to 
 ### 1. Build Docker Image
 To build the docker image, run the following command
 ```bash
-$ docker build -t mycluster.icp:8500/default/browncompute-inventory-dal:latest .
+$ docker build -t super-cluster.icp:8500/default/browncompute-inventory-dal:latest .
 ```
 
 Where:
-* `mycluster.icp` is the default ICP cluster name, which you can change upon installing ICP:
-  + Make sure than an entry for `mycluster.icp` (or whatever name you chose) exists in your local `/etc/hosts` file. i.e.
+* `super-cluster.icp` is the ICP cluster name, which you can change upon installing ICP:
+  + Make sure than an entry for `super-cluster.icp` (or whatever name you chose) exists in your local `/etc/hosts` file. i.e.
     ```bash
     127.0.0.1       localhost
     255.255.255.255 broadcasthost
     ::1             localhost
-    10.0.0.1        mycluster.icp icp
+    172.16.40.xxx        super-cluster.icp icp
     ```
 * `8500` is the port number for ICP's Docker Registry.
 * `default` is the Docker Registry Namespace where the Docker image will be located, which you can change.
@@ -81,10 +81,10 @@ Where:
 To push the image to ICP's Docker Registry, run the following command:
 ```bash
 # Login to ICP Docker Registry
-$ docker login mycluster.icp:8500
+$ docker login super-cluster.icp:8500
 
 # Push Image
-$ docker push mycluster.icp:8500/default/browncompute-inventory-dal:latest
+$ docker push super-cluster.icp:8500/browncompute/browncompute-inventory-dal:latest
 ```
 
 You can see the image in the `Images` section under `Catalog` in the ICP Dashboard.
@@ -93,7 +93,7 @@ You can see the image in the `Images` section under `Catalog` in the ICP Dashboa
 To use the new docker image in a fresh `helm install`, just pass it as an argument as follows:
 ```bash
 $ helm install browncompute/browncompute-inventory-dal --name browncompute-dal \
-  --set image.repository=mycluster.icp:8500/default/browncompute-inventory-dal \
+  --set image.repository=super-cluster.icp:8500/browncompute/browncompute-inventory-dal \
   --set image.tag=latest \
   --tls;
 ```
@@ -101,7 +101,7 @@ $ helm install browncompute/browncompute-inventory-dal --name browncompute-dal \
 If you want to upgrade an existing helm release, use the following command:
 ```bash
 $ helm upgrade <HELM_RELEASE_NAME> \
-  --set image.repository=mycluster.icp:8500/default/browncompute-inventory-dal \
+  --set image.repository=super-cluster.icp:8500/browncompute/browncompute-inventory-dal \
   --set image.tag=latest \
   --tls;
 ```
@@ -113,7 +113,7 @@ If you want to upgrade the deployment image directly without using `helm`, you c
 ```bash
 # Set the new image
 $ kubectl set image <HELM_RELEASE_NAME>-browncompute-inventory-dal \
-  browncompute-inventory-dal=mycluster.icp:8500/default/browncompute-inventory-dal:latest;
+  browncompute-inventory-dal=super-cluster.icp:8500/browncompute/browncompute-inventory-dal:latest;
 
 # Watch the upgrade status
 $ kubectl rollout status <HELM_RELEASE_NAME>-browncompute-inventory-dal;
