@@ -102,6 +102,20 @@ public class ItemEntity implements Serializable {
 
 The same approach is done for the Inventory and the Supplier tables.
 
+The JAXWS annotations are centralized in one class, which may not be the best approach. 
+Here is an extract of this class showing the getItems implementation with the delegate to the providre class which supports the business logic implementation.
+
+```Java
+@WebService
+public class DALService {
+@WebMethod(operationName = "getItems")
+	public Collection<Item> getItems() throws DALException{
+		return processList(inventoryProvider.getItems());
+	}
+}
+```
+The processList function is here to do data transformation between entities and DTO.
+
 The unit tests are using an embedded derby to validate the service and data access object layer without dependency to external DB. In production the data base is DB2.
 Therefore two persistence.xml are defined: one for testing ( src/test/resources) and one for production to be packaged into the war (src/java/resources).
 
@@ -222,6 +236,10 @@ The tests are using a Derby embedded database so it is easier to start and execu
 
 When tests are executed by `gradlew` the reports are in the build/reports folder.
 
+As the logic was separated into three classes: front end to support JaxWS annotation, service class to do service orchestration and to implement the business logic (Porvider classes) and DAO to support integration with data source, the unit tests should be at the DAO and service level.
+
+In [another project]() we are presenting how to use Mockito to isolate back end component to test the business logic layer.
+   
 ## Conclusion
 The SOA service operations defined in this project are not exposed to Bluemix application or to microservice directly. When using ESB pattern, integration flows will be developed to address interface mapping, protocol mapping, or different quality of service configuration.
 

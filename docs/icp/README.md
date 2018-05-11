@@ -29,7 +29,7 @@ The chart consists of the following files:
   + [service.yaml](../../chart/browncompute-inventory-dal/templates/service.yaml) - Contains the Kubernetes [Service](https://kubernetes.io/docs/concepts/services-networking/service/) template.
 
 ## Access WSDL
-The `helm install` output from above also includes instructions for accessing the WSDL through a browser, which look as follows:
+The `helm install browncompute-inventory-dal --name browncompute-dal --namespace browncompute` command, output includes instructions for accessing the WSDL through a browser, which look as follows:
 ```bash
 export NODE_PORT=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].nodePort}" services dal-browncompute-inventory-dal);
 export NODE_IP=$(kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}");
@@ -60,7 +60,9 @@ If you would like to install the chart using your own Docker image, you need to 
 ### 1. Build Docker Image
 To build the docker image, run the following command
 ```bash
-$ docker build -t super-cluster.icp:8500/default/browncompute-inventory-dal:latest .
+$ docker build -t ibmcase/browncompute-inventory-dal:latest .
+# and tag for the private repository running on ICP master node
+$ docker tag  ibmcase/browncompute-inventory-dal:latest super-cluster.icp:8500/ibmcase/browncompute-inventory-dal:latest
 ```
 
 Where:
@@ -73,7 +75,7 @@ Where:
     172.16.40.xxx        super-cluster.icp icp
     ```
 * `8500` is the port number for ICP's Docker Registry.
-* `default` is the Docker Registry Namespace where the Docker image will be located, which you can change.
+* `ibmcase` is the Docker Registry Namespace where the Docker image will be located, which you can change.
 * `browncompute-inventory-dal` is the actual Docker image name, which you can change.
 * `latest` is the Docker image tag.
 
@@ -84,24 +86,38 @@ To push the image to ICP's Docker Registry, run the following command:
 $ docker login super-cluster.icp:8500
 
 # Push Image
-$ docker push super-cluster.icp:8500/browncompute/browncompute-inventory-dal:latest
+$ docker push super-cluster.icp:8500/ibmcase/browncompute-inventory-dal:latest
 ```
 
 You can see the image in the `Images` section under `Catalog` in the ICP Dashboard.
 
+We are prefer now push the image to dockerhub and reference the image in the helm chart. As our code is public using public dockerhub repository is perfectly fine.
+Here are the steps:
+```
+$ docker login
+$ docker push ibmcase/browncompute-inventory-dal
+```
+
 ### 3. Pass the Docker image to `helm install`
 To use the new docker image in a fresh `helm install`, just pass it as an argument as follows:
 ```bash
-$ helm install browncompute/browncompute-inventory-dal --name browncompute-dal \
-  --set image.repository=super-cluster.icp:8500/browncompute/browncompute-inventory-dal \
+$ helm install browncompute-inventory-dal --name browncompute-dal \
+  --set image.repository=super-cluster.icp:8500/ibmcase/browncompute-inventory-dal \
+  --set image.tag=latest \
+  --tls;
+```
+As an alternate using docker hub image:
+```bash
+$ helm install browncompute-inventory-dal --name browncompute-dal \
+  --set image.repository=ibmcase/browncompute-inventory-dal \
   --set image.tag=latest \
   --tls;
 ```
 
-If you want to upgrade an existing helm release, use the following command:
+If you want to upgrade an existing helm release with a new image version deployed on docker hub, use the following command:
 ```bash
 $ helm upgrade <HELM_RELEASE_NAME> \
-  --set image.repository=super-cluster.icp:8500/browncompute/browncompute-inventory-dal \
+  --set image.repository=ibmcase/browncompute-inventory-dal \
   --set image.tag=latest \
   --tls;
 ```
@@ -113,13 +129,16 @@ If you want to upgrade the deployment image directly without using `helm`, you c
 ```bash
 # Set the new image
 $ kubectl set image <HELM_RELEASE_NAME>-browncompute-inventory-dal \
-  browncompute-inventory-dal=super-cluster.icp:8500/browncompute/browncompute-inventory-dal:latest;
+  browncompute-inventory-dal=ibmcase/browncompute-inventory-dal:latest;
 
 # Watch the upgrade status
 $ kubectl rollout status <HELM_RELEASE_NAME>-browncompute-inventory-dal;
 ```
 
 The advantage of using this approach is that this command preserves a history of the deployment image updates. This is useful for image rollbacks in case the new images contain breaking changes.
+
+## Troubleshooting
+If you have issue in deployment review our centralized [Troubleshooting note](https://github.com/ibm-cloud-architecture/refarch-integration/blob/master/docs/icp/troubleshooting.md)
 
 ## Testing the access to the application
 In order to access the exposed WSDL via curl, run the command below:
