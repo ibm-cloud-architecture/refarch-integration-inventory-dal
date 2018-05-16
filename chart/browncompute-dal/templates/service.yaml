@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "browncompute-dal.fullname" . }}
+  labels:
+    app: {{ template "browncompute-dal.name" . }}
+    chart: {{ template "browncompute-dal.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.externalPort }}
+      targetPort: {{ .Values.service.internalPort }}
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ template "browncompute-dal.name" . }}
+    release: {{ .Release.Name }}

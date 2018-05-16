@@ -1,5 +1,8 @@
 # Deploy the Data Access Layer to IBM Cloud Private
 
+To get global understanding of kubernetes and ICP see [this note]()
+
+Updated 05/16/2018
 
 ## Table of Contents
 * [Topology](#topology)
@@ -15,7 +18,17 @@
 The ICP topology looks like the image below:
 ![](dal-on-icp.png)
 
-The data access layer is accessing the DB2 running on premise using the JDBC protocol, and is exposed to the external world via Ingress rules so a SOAP request to the URL http://dal.brown.case/inventory/ws will return item(s) from the database.
+The data access layer is accessing the DB2 running on premise using the JDBC protocol, and is exposed to the external world via Ingress rules so a SOAP request to the URL http://dal.brown.case/inventory/ws with an envelop like:
+```
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getItems/>
+   </soapenv:Body>
+</soapenv:Envelope>
+```
+
+will return the items from the database.
 
 ## Setup Helm
 The chart consists of the following files:
@@ -28,20 +41,78 @@ The chart consists of the following files:
   + [NOTES.txt](../../chart/browncompute-inventory-dal/templates/NOTES.txt) - A plain text file containing short usage notes.
   + [service.yaml](../../chart/browncompute-inventory-dal/templates/service.yaml) - Contains the Kubernetes [Service](https://kubernetes.io/docs/concepts/services-networking/service/) template.
 
-## Access WSDL
-The `helm install browncompute-inventory-dal --name browncompute-dal --namespace browncompute` command, output includes instructions for accessing the WSDL through a browser, which look as follows:
-```bash
-export NODE_PORT=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].nodePort}" services dal-browncompute-inventory-dal);
-export NODE_IP=$(kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}");
-echo http://$NODE_IP:$NODE_PORT;
+## Create Helm chart
+The command `helm create browncompute-dal` executed under the chart folder, creates all the necessary files for us. The only steps that need to be done are:
+* In the value.yaml specify the dockerhub image, latest tag, the number of replica, enable ingress, and set the host name to dal.brown.case
+* In the value,yaml remove the port: 80 in the service element and add at the same level:
+```
+service:
+  type: ClusterIP
+  externalPort: 9080
+  internalPort: 9080
+  externalSPort: 9443
+  internalSPort: 9443
+```
+* Modify the chart.yaml with a new version and a description. Optionally you can add:
+```
+home: https://github.com/ibm-cloud-architecture/refarch-integration-inventory-dal
+details: JAX-WS based SOAP interface for the Inventory datasource and implements the data access object as JPA entities
+```
+* In the deployment.yaml template modify the container port to get its value from the values file:
+```
+containers:
+  - name: {{ .Chart.Name }}
+    image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+    imagePullPolicy: {{ .Values.image.pullPolicy }}
+    ports:
+      - name: http
+        containerPort: {{ .Values.service.internalPort }}
+        protocol: TCP
+```
+* In the service do the mapping from exposed port to internal port.
+```
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.externalPort }}
+      targetPort: {{ .Values.service.internalPort }
 ```
 
-Copy and run the produced snippet in your terminal, open a new browser window, and paste the URL to access the WSDL.
+Deploy with `helm install browncompute-dal/ --name browncompute-dal --namespace browncompute --tls`
+
+## Access WSDL
+The `helm install browncompute-dal --name browncompute-dal --namespace browncompute --tls` command, output includes instructions for accessing the WSDL through a browser.
+
 
 If you cleared the `helm install` output by accident, you can get it back with the following command:
 ```bash
 $ helm status browncompute-dal --tls
+
+LAST DEPLOYED: Wed May 16 15:28:00 2018
+NAMESPACE: browncompute
+STATUS: DEPLOYED
+
+RESOURCES:
+==> v1/Service
+NAME              TYPE       CLUSTER-IP    EXTERNAL-IP  PORT(S)   AGE
+browncompute-dal  ClusterIP  10.10.10.168  <none>       9080/TCP  15m
+
+==> v1beta2/Deployment
+NAME              DESIRED  CURRENT  UP-TO-DATE  AVAILABLE  AGE
+browncompute-dal  2        2        2           2          15m
+
+==> v1beta1/Ingress
+NAME              HOSTS           ADDRESS         PORTS  AGE
+browncompute-dal  dal.brown.case  172.16.249.128  80     15m
+
+
+NOTES:
+1. Get the application URL by running these commands:
+  http://dal.brown.case/
 ```
+
+## Issue with deployment
+We had a 503 error when accessing the URL above. It comes to bad settings in the ingress and service definition. See [this note](https://github.com/ibm-cloud-architecture/refarch-integration/blob/master/docs/icp/troubleshooting.md#503-on-a-deployed-app-with-ingress-rule) to troubleshoot such issue
 
 ## Delete the Helm Chart
 To delete the helm chart, use the following command:
