@@ -1,0 +1,1181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="6dd1fdf6-ed89-48b5-9d0d-ccc1e3406022" activeEnvironment="Default" name="DalTest" resourceRoot="" soapui-version="5.2.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="e92d8389-df94-48f6-a882-e37dc248895a" wsaVersion="NONE" name="DALServiceServiceSoapBinding" type="wsdl" bindingName="{http://ws.inventory/}DALServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://brownappserver:9080/inventory/ws?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://brownappserver:9080/inventory/ws?wsdl"><con:part><con:url>http://brownappserver:9080/inventory/ws?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="DALServiceService" targetNamespace="http://ws.inventory/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.inventory/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http">
+  <wsdl:types>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://ws.inventory/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="Item" type="tns:item"/>
+      <xs:element name="Supplier" type="tns:supplier"/>
+      <xs:element name="addItemToSite" type="tns:addItemToSite"/>
+      <xs:element name="addItemToSiteResponse" type="tns:addItemToSiteResponse"/>
+      <xs:element name="deleteItems" type="tns:deleteItems"/>
+      <xs:element name="deleteItemsResponse" type="tns:deleteItemsResponse"/>
+      <xs:element name="deleteSupplier" type="tns:deleteSupplier"/>
+      <xs:element name="deleteSupplierResponse" type="tns:deleteSupplierResponse"/>
+      <xs:element name="getInventoryById" type="tns:getInventoryById"/>
+      <xs:element name="getInventoryByIdResponse" type="tns:getInventoryByIdResponse"/>
+      <xs:element name="getInventoryCrossSite" type="tns:getInventoryCrossSite"/>
+      <xs:element name="getInventoryCrossSiteResponse" type="tns:getInventoryCrossSiteResponse"/>
+      <xs:element name="getInventoryForSiteAndItemId" type="tns:getInventoryForSiteAndItemId"/>
+      <xs:element name="getInventoryForSiteAndItemIdResponse" type="tns:getInventoryForSiteAndItemIdResponse"/>
+      <xs:element name="getInventoryPerSite" type="tns:getInventoryPerSite"/>
+      <xs:element name="getInventoryPerSiteResponse" type="tns:getInventoryPerSiteResponse"/>
+      <xs:element name="getInventoryPerSupplier" type="tns:getInventoryPerSupplier"/>
+      <xs:element name="getInventoryPerSupplierResponse" type="tns:getInventoryPerSupplierResponse"/>
+      <xs:element name="getItemStock" type="tns:getItemStock"/>
+      <xs:element name="getItemStockResponse" type="tns:getItemStockResponse"/>
+      <xs:element name="getItems" type="tns:getItems"/>
+      <xs:element name="getItemsPerSite" type="tns:getItemsPerSite"/>
+      <xs:element name="getItemsPerSiteResponse" type="tns:getItemsPerSiteResponse"/>
+      <xs:element name="getItemsResponse" type="tns:getItemsResponse"/>
+      <xs:element name="getSuppliersOfItem" type="tns:getSuppliersOfItem"/>
+      <xs:element name="getSuppliersOfItemResponse" type="tns:getSuppliersOfItemResponse"/>
+      <xs:element name="itemById" type="tns:itemById"/>
+      <xs:element name="itemByIdResponse" type="tns:itemByIdResponse"/>
+      <xs:element name="itemByName" type="tns:itemByName"/>
+      <xs:element name="itemByNameResponse" type="tns:itemByNameResponse"/>
+      <xs:element name="newItem" type="tns:newItem"/>
+      <xs:element name="newItemResponse" type="tns:newItemResponse"/>
+      <xs:element name="newSupplier" type="tns:newSupplier"/>
+      <xs:element name="newSupplierResponse" type="tns:newSupplierResponse"/>
+      <xs:element name="sayHello" type="tns:sayHello"/>
+      <xs:element name="sayHelloResponse" type="tns:sayHelloResponse"/>
+      <xs:element name="sellItem" type="tns:sellItem"/>
+      <xs:element name="sellItemResponse" type="tns:sellItemResponse"/>
+      <xs:element name="supplierById" type="tns:supplierById"/>
+      <xs:element name="supplierByIdResponse" type="tns:supplierByIdResponse"/>
+      <xs:element name="supplierByName" type="tns:supplierByName"/>
+      <xs:element name="supplierByNameResponse" type="tns:supplierByNameResponse"/>
+      <xs:element name="suppliers" type="tns:suppliers"/>
+      <xs:element name="suppliersResponse" type="tns:suppliersResponse"/>
+      <xs:element name="updateInventoryEntry" type="tns:updateInventoryEntry"/>
+      <xs:element name="updateInventoryEntryResponse" type="tns:updateInventoryEntryResponse"/>
+      <xs:element name="updateItem" type="tns:updateItem"/>
+      <xs:element name="updateItemResponse" type="tns:updateItemResponse"/>
+      <xs:element name="updateSupplier" type="tns:updateSupplier"/>
+      <xs:element name="updateSupplierResponse" type="tns:updateSupplierResponse"/>
+      <xs:complexType name="updateInventoryEntry">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="tns:inventory"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="inventory">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="cost" type="xs:double"/>
+          <xs:element minOccurs="0" name="creationDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="customerId" type="xs:long"/>
+          <xs:element minOccurs="0" name="id" type="xs:long"/>
+          <xs:element minOccurs="0" name="itemId" type="xs:long"/>
+          <xs:element minOccurs="0" name="quantity" type="xs:int"/>
+          <xs:element minOccurs="0" name="site" type="xs:string"/>
+          <xs:element minOccurs="0" name="soldPrice" type="xs:double"/>
+          <xs:element minOccurs="0" name="supplierId" type="xs:long"/>
+          <xs:element minOccurs="0" name="updateDate" type="xs:dateTime"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="updateInventoryEntryResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:inventory"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="dalFault">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="code" type="xs:string"/>
+          <xs:element minOccurs="0" name="message" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getInventoryForSiteAndItemId">
+        <xs:sequence>
+          <xs:element name="arg0" type="xs:long"/>
+          <xs:element minOccurs="0" name="arg1" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getInventoryForSiteAndItemIdResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:inventory"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="deleteItems">
+        <xs:sequence>
+          <xs:element name="arg0" type="xs:long"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="deleteItemsResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getItemsPerSite">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getItemsPerSiteResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:item"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="item">
+        <xs:sequence>
+          <xs:element name="id" nillable="true" type="xs:long"/>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="description" type="xs:string"/>
+          <xs:element name="price" type="xs:double"/>
+          <xs:element minOccurs="0" name="imgAlt" type="xs:string"/>
+          <xs:element minOccurs="0" name="img" type="xs:string"/>
+          <xs:element name="quantity" type="xs:int"/>
+          <xs:element minOccurs="0" name="type" type="xs:string"/>
+          <xs:element minOccurs="0" name="serialNumber" type="xs:string"/>
+          <xs:element minOccurs="0" name="model" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getInventoryById">
+        <xs:sequence>
+          <xs:element name="arg0" type="xs:long"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getInventoryByIdResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:inventory"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getInventoryPerSite">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getInventoryPerSiteResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:inventory"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getSuppliersOfItem">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:long"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getSuppliersOfItemResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:supplier"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="supplier">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" nillable="true" type="xs:long"/>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="type" type="xs:string"/>
+          <xs:element minOccurs="0" name="status" type="xs:string"/>
+          <xs:element minOccurs="0" name="street" type="xs:string"/>
+          <xs:element minOccurs="0" name="city" type="xs:string"/>
+          <xs:element minOccurs="0" name="zipcode" type="xs:string"/>
+          <xs:element minOccurs="0" name="state" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="supplierById">
+        <xs:sequence>
+          <xs:element name="arg0" type="xs:long"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="supplierByIdResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:supplier"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="updateItem">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="tns:item"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="updateItemResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:item"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="deleteSupplier">
+        <xs:sequence>
+          <xs:element name="arg0" type="xs:long"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="deleteSupplierResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getItemStock">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:long"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getItemStockResponse">
+        <xs:sequence>
+          <xs:element name="return" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="newItem">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="tns:item"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="newItemResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:item"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="sayHello">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:complexType name="sayHelloResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="itemById">
+        <xs:sequence>
+          <xs:element name="id" type="xs:long"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="itemByIdResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:item"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="addItemToSite">
+        <xs:sequence>
+          <xs:element name="arg0" type="xs:long"/>
+          <xs:element name="arg1" type="xs:int"/>
+          <xs:element minOccurs="0" name="arg2" type="xs:string"/>
+          <xs:element name="arg3" type="xs:long"/>
+          <xs:element name="arg4" type="xs:double"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="addItemToSiteResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:inventory"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getInventoryPerSupplier">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:long"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getInventoryPerSupplierResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:inventory"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getInventoryCrossSite">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:complexType name="getInventoryCrossSiteResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:inventory"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="sellItem">
+        <xs:sequence>
+          <xs:element name="arg0" type="xs:long"/>
+          <xs:element name="arg1" type="xs:int"/>
+          <xs:element minOccurs="0" name="arg2" type="xs:string"/>
+          <xs:element name="arg3" type="xs:long"/>
+          <xs:element name="arg4" type="xs:double"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="sellItemResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:inventory"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="itemByName">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="itemByNameResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:item"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getItems">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:complexType name="getItemsResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:item"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="supplierByName">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="supplierByNameResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:supplier"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="updateSupplier">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="tns:supplier"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="updateSupplierResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:supplier"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="newSupplier">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="tns:supplier"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="newSupplierResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:supplier"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="suppliers">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:complexType name="suppliersResponse">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:supplier"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="DALFault" nillable="true" type="tns:dalFault"/>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="updateInventoryEntry">
+    <wsdl:part element="tns:updateInventoryEntry" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getInventoryForSiteAndItemId">
+    <wsdl:part element="tns:getInventoryForSiteAndItemId" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateInventoryEntryResponse">
+    <wsdl:part element="tns:updateInventoryEntryResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getItemsPerSite">
+    <wsdl:part element="tns:getItemsPerSite" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getInventoryById">
+    <wsdl:part element="tns:getInventoryById" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="DALException">
+    <wsdl:part element="tns:DALFault" name="DALException"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getInventoryByIdResponse">
+    <wsdl:part element="tns:getInventoryByIdResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getSuppliersOfItem">
+    <wsdl:part element="tns:getSuppliersOfItem" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getInventoryCrossSiteResponse">
+    <wsdl:part element="tns:getInventoryCrossSiteResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteSupplier">
+    <wsdl:part element="tns:deleteSupplier" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="suppliersResponse">
+    <wsdl:part element="tns:suppliersResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getInventoryPerSiteResponse">
+    <wsdl:part element="tns:getInventoryPerSiteResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getInventoryPerSupplierResponse">
+    <wsdl:part element="tns:getInventoryPerSupplierResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteItemsResponse">
+    <wsdl:part element="tns:deleteItemsResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getInventoryPerSupplier">
+    <wsdl:part element="tns:getInventoryPerSupplier" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getInventoryCrossSite">
+    <wsdl:part element="tns:getInventoryCrossSite" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="sellItem">
+    <wsdl:part element="tns:sellItem" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="itemByNameResponse">
+    <wsdl:part element="tns:itemByNameResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="supplierByName">
+    <wsdl:part element="tns:supplierByName" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="itemByIdResponse">
+    <wsdl:part element="tns:itemByIdResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="supplierByNameResponse">
+    <wsdl:part element="tns:supplierByNameResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="newSupplier">
+    <wsdl:part element="tns:newSupplier" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getInventoryForSiteAndItemIdResponse">
+    <wsdl:part element="tns:getInventoryForSiteAndItemIdResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getSuppliersOfItemResponse">
+    <wsdl:part element="tns:getSuppliersOfItemResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getItemStockResponse">
+    <wsdl:part element="tns:getItemStockResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteItems">
+    <wsdl:part element="tns:deleteItems" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateSupplierResponse">
+    <wsdl:part element="tns:updateSupplierResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getInventoryPerSite">
+    <wsdl:part element="tns:getInventoryPerSite" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="addItemToSiteResponse">
+    <wsdl:part element="tns:addItemToSiteResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="supplierById">
+    <wsdl:part element="tns:supplierById" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateItem">
+    <wsdl:part element="tns:updateItem" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="sayHelloResponse">
+    <wsdl:part element="tns:sayHelloResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getItemStock">
+    <wsdl:part element="tns:getItemStock" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="supplierByIdResponse">
+    <wsdl:part element="tns:supplierByIdResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="newItem">
+    <wsdl:part element="tns:newItem" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="sayHello">
+    <wsdl:part element="tns:sayHello" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="itemById">
+    <wsdl:part element="tns:itemById" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateItemResponse">
+    <wsdl:part element="tns:updateItemResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="addItemToSite">
+    <wsdl:part element="tns:addItemToSite" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteSupplierResponse">
+    <wsdl:part element="tns:deleteSupplierResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="itemByName">
+    <wsdl:part element="tns:itemByName" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="newItemResponse">
+    <wsdl:part element="tns:newItemResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getItems">
+    <wsdl:part element="tns:getItems" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateSupplier">
+    <wsdl:part element="tns:updateSupplier" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getItemsPerSiteResponse">
+    <wsdl:part element="tns:getItemsPerSiteResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="newSupplierResponse">
+    <wsdl:part element="tns:newSupplierResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="suppliers">
+    <wsdl:part element="tns:suppliers" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="sellItemResponse">
+    <wsdl:part element="tns:sellItemResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getItemsResponse">
+    <wsdl:part element="tns:getItemsResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="DALService">
+    <wsdl:operation name="updateInventoryEntry">
+      <wsdl:input message="tns:updateInventoryEntry" name="updateInventoryEntry"></wsdl:input>
+      <wsdl:output message="tns:updateInventoryEntryResponse" name="updateInventoryEntryResponse"></wsdl:output>
+      <wsdl:fault message="tns:DALException" name="DALException"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getInventoryForSiteAndItemId">
+      <wsdl:input message="tns:getInventoryForSiteAndItemId" name="getInventoryForSiteAndItemId"></wsdl:input>
+      <wsdl:output message="tns:getInventoryForSiteAndItemIdResponse" name="getInventoryForSiteAndItemIdResponse"></wsdl:output>
+      <wsdl:fault message="tns:DALException" name="DALException"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="deleteItems">
+      <wsdl:input message="tns:deleteItems" name="deleteItems"></wsdl:input>
+      <wsdl:output message="tns:deleteItemsResponse" name="deleteItemsResponse"></wsdl:output>
+      <wsdl:fault message="tns:DALException" name="DALException"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getItemsPerSite">
+      <wsdl:input message="tns:getItemsPerSite" name="getItemsPerSite"></wsdl:input>
+      <wsdl:output message="tns:getItemsPerSiteResponse" name="getItemsPerSiteResponse"></wsdl:output>
+      <wsdl:fault message="tns:DALException" name="DALException"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getInventoryById">
+      <wsdl:input message="tns:getInventoryById" name="getInventoryById"></wsdl:input>
+      <wsdl:output message="tns:getInventoryByIdResponse" name="getInventoryByIdResponse"></wsdl:output>
+      <wsdl:fault message="tns:DALException" name="DALException"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getInventoryPerSite">
+      <wsdl:input message="tns:getInventoryPerSite" name="getInventoryPerSite"></wsdl:input>
+      <wsdl:output message="tns:getInventoryPerSiteResponse" name="getInventoryPerSiteResponse"></wsdl:output>
+      <wsdl:fault message="tns:DALException" name="DALException"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getSuppliersOfItem">
+      <wsdl:input message="tns:getSuppliersOfItem" name="getSuppliersOfItem"></wsdl:input>
+      <wsdl:output message="tns:getSuppliersOfItemResponse" name="getSuppliersOfItemResponse"></wsdl:output>
+      <wsdl:fault message="tns:DALException" name="DALException"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="supplierById">
+      <wsdl:input message="tns:supplierById" name="supplierById"></wsdl:input>
+      <wsdl:output message="tns:supplierByIdResponse" name="supplierByIdResponse"></wsdl:output>
+      <wsdl:fault message="tns:DALException" name="DALException"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updateItem">
+      <wsdl:input message="tns:updateItem" name="updateItem"></wsdl:input>
+      <wsdl:output message="tns:updateItemResponse" name="updateItemResponse"></wsdl:output>
+      <wsdl:fault message="tns:DALException" name="DALException"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="deleteSupplier">
+      <wsdl:input message="tns:deleteSupplier" name="deleteSupplier"></wsdl:input>
+      <wsdl:output message="tns:deleteSupplierResponse" name="deleteSupplierResponse"></wsdl:output>
+      <wsdl:fault message="tns:DALException" name="DALException"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getItemStock">
+      <wsdl:input message="tns:getItemStock" name="getItemStock"></wsdl:input>
+      <wsdl:output message="tns:getItemStockResponse" name="getItemStockResponse"></wsdl:output>
+      <wsdl:fault message="tns:DALException" name="DALException"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="newItem">
+      <wsdl:input message="tns:newItem" name="newItem"></wsdl:input>
+      <wsdl:output message="tns:newItemResponse" name="newItemResponse"></wsdl:output>
+      <wsdl:fault message="tns:DALException" name="DALException"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="sayHello">
+      <wsdl:input message="tns:sayHello" name="sayHello"></wsdl:input>
+      <wsdl:output message="tns:sayHelloResponse" name="sayHelloResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="itemById">
+      <wsdl:input message="tns:itemById" name="itemById"></wsdl:input>
+      <wsdl:output message="tns:itemByIdResponse" name="itemByIdResponse"></wsdl:output>
+      <wsdl:fault message="tns:DALException" name="DALException"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="addItemToSite">
+      <wsdl:input message="tns:addItemToSite" name="addItemToSite"></wsdl:input>
+      <wsdl:output message="tns:addItemToSiteResponse" name="addItemToSiteResponse"></wsdl:output>
+      <wsdl:fault message="tns:DALException" name="DALException"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getInventoryPerSupplier">
+      <wsdl:input message="tns:getInventoryPerSupplier" name="getInventoryPerSupplier"></wsdl:input>
+      <wsdl:output message="tns:getInventoryPerSupplierResponse" name="getInventoryPerSupplierResponse"></wsdl:output>
+      <wsdl:fault message="tns:DALException" name="DALException"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getInventoryCrossSite">
+      <wsdl:input message="tns:getInventoryCrossSite" name="getInventoryCrossSite"></wsdl:input>
+      <wsdl:output message="tns:getInventoryCrossSiteResponse" name="getInventoryCrossSiteResponse"></wsdl:output>
+      <wsdl:fault message="tns:DALException" name="DALException"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="sellItem">
+      <wsdl:input message="tns:sellItem" name="sellItem"></wsdl:input>
+      <wsdl:output message="tns:sellItemResponse" name="sellItemResponse"></wsdl:output>
+      <wsdl:fault message="tns:DALException" name="DALException"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="itemByName">
+      <wsdl:input message="tns:itemByName" name="itemByName"></wsdl:input>
+      <wsdl:output message="tns:itemByNameResponse" name="itemByNameResponse"></wsdl:output>
+      <wsdl:fault message="tns:DALException" name="DALException"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getItems">
+      <wsdl:input message="tns:getItems" name="getItems"></wsdl:input>
+      <wsdl:output message="tns:getItemsResponse" name="getItemsResponse"></wsdl:output>
+      <wsdl:fault message="tns:DALException" name="DALException"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="supplierByName">
+      <wsdl:input message="tns:supplierByName" name="supplierByName"></wsdl:input>
+      <wsdl:output message="tns:supplierByNameResponse" name="supplierByNameResponse"></wsdl:output>
+      <wsdl:fault message="tns:DALException" name="DALException"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updateSupplier">
+      <wsdl:input message="tns:updateSupplier" name="updateSupplier"></wsdl:input>
+      <wsdl:output message="tns:updateSupplierResponse" name="updateSupplierResponse"></wsdl:output>
+      <wsdl:fault message="tns:DALException" name="DALException"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="newSupplier">
+      <wsdl:input message="tns:newSupplier" name="newSupplier"></wsdl:input>
+      <wsdl:output message="tns:newSupplierResponse" name="newSupplierResponse"></wsdl:output>
+      <wsdl:fault message="tns:DALException" name="DALException"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="suppliers">
+      <wsdl:input message="tns:suppliers" name="suppliers"></wsdl:input>
+      <wsdl:output message="tns:suppliersResponse" name="suppliersResponse"></wsdl:output>
+      <wsdl:fault message="tns:DALException" name="DALException"></wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DALServiceServiceSoapBinding" type="tns:DALService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="updateInventoryEntry">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="updateInventoryEntry">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updateInventoryEntryResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DALException">
+        <soap:fault name="DALException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getInventoryForSiteAndItemId">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getInventoryForSiteAndItemId">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getInventoryForSiteAndItemIdResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DALException">
+        <soap:fault name="DALException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="deleteItems">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="deleteItems">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deleteItemsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DALException">
+        <soap:fault name="DALException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getItemsPerSite">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getItemsPerSite">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getItemsPerSiteResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DALException">
+        <soap:fault name="DALException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getInventoryById">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getInventoryById">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getInventoryByIdResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DALException">
+        <soap:fault name="DALException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getInventoryPerSite">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getInventoryPerSite">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getInventoryPerSiteResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DALException">
+        <soap:fault name="DALException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="supplierById">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="supplierById">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="supplierByIdResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DALException">
+        <soap:fault name="DALException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getSuppliersOfItem">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getSuppliersOfItem">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getSuppliersOfItemResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DALException">
+        <soap:fault name="DALException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updateItem">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="updateItem">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updateItemResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DALException">
+        <soap:fault name="DALException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="deleteSupplier">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="deleteSupplier">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deleteSupplierResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DALException">
+        <soap:fault name="DALException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getItemStock">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getItemStock">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getItemStockResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DALException">
+        <soap:fault name="DALException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="newItem">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="newItem">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="newItemResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DALException">
+        <soap:fault name="DALException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="sayHello">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="sayHello">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="sayHelloResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="itemById">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="itemById">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="itemByIdResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DALException">
+        <soap:fault name="DALException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="addItemToSite">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="addItemToSite">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="addItemToSiteResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DALException">
+        <soap:fault name="DALException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getInventoryPerSupplier">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getInventoryPerSupplier">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getInventoryPerSupplierResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DALException">
+        <soap:fault name="DALException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getInventoryCrossSite">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getInventoryCrossSite">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getInventoryCrossSiteResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DALException">
+        <soap:fault name="DALException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="sellItem">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="sellItem">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="sellItemResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DALException">
+        <soap:fault name="DALException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="itemByName">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="itemByName">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="itemByNameResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DALException">
+        <soap:fault name="DALException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getItems">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getItems">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getItemsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DALException">
+        <soap:fault name="DALException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="supplierByName">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="supplierByName">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="supplierByNameResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DALException">
+        <soap:fault name="DALException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updateSupplier">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="updateSupplier">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updateSupplierResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DALException">
+        <soap:fault name="DALException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="newSupplier">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="newSupplier">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="newSupplierResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DALException">
+        <soap:fault name="DALException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="suppliers">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="suppliers">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="suppliersResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="DALException">
+        <soap:fault name="DALException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="DALServiceService">
+    <wsdl:port binding="tns:DALServiceServiceSoapBinding" name="DALServicePort">
+      <soap:address location="http://brownappserver:9080/inventory/ws"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://brownappserver:9080/inventory/ws</con:endpoint></con:endpoints><con:operation id="3e7779fd-33ed-4ffa-8290-cdd159f0a649" isOneWay="false" action="" name="addItemToSite" bindingOperationName="addItemToSite" type="Request-Response" outputName="addItemToSiteResponse" inputName="addItemToSite" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="ca468057-ea3d-4073-ae17-f9cbf14277e4" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://brownappserver:9080/inventory/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:addItemToSite>
+         <arg0>?</arg0>
+         <arg1>?</arg1>
+         <!--Optional:-->
+         <arg2>?</arg2>
+         <arg3>?</arg3>
+         <arg4>?</arg4>
+      </ws:addItemToSite>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.inventory/DALService/addItemToSite"/></con:call></con:operation><con:operation id="cdc0e9d1-5979-4349-9cbd-9debe7ed995f" isOneWay="false" action="" name="deleteItems" bindingOperationName="deleteItems" type="Request-Response" outputName="deleteItemsResponse" inputName="deleteItems" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="7ed32ef3-2f46-4ac2-8138-3c49b104b022" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://brownappserver:9080/inventory/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:deleteItems>
+         <arg0>?</arg0>
+      </ws:deleteItems>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.inventory/DALService/deleteItems"/></con:call></con:operation><con:operation id="d2230d1d-a923-478b-b1b1-60b99721546e" isOneWay="false" action="" name="deleteSupplier" bindingOperationName="deleteSupplier" type="Request-Response" outputName="deleteSupplierResponse" inputName="deleteSupplier" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="ec7b2fb1-f3cb-4622-998b-0b9c1ef85e97" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://brownappserver:9080/inventory/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:deleteSupplier>
+         <arg0>?</arg0>
+      </ws:deleteSupplier>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.inventory/DALService/deleteSupplier"/></con:call></con:operation><con:operation id="59e6d0b8-5dc8-4685-a030-46d73a4633a3" isOneWay="false" action="" name="getInventoryById" bindingOperationName="getInventoryById" type="Request-Response" outputName="getInventoryByIdResponse" inputName="getInventoryById" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="e2e194b4-fd2a-4c96-8b17-6f0d69d409b1" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://brownappserver:9080/inventory/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getInventoryById>
+         <arg0>?</arg0>
+      </ws:getInventoryById>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.inventory/DALService/getInventoryById"/></con:call></con:operation><con:operation id="80e882b6-5d56-449f-89da-191dff377d7c" isOneWay="false" action="" name="getInventoryCrossSite" bindingOperationName="getInventoryCrossSite" type="Request-Response" outputName="getInventoryCrossSiteResponse" inputName="getInventoryCrossSite" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="dfbf97cd-af90-4841-a9a6-494eaa70bdf3" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://brownappserver:9080/inventory/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getInventoryCrossSite/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.inventory/DALService/getInventoryCrossSite"/></con:call></con:operation><con:operation id="cd60162a-d620-42f1-8096-9d4387fa4170" isOneWay="false" action="" name="getInventoryForSiteAndItemId" bindingOperationName="getInventoryForSiteAndItemId" type="Request-Response" outputName="getInventoryForSiteAndItemIdResponse" inputName="getInventoryForSiteAndItemId" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="dac1791d-cd3b-4b49-9166-bc88489f5436" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://brownappserver:9080/inventory/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getInventoryForSiteAndItemId>
+         <arg0>?</arg0>
+         <!--Optional:-->
+         <arg1>?</arg1>
+      </ws:getInventoryForSiteAndItemId>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.inventory/DALService/getInventoryForSiteAndItemId"/></con:call></con:operation><con:operation id="62a81507-343c-47df-9a09-2f17ac3eb9a5" isOneWay="false" action="" name="getInventoryPerSite" bindingOperationName="getInventoryPerSite" type="Request-Response" outputName="getInventoryPerSiteResponse" inputName="getInventoryPerSite" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="ff8fb781-a462-4167-a7d9-2c18ee1456c0" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://brownappserver:9080/inventory/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getInventoryPerSite>
+         <!--Optional:-->
+         <arg0>?</arg0>
+      </ws:getInventoryPerSite>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.inventory/DALService/getInventoryPerSite"/></con:call></con:operation><con:operation id="1486ef14-9ebf-4af6-801f-3d1234d5e1b1" isOneWay="false" action="" name="getInventoryPerSupplier" bindingOperationName="getInventoryPerSupplier" type="Request-Response" outputName="getInventoryPerSupplierResponse" inputName="getInventoryPerSupplier" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="41113be4-1d31-404d-b08b-a4db8e7960e7" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://brownappserver:9080/inventory/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getInventoryPerSupplier>
+         <!--Optional:-->
+         <arg0>?</arg0>
+      </ws:getInventoryPerSupplier>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.inventory/DALService/getInventoryPerSupplier"/></con:call></con:operation><con:operation id="db9a055b-e07f-40e2-a0a7-53dfe7af57cd" isOneWay="false" action="" name="getItems" bindingOperationName="getItems" type="Request-Response" outputName="getItemsResponse" inputName="getItems" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="b9cc6032-c9f4-4518-8812-41faa4428102" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://brownappserver:9080/inventory/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getItems/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.inventory/DALService/getItems"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="62eee3d7-cc0a-4686-ba6f-5c2b7a0ecaa4" isOneWay="false" action="" name="getItemsPerSite" bindingOperationName="getItemsPerSite" type="Request-Response" outputName="getItemsPerSiteResponse" inputName="getItemsPerSite" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="ef7feaee-4965-4ede-9d6b-f0e2ad7b8a6f" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://brownappserver:9080/inventory/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getItemsPerSite>
+         <!--Optional:-->
+         <arg0>?</arg0>
+      </ws:getItemsPerSite>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.inventory/DALService/getItemsPerSite"/></con:call></con:operation><con:operation id="7216b7f4-427d-4fc9-ab71-b1ade034dfd2" isOneWay="false" action="" name="getItemStock" bindingOperationName="getItemStock" type="Request-Response" outputName="getItemStockResponse" inputName="getItemStock" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="50931374-e7af-4a13-bbf2-11719b94117a" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://brownappserver:9080/inventory/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getItemStock>
+         <!--Optional:-->
+         <arg0>?</arg0>
+      </ws:getItemStock>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.inventory/DALService/getItemStock"/></con:call></con:operation><con:operation id="bda31399-b459-48f5-9177-574d7899ec74" isOneWay="false" action="" name="getSuppliersOfItem" bindingOperationName="getSuppliersOfItem" type="Request-Response" outputName="getSuppliersOfItemResponse" inputName="getSuppliersOfItem" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="a7e3b319-0972-4051-813b-c27746416bdd" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://brownappserver:9080/inventory/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:getSuppliersOfItem>
+         <!--Optional:-->
+         <arg0>?</arg0>
+      </ws:getSuppliersOfItem>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.inventory/DALService/getSuppliersOfItem"/></con:call></con:operation><con:operation id="a3e5b803-c30f-4fc8-9e81-bb2b0e5b7920" isOneWay="false" action="" name="itemById" bindingOperationName="itemById" type="Request-Response" outputName="itemByIdResponse" inputName="itemById" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="fbba72c4-1cc7-4a64-a1c8-f771309eccb2" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://brownappserver:9080/inventory/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:itemById>
+         <id>?</id>
+      </ws:itemById>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.inventory/DALService/itemById"/></con:call></con:operation><con:operation id="3bb0e84c-5d8d-4307-a000-6449e251c82b" isOneWay="false" action="" name="itemByName" bindingOperationName="itemByName" type="Request-Response" outputName="itemByNameResponse" inputName="itemByName" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="7968f84b-3ed0-4ec4-84d9-5c33b0219399" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://brownappserver:9080/inventory/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:itemByName>
+         <!--Optional:-->
+         <name>?</name>
+      </ws:itemByName>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.inventory/DALService/itemByName"/></con:call></con:operation><con:operation id="7fbab376-1eff-4d72-890a-5aa664ad4bb3" isOneWay="false" action="" name="newItem" bindingOperationName="newItem" type="Request-Response" outputName="newItemResponse" inputName="newItem" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="c14fc733-ad99-4098-86f7-23521c7c6967" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://brownappserver:9080/inventory/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:newItem>
+         <!--Optional:-->
+         <arg0>
+            <id>?</id>
+            <!--Optional:-->
+            <name>?</name>
+            <!--Optional:-->
+            <description>?</description>
+            <price>?</price>
+            <!--Optional:-->
+            <imgAlt>?</imgAlt>
+            <!--Optional:-->
+            <img>?</img>
+            <quantity>?</quantity>
+            <!--Optional:-->
+            <type>?</type>
+            <!--Optional:-->
+            <serialNumber>?</serialNumber>
+            <!--Optional:-->
+            <model>?</model>
+         </arg0>
+      </ws:newItem>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.inventory/DALService/newItem"/></con:call></con:operation><con:operation id="fef25ff5-a53b-454a-a8ee-da90802e9dd0" isOneWay="false" action="" name="newSupplier" bindingOperationName="newSupplier" type="Request-Response" outputName="newSupplierResponse" inputName="newSupplier" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="6d05b366-4f1d-4350-8cd5-ed0b14411ab4" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://brownappserver:9080/inventory/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:newSupplier>
+         <!--Optional:-->
+         <arg0>
+            <!--Optional:-->
+            <id>?</id>
+            <!--Optional:-->
+            <name>?</name>
+            <!--Optional:-->
+            <type>?</type>
+            <!--Optional:-->
+            <status>?</status>
+            <!--Optional:-->
+            <street>?</street>
+            <!--Optional:-->
+            <city>?</city>
+            <!--Optional:-->
+            <zipcode>?</zipcode>
+            <!--Optional:-->
+            <state>?</state>
+         </arg0>
+      </ws:newSupplier>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.inventory/DALService/newSupplier"/></con:call></con:operation><con:operation id="7623893f-eb9d-4e12-a847-23aae52e125c" isOneWay="false" action="" name="sayHello" bindingOperationName="sayHello" type="Request-Response" outputName="sayHelloResponse" inputName="sayHello" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="5707c0e0-b527-4a12-add2-1f05dd5dde1d" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://brownappserver:9080/inventory/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:sayHello/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.inventory/DALService/sayHello"/></con:call></con:operation><con:operation id="1f44b927-2082-43c0-a6e1-b13e0e5845ee" isOneWay="false" action="" name="sellItem" bindingOperationName="sellItem" type="Request-Response" outputName="sellItemResponse" inputName="sellItem" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="3e7c140b-f068-47b9-9bb0-736db15e193b" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://brownappserver:9080/inventory/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:sellItem>
+         <arg0>?</arg0>
+         <arg1>?</arg1>
+         <!--Optional:-->
+         <arg2>?</arg2>
+         <arg3>?</arg3>
+         <arg4>?</arg4>
+      </ws:sellItem>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.inventory/DALService/sellItem"/></con:call></con:operation><con:operation id="d4cbb1cc-3928-4e68-8073-7d8982129a32" isOneWay="false" action="" name="supplierById" bindingOperationName="supplierById" type="Request-Response" outputName="supplierByIdResponse" inputName="supplierById" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="d363d14f-44e9-40a9-9fd5-74ff6b96f340" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://brownappserver:9080/inventory/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:supplierById>
+         <arg0>?</arg0>
+      </ws:supplierById>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.inventory/DALService/supplierById"/></con:call></con:operation><con:operation id="4e59a232-253f-4874-820a-288e57843f13" isOneWay="false" action="" name="supplierByName" bindingOperationName="supplierByName" type="Request-Response" outputName="supplierByNameResponse" inputName="supplierByName" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="eb4509c7-8748-4b87-9c80-42521c56fb64" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://brownappserver:9080/inventory/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:supplierByName>
+         <!--Optional:-->
+         <arg0>?</arg0>
+      </ws:supplierByName>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.inventory/DALService/supplierByName"/></con:call></con:operation><con:operation id="cc496936-9204-4f67-b1f0-58fb5277d086" isOneWay="false" action="" name="suppliers" bindingOperationName="suppliers" type="Request-Response" outputName="suppliersResponse" inputName="suppliers" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="8d7db122-ffd6-42e5-9ddc-a0ac97aa3c89" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://brownappserver:9080/inventory/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:suppliers/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.inventory/DALService/suppliers"/></con:call></con:operation><con:operation id="1fe9a4d9-452b-4496-9f3b-3fe5bd7ca88c" isOneWay="false" action="" name="updateInventoryEntry" bindingOperationName="updateInventoryEntry" type="Request-Response" outputName="updateInventoryEntryResponse" inputName="updateInventoryEntry" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="197090f7-667c-4e4b-8eda-ea03e2735e4d" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://brownappserver:9080/inventory/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:updateInventoryEntry>
+         <!--Optional:-->
+         <arg0>
+            <!--Optional:-->
+            <cost>?</cost>
+            <!--Optional:-->
+            <creationDate>?</creationDate>
+            <!--Optional:-->
+            <customerId>?</customerId>
+            <!--Optional:-->
+            <id>?</id>
+            <!--Optional:-->
+            <itemId>?</itemId>
+            <!--Optional:-->
+            <quantity>?</quantity>
+            <!--Optional:-->
+            <site>?</site>
+            <!--Optional:-->
+            <soldPrice>?</soldPrice>
+            <!--Optional:-->
+            <supplierId>?</supplierId>
+            <!--Optional:-->
+            <updateDate>?</updateDate>
+         </arg0>
+      </ws:updateInventoryEntry>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.inventory/DALService/updateInventoryEntry"/></con:call></con:operation><con:operation id="3ab6b845-5c67-4def-9f30-d50f2208b495" isOneWay="false" action="" name="updateItem" bindingOperationName="updateItem" type="Request-Response" outputName="updateItemResponse" inputName="updateItem" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="4b3b19cf-97ae-4e72-9e8a-a3a6c1aaaeaf" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://brownappserver:9080/inventory/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:updateItem>
+         <!--Optional:-->
+         <arg0>
+            <id>?</id>
+            <!--Optional:-->
+            <name>?</name>
+            <!--Optional:-->
+            <description>?</description>
+            <price>?</price>
+            <!--Optional:-->
+            <imgAlt>?</imgAlt>
+            <!--Optional:-->
+            <img>?</img>
+            <quantity>?</quantity>
+            <!--Optional:-->
+            <type>?</type>
+            <!--Optional:-->
+            <serialNumber>?</serialNumber>
+            <!--Optional:-->
+            <model>?</model>
+         </arg0>
+      </ws:updateItem>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.inventory/DALService/updateItem"/></con:call></con:operation><con:operation id="45779e49-8b6a-4f19-a8c0-9d98d80bf7e5" isOneWay="false" action="" name="updateSupplier" bindingOperationName="updateSupplier" type="Request-Response" outputName="updateSupplierResponse" inputName="updateSupplier" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="84c5e8cd-eaf0-468c-ab54-04d2b487df29" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://brownappserver:9080/inventory/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.inventory/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:updateSupplier>
+         <!--Optional:-->
+         <arg0>
+            <!--Optional:-->
+            <id>?</id>
+            <!--Optional:-->
+            <name>?</name>
+            <!--Optional:-->
+            <type>?</type>
+            <!--Optional:-->
+            <status>?</status>
+            <!--Optional:-->
+            <street>?</street>
+            <!--Optional:-->
+            <city>?</city>
+            <!--Optional:-->
+            <zipcode>?</zipcode>
+            <!--Optional:-->
+            <state>?</state>
+         </arg0>
+      </ws:updateSupplier>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.inventory/DALService/updateSupplier"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/></con:soapui-project>
