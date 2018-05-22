@@ -13,7 +13,7 @@ spec:
     - port: {{ .Values.service.externalPort }}
       targetPort: {{ .Values.service.internalPort }}
       protocol: TCP
-      name: http
+      name: {{ .Values.service.name }}
   selector:
     app: {{ template "browncompute-dal.name" . }}
     release: {{ .Release.Name }}
