@@ -21,6 +21,7 @@ Updated 04/27/2018.
     - [Access the WSDL](#access-the-wsdl)
   + [Option 2: Docker](#option-2-docker)
   + [Option 3: IBM Cloud Private](#option-3-ibm-cloud-private)
+  + [Option 4: Traditional WebSphere Application Server](docs/twas-deploy.md)
 * [Continuous Integration](#continuous-integration)
 * [Test Driven Development](#test-driven-development)
 * [Conclusion](#conclusion)
@@ -102,7 +103,7 @@ public class ItemEntity implements Serializable {
 
 The same approach is done for the Inventory and the Supplier tables.
 
-The JAXWS annotations are centralized in one class, which may not be the best approach. 
+The JAXWS annotations are centralized in one class, which may not be the best approach.
 Here is an extract of this class showing the getItems implementation with the delegate to the providre class which supports the business logic implementation.
 
 ```Java
@@ -239,7 +240,7 @@ When tests are executed by `gradlew` the reports are in the build/reports folder
 As the logic was separated into three classes: front end to support JaxWS annotation, service class to do service orchestration and to implement the business logic (Porvider classes) and DAO to support integration with data source, the unit tests should be at the DAO and service level.
 
 In [another project]() we are presenting how to use Mockito to isolate back end component to test the business logic layer.
-   
+
 ## Conclusion
 The SOA service operations defined in this project are not exposed to Bluemix application or to microservice directly. When using ESB pattern, integration flows will be developed to address interface mapping, protocol mapping, or different quality of service configuration.
 
