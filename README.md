@@ -137,7 +137,7 @@ The project was developed with [Eclipse Neon](http://www.eclipse.org/neon) with 
 Install gradle CLI on your computer so you can build, unit test and assemble war.  For that see the installation instructions at [gradle](http://gradle.org)
 
 #### Install Java JDK
-* Install Java JDK, preferably Oracle one. For example for a Ubuntu build server we did the following commands:
+Install Java JDK, preferably Oracle one. For example for a Ubuntu build server we did the following commands:
 ```bash
 $ sudo update-ca-certificates -f
 $ sudo add-apt-repository ppa:webupd8team/java
@@ -177,10 +177,12 @@ The server name was *appServer*.
 
 #### Access the WSDL
 To access the WSDL, open a web browser and enter the following link:
-- http://localhost:9080/inventory/ws?wsdl
+```http://localhost:9080/inventory/ws?wsdl```
+
+Validate with the following script which is doing a SOAP request.
 
 ### Option 2: Docker
-The included [Multi-staged Dockerfile](https://docs.docker.com/develop/develop-images/multistage-build/#use-multi-stage-builds) contains 2 stages:
+The included [Multi-staged Dockerfile](https://docs.docker.com/develop/develop-images/multistage-build/#use-multi-stage-builds) contains two stages:
 1. The first stage performs a `gradle build`, which produces the `jar` and `war` files.
 2. The second stage creates the `WebSphere Liberty profile` server and puts the `jar` and `war` from the previous files in the WPL server directories.
 
@@ -239,7 +241,7 @@ The tests are using a Derby embedded database so it is easier to start and execu
 
 When tests are executed by `gradlew` the reports are in the build/reports folder.
 
-As the logic was separated into three classes: front end to support JaxWS annotation, service class to do service orchestration and to implement the business logic (Porvider classes) and DAO to support integration with data source, the unit tests should be at the DAO and service level.
+As the logic was separated into three classes: front end to support JaxWS annotation, service class to do service orchestration and to implement the business logic (Provider classes) and DAO to support integration with data source, the unit tests should be at the DAO and service level.
 
 In [another project]() we are presenting how to use Mockito to isolate back end component to test the business logic layer.
 
