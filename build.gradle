@@ -57,7 +57,7 @@ openjpa {
 }
 
 task processConfig(type: Copy) {
-    from('src/main/config') {
+    from('src/main/liberty') {
         include '**/*'
     }
 
@@ -70,6 +70,9 @@ test {
 
 war {
   dependsOn openjpaEnhance
+  from('src/main/resources/META-INF') {
+     include 'persistence.xml'
+  }
   rootSpec.exclude("**/lib/db2jcc4.jar")
   rootSpec.exclude("**/lib/derby.jar")
 }

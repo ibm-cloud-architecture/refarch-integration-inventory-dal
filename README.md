@@ -4,7 +4,9 @@ This project is part of the 'IBM Hybrid Integration Reference Architecture' solu
 The goal of this project is to implement a set of SOA service operations to manage a product inventory, suppliers and stock. This is on purpose, that we centralize those three components inside the same application to represent an older application design done in the 2000s.
 In 2017, most likely, we will have separated those three entities into three microservices.
 
-Updated 04/27/2018.
+The application is packages as war file and can be deployed as docker images with Liberty profile or traditional WebSphere Application Server.
+
+Updated 08/17/2018.
 
 ## Table of Contents
 * [Goals](#goals)
@@ -121,10 +123,10 @@ The unit tests are using an embedded derby to validate the service and data acce
 Therefore two persistence.xml are defined: one for testing ( src/test/resources) and one for production to be packaged into the war (src/java/resources).
 
 ## Build & Deployment Options
-To build & deploy the application, you can use 1 of the following 3 approaches:
+To build & deploy the application, you can use one of the following three approaches:
 1. Deploy to local `IBM WebSphere Liberty Profile` app server (least preferred).
 2. Use the provided `Dockerfile` and deploy to local docker engine (easiest).
-3. Use the provided `Helm Chart` and deploy to `IBM Cloud Private cluster`.
+3. Use the provided `Helm Chart` and deploy to `IBM Cloud Private cluster` (one time deployment then use the docker build to push image to the docker repository you use for ICP).
 
 ### Option 1: Local WebSphere Liberty Profile
 #### Install & Configure Eclipse
