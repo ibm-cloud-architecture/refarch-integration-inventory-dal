@@ -23,7 +23,7 @@ Updated 08/17/2018.
     - [Access the WSDL](#access-the-wsdl)
   + [Option 2: Docker](#option-2-docker)
   + [Option 3: IBM Cloud Private](#option-3-ibm-cloud-private)
-  + [Option 4: Traditional WebSphere Application Server](docs/twas-deploy.md)
+  + [Option 4: Traditional WebSphere Application Server](docs/twas/readme.md)
 * [Continuous Integration](#continuous-integration)
 * [Test Driven Development](#test-driven-development)
 * [Conclusion](#conclusion)
