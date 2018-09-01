@@ -22,7 +22,7 @@ public class Item {
 	private String type;
 	private String serialNumber;
 	private String model;
-
+	private String productType;
 	
 	public Item(){}
 	
@@ -57,6 +57,7 @@ public class Item {
 		this.model=ie.getModel();
 		this.type=ie.getProductType();
 		this.serialNumber=ie.getSerialNumber();
+		this.productType = ie.getProductType();
 	}
 	
 	public ItemEntity toItemEntity() {
@@ -67,6 +68,7 @@ public class Item {
 		ie.setImg(this.getImg());
 		ie.setImgAlt(this.getImgAlt());
 		ie.setPrice(this.getPrice());
+		ie.setProductType(this.getProductType());
 		return ie;
 	}
 
@@ -148,6 +150,14 @@ public class Item {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	public String getProductType() {
+		return productType;
+	}
+
+	public void setProductType(String productType) {
+		this.productType = productType;
 	}
 	
 }

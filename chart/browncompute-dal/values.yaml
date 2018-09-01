@@ -21,9 +21,9 @@ ingress:
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  path: /
+  path: /inventory/ws
   hosts:
-    - dal.brown.case
+    - green.csplab.local
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
