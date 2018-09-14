@@ -68,6 +68,8 @@ test {
   jvmArgs "-javaagent:./lib/openjpa-all-2.4.2.jar"
 }
 
+
+
 war {
   dependsOn openjpaEnhance
   from('src/main/resources/META-INF') {
