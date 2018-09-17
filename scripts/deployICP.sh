@@ -1,14 +1,8 @@
-set p = $(echo $PWD | awk -v h="scripts" '$0 ~h')
-if [[ $PWD = */scripts ]]; then
+
+if [[ "$PWD" = */scripts ]]; then
  cd ..
 fi
 . ./scripts/setenv.sh
-if [[ $PWD != */chart ]]; then
-echo "you need a chart folder with helm chart in it"
- exit
-fi
-echo $PWD
-
 
 rc=$(helm ls --all $progname --tls)
 if [[ ! -z "$rc" ]]; then
